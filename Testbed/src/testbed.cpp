@@ -1,13 +1,13 @@
-#include "application.h"
-#include "entry.h"
+#include "pheasant.h"
 
-class Testbed : public Application 
+class Testbed : public Phs::Application 
 {
 public:
 	Testbed() = default;
 	~Testbed() = default;
 };
 
-Application* createApplication() {
+Phs::Application* Phs::createApplication()
+{
 	return new Testbed;
 }

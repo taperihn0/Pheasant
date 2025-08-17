@@ -2,6 +2,9 @@
 
 #include "core.h"
 
+namespace Phs
+{
+
 class PHEASANT_API Application
 {
 public:
@@ -11,3 +14,5 @@ public:
 };
 
 Application* createApplication();
+
+} // namespace Phs
