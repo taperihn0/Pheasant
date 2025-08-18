@@ -1,25 +1,29 @@
+cmake_minimum_required(VERSION 3.16)
+
 project(Testbed CXX)
 
 add_executable(Testbed
-    src/*.cpp
-	src/*.h
+    src/testbed.cpp
 )
 
-set(TARGET_ARCHITECTURE x64)
-
-target_include_directories(Testbed
-    PUBLIC
-		${CMAKE_SOURCE_DIR}/Pheasant/src/
+target_include_directories(Testbed PUBLIC
+	${CMAKE_SOURCE_DIR}/Pheasant/src/
 )
 
 target_link_libraries(Testbed PRIVATE Pheasant)
 
-target_compile_definitions(Testbed PRIVATE
-    $<$<CONFIG:Debug>:PHEASANT_DEBUG>
-    $<$<CONFIG:Release>:PHEASANT_RELEASE>
-    $<$<CONFIG:Dist>:PHEASANT_DIST>
+# Just leave it for now
+add_custom_command(TARGET Testbed POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+    	${CMAKE_SOURCE_DIR}/bin/Pheasant/${CMAKE_BUILD_TYPE}/${TARGET_ARCHITECTURE}/*.so
+        ${CMAKE_SOURCE_DIR}/bin/${PROJECT_NAME}/${CMAKE_BUILD_TYPE}/${TARGET_ARCHITECTURE}/
 )
 
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/${CMAKE_PROJECT_NAME}/$<CONFIG>/${TARGET_ARCHITECTURE}/)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/${CMAKE_PROJECT_NAME}/$<CONFIG>/${TARGET_ARCHITECTURE}/)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/${CMAKE_PROJECT_NAME}/$<CONFIG>/${TARGET_ARCHITECTURE}/)
+set_target_properties(Testbed PROPERTIES
+	RUNTIME_OUTPUT_DIRECTORY 
+	"${CMAKE_SOURCE_DIR}/bin/${PROJECT_NAME}/${CMAKE_BUILD_TYPE}/${TARGET_ARCHITECTURE}"
+	LIBRARY_OUTPUT_DIRECTORY
+	"${CMAKE_SOURCE_DIR}/bin/${PROJECT_NAME}/${CMAKE_BUILD_TYPE}/${TARGET_ARCHITECTURE}"
+	ARCHIVE_OUTPUT_DIRECTORY 
+	"${CMAKE_SOURCE_DIR}/bin/intermediates/${PROJECT_NAME}/${CMAKE_BUILD_TYPE}/${TARGET_ARCHITECTURE}"
+)
