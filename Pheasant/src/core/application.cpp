@@ -6,8 +6,8 @@ namespace Phs {
 
 void Application::run()
 {
-#ifdef PHEASANT_PLATFORM_LINUX
-	std::cout << "Welcome to Pheasant on Linux!\n";
+#ifdef PHEASANT_PLATFORM_WINDOWS
+	std::cout << "Welcome to Pheasant on Windows!\n";
 #endif
 	while (true);
 }
