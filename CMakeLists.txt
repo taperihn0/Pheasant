@@ -18,6 +18,8 @@ set(CMAKE_CONFIGURATION_TYPES "Debug;Release;Final" CACHE STRING "" FORCE)
 
 # Currently, only x64 architecture is supported
 set(TARGET_ARCHITECTURE x64)
+target_compile_definitions(Pheasant PUBLIC ARCHITECTURE_64)
+target_compile_definitions(Testbed  PUBLIC ARCHITECTURE_64)
 
 add_subdirectory(Pheasant)
 add_subdirectory(Testbed)

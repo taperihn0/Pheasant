@@ -1,0 +1,82 @@
+#pragma once
+
+#define NONE_TOKEN  
+
+#ifdef PHEASANT_BUILD_EXPORT
+#	if defined(PHEASANT_PLATFORM_WINDOWS)
+#		define PHEASANT_API __declspec(dllexport)
+#	elif defined(PHEASANT_PLATFORM_LINUX)
+#		define PHEASANT_API __attribute__((visibility("default")))
+#  elif defined(PHEASANT_PLATFORM_MACOS)
+#     error "MacOS system is not supported so far."
+#	endif
+#else
+#	if defined(PHEASANT_PLATFORM_WINDOWS)
+#		define PHEASANT_API __declspec(dllimport)
+#  elif defined(PHEASANT_PLATFORM_LINUX)
+#		define PHEASANT_API NONE_TOKEN
+#  elif defined(PHEASANT_PLATFORM_MACOS)
+#     error "MacOS system is not supported so far."
+#  endif
+#endif
+
+#ifdef PHEASANT_PLATFORM_WINDOWS
+#  define PHS_WINDOWS
+#elif defined(PHEASANT_PLATFORM_LINUX)
+#  define PHS_LINUX
+#elif defined(PHEASANT_PLATFORM_MACOS)
+#  define PHS_MACOS
+#endif
+
+#if defined(DEBUG) or defined(_DEBUG)
+#  ifndef PHEASANT_DEBUG
+#     define PHEASANT_DEBUG
+#  endif
+#  ifndef PHS_DEBUG
+#     define PHS_DEBUG
+#  endif
+#endif
+
+#if defined(RELEASE) or defined(_RELEASE) or defined(NDEBUG)
+#  ifndef PHEASANT_RELEASE
+#     define PHEASANT_RELEASE
+#  endif
+#  ifndef PHS_RELEASE
+#     define PHS_RELEASE
+#  endif
+#endif
+
+#if  __cplusplus >= 202002L
+#  define PHEASANT_STANDARD_20
+#  define PHS_STANDARD_20
+#elif __cplusplus >= 201702L
+#  define PHEASANT_STANDARD_17
+#  define PHS_STANDARD_17
+#else
+#  error "C++ standard not defined"
+#endif
+
+#if defined(_MSC_VER)
+#  define PHS_INLINE				    inline 
+#  define PHS_FORCEINLINE		    __forceinline
+#  define PHS_LAMBDA_FORCEINLINE  [[msvc::forceinline]] 
+#elif defined(__GNUC__)
+#  define PHS_INLINE				    inline
+#  define PHS_FORCEINLINE		    __attribute__((always_inline))
+#  define PHS_LAMBDA_FORCEINLINE  NONE_TOKEN
+#endif
+
+#define PHS_NORETURN              [[noreturn]]
+#define PHS_UNUSED                [[maybe_unused]]
+
+#if defined(PHS_STANDARD_20)
+#  define PHS_UNLIKELY            [[unlikely]]
+#else
+#  define PHS_UNLIKELY
+#endif
+
+#ifdef ARCHITECTURE_64
+#  define CACHELINE_SIZE 64
+#else
+#  error "Only 64-bit architecture supported"
+#endif

@@ -1,6 +1,7 @@
 #pragma once
 
-#include "core.h"
+#include "precompile.h"
+#include "defines.h"
 
 namespace Phs
 {
