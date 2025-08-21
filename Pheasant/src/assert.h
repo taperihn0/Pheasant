@@ -15,8 +15,9 @@
 #	define PHS_DEBUG_BREAK() __builtin_trap()
 #endif
 
-bool failedAssertion(std::string_view file, std::string_view text, int line) {
-	// LOG(test, file, line)...
+bool failedAssertion(std::string_view file, std::string_view text, int line) 
+{
+	std::cout << "\nAssertion failed: " << text << " file " << file << " line " << line << std::endl;
 	PHS_DEBUG_BREAK();
 	return true;
 }

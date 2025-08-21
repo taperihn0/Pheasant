@@ -1,6 +1,7 @@
 #pragma once
 
 #include "defines.h"
+#include "assert.h"
 
 #include <cstdint>
 #include <limits>
@@ -17,13 +18,15 @@ using longlong = long long;
 using ulonglong = unsigned long long;
 
 template <typename T>
-constexpr PHS_INLINE T maxof() {
+constexpr PHS_INLINE T maxof() 
+{
    PHS_STATIC_ASSERT(std::is_floating_point_v<T> or std::is_integral_v<T>);
    return std::numeric_limits<T>::max();
 }
 
 template <typename T>
-constexpr PHS_INLINE T minof() {
+constexpr PHS_INLINE T minof() 
+{
    PHS_STATIC_ASSERT(std::is_floating_point_v<T> or std::is_integral_v<T>);
    return std::numeric_limits<T>::lowest();
 }

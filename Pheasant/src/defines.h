@@ -57,7 +57,7 @@
 #endif
 
 #if defined(_MSC_VER)
-#  define PHS_INLINE				    inline 
+#  define PHS_INLINE              inline 
 #  define PHS_FORCEINLINE		    __forceinline
 #  define PHS_LAMBDA_FORCEINLINE  [[msvc::forceinline]] 
 #elif defined(__GNUC__)

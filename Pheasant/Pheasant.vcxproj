@@ -130,6 +130,8 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>$(SolutionDir)Pheasant\src\;</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>precompile.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -157,15 +159,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\assert.h" />
+    <ClInclude Include="src\common.h" />
     <ClInclude Include="src\core\application.h" />
     <ClInclude Include="src\defines.h" />
     <ClInclude Include="src\core\entry.h" />
+    <ClInclude Include="src\core\log.h" />
     <ClInclude Include="src\pheasant.h" />
     <ClInclude Include="src\precompile.h" />
     <ClInclude Include="src\types.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\application.cpp" />
+    <ClCompile Include="src\core\precompile.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
