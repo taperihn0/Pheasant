@@ -14,6 +14,10 @@ add_library(Pheasant SHARED
 	${PHEASANT_HEADERS}
 )
 
+add_subdirectory(vendor/glfw)
+
+target_link_libraries(Pheasant PUBLIC glfw)
+
 target_compile_definitions(Pheasant PUBLIC 
 	$<$<CONFIG:Debug>:PHEASANT_DEBUG>
 	$<$<CONFIG:Release>:PHEASANT_RELEASE>
@@ -33,6 +37,12 @@ else ()
 	message(FATAL_ERROR "Platform not recognised.")
 endif ()
 
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src")
+
+if (MSVC)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zc:__cplusplus")
+endif()
+
 set_target_properties(Pheasant PROPERTIES
 	RUNTIME_OUTPUT_DIRECTORY 
 	"${CMAKE_SOURCE_DIR}/bin/${PROJECT_NAME}/${CMAKE_BUILD_TYPE}/${TARGET_ARCHITECTURE}"
@@ -40,3 +50,11 @@ set_target_properties(Pheasant PROPERTIES
 	"${CMAKE_SOURCE_DIR}/bin/${PROJECT_NAME}/${CMAKE_BUILD_TYPE}/${TARGET_ARCHITECTURE}"
 	ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/intermediates/${PROJECT_NAME}/${CMAKE_BUILD_TYPE}/${TARGET_ARCHITECTURE}"
 )
+
+# Copy library file into executable directory
+add_custom_command(TARGET Pheasant POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+    	${CMAKE_SOURCE_DIR}/bin/${PROJECT_NAME}/${CMAKE_BUILD_TYPE}/${TARGET_ARCHITECTURE}/${PROJECT_NAME}.dll
+        ${CMAKE_SOURCE_DIR}/bin/Testbed/${CMAKE_BUILD_TYPE}/${TARGET_ARCHITECTURE}/
+)
+

@@ -2,7 +2,7 @@
 
 #include "precompile.h"
 #include "types.h"
-#include "assert.h"
+//#include "assert.h"
 
 // Sets line buffering.
 // It is rather slow, but useful for DEBUG builds
@@ -84,8 +84,6 @@ private:
    static bool _initialized;
 };
 
-}
-
 #define PHS_CORE_LOG_TRACE(...) Log::message(Log::MSG_TRACE, __VA_ARGS__)
 #define PHS_CORE_LOG_DEBUG(...) Log::message(Log::MSG_DEBUG, __VA_ARGS__)
 #define PHS_CORE_LOG_INFO(...)  Log::message(Log::MSG_INFO,  __VA_ARGS__)
@@ -99,5 +97,7 @@ private:
 #define PHS_LOG_WARN(...)     ::Log::message(::Log::MSG_WARN,  __VA_ARGS__)
 #define PHS_LOG_ERROR(...)    ::Log::message(::Log::MSG_ERROR, __VA_ARGS__)
 #define PHS_LOG_FATAL(...)    ::Log::message(::Log::MSG_FATAL, __VA_ARGS__)
+
+} // namespace Phs
 
 #include "log.inl"

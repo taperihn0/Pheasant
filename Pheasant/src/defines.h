@@ -28,22 +28,12 @@
 #  define PHS_OS_MACOS
 #endif
 
-#if defined(DEBUG) or defined(_DEBUG)
-#  ifndef PHEASANT_DEBUG
-#     define PHEASANT_DEBUG
-#  endif
-#  ifndef PHS_DEBUG
-#     define PHS_DEBUG
-#  endif
+#ifdef PHEASANT_DEBUG
+#  define PHS_DEBUG
 #endif
 
-#if defined(RELEASE) or defined(_RELEASE) or defined(NDEBUG)
-#  ifndef PHEASANT_RELEASE
-#     define PHEASANT_RELEASE
-#  endif
-#  ifndef PHS_RELEASE
-#     define PHS_RELEASE
-#  endif
+#ifdef PHEASANT_RELEASE
+#  define PHS_RELEASE
 #endif
 
 #if  __cplusplus >= 202002L

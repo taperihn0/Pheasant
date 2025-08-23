@@ -42,12 +42,14 @@ PHS_INLINE void Log::print_message_queue(std::string format, Ts&&... queue)
    if (pos == std::string::npos)
       return;
 
-   if constexpr (N < sizeof...(queue)) {
+   if constexpr (N < sizeof...(queue)) 
+   {
       std::cout << getNthArgument<N>(std::forward<Ts>(queue)...);
       std::string tail = format.substr(pos + 2);
       print_message_queue<N + 1>(std::move(tail), std::forward<Ts>(queue)...);
    }
-   else {
+   else 
+   {
       PHS_ASSERT_LOG(false, "Too little arguments for their placeholders provided.");
       return;
    }
