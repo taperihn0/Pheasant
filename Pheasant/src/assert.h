@@ -3,6 +3,9 @@
 #include "defines.h"
 #include "precompile.h"
 
+namespace Phs
+{
+
 #ifdef PHS_DEBUG
 #  define PHS_ASSERT_ENABLE
 #endif
@@ -15,12 +18,12 @@
 #	define PHS_DEBUG_BREAK() __builtin_trap()
 #endif
 
-PHS_INLINE bool failedAssertion(std::string_view file, std::string_view text, int line) 
-{
-	std::cout << "\nAssertion failed: " << text << " file " << file << " line " << line << std::endl;
-	PHS_DEBUG_BREAK();
-	return true;
-}
+	PHS_INLINE bool failedAssertion(std::string_view file, std::string_view text, int line)
+	{
+		std::cout << "\nAssertion failed: " << text << " file " << file << " line " << line << std::endl;
+		PHS_DEBUG_BREAK();
+		return true;
+	}
 
 #define PHS_ASSERT(s)						(void)((s) or failedAssertion(__FILE__, "Runtime assertion failed", __LINE__))
 #define PHS_ASSERT_LOG(s, msg)			(void)((s) or failedAssertion(__FILE__, msg, __LINE__))
@@ -35,3 +38,5 @@ PHS_INLINE bool failedAssertion(std::string_view file, std::string_view text, in
 #define PHS_STATIC_ASSERT_LOG(s, msg)	NONE_TOKEN
 
 #endif // PHS_ASSERT_ENABLE
+
+} // namespace Phs

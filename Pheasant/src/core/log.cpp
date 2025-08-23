@@ -22,6 +22,7 @@ namespace Phs
       if (!GetConsoleMode(handle_out, &mode_out)) 
       {
          PHS_CORE_LOG_ERROR("Failed to get Windows-specific output console mode in {}", __PRETTY_FUNCTION__);
+         return;
       }
 
       mode_out |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
@@ -30,6 +31,7 @@ namespace Phs
       if (!SetConsoleMode(handle_out, mode_out))
       {
          PHS_CORE_LOG_ERROR("Failed to set Windows-specific output console mode in {}", __PRETTY_FUNCTION__);
+         return;
       }
 #endif
 
