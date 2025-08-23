@@ -21,13 +21,15 @@ constexpr PHS_INLINE bool isSameType() {
 // Assert IEEE Standard is implemented
 PHS_STATIC_ASSERT(std::numeric_limits<float>::is_iec559);
 
+// As IEEE is checked, these types exactly maps their size.
 using float32_t = float;
 using float64_t = double;
 
-using byte = uint8_t;
-
-using longlong = long long;
-using ulonglong = unsigned long long;
+// Define some handy aliases
+using byte      = uint8_t;
+using ll        = long long;
+using ull       = unsigned long long;
+using uint      = unsigned int;
 
 static constexpr uint8_t operator"" _u8(uintmax_t v)
 {

@@ -2,29 +2,25 @@
 #include "application.h"
 #include "log.h"
 
-#include <GLFW/glfw3.h>
-
 namespace Phs {
+
+Application::Application()
+	: _window(std::make_unique<Window>())
+	, _running(true)
+{
+	// TODO: Move that instuction to a safe place.
+	Log::init();
+	_window->init(800, 600, "Hello GLFW");
+}
 
 void Application::run()
 {
-	bool debug;
+	PHS_CORE_LOG_TRACE("Welcome to Pheasant from Visual Studio with CMake!");
 
-#ifdef PHS_DEBUG
-	debug = true;
-#else
-	debug = false;
-#endif
-
-#ifdef GLFWAPI
-	Log::init();
-	PHS_CORE_LOG_TRACE("Welcome to Pheasant from Visual Studio with CMake! The build is: {}", debug ? "DEBUG" : "RELEASE");
-	PHS_CORE_LOG_TRACE("GLFWAPI defined");
-#endif
-
-	glfwInit(); // Works!
-
-	while (true);
+	while (_running)
+	{
+		_window->update();
+	}
 }
 
 } // namespace Phs
