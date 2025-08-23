@@ -9,13 +9,13 @@
 
 #ifdef PHS_ASSERT_ENABLE
 
-#ifdef PHS_WINDOWS
+#ifdef PHS_OS_WINDOWS
 #	define PHS_DEBUG_BREAK() __debugbreak()
 #else
 #	define PHS_DEBUG_BREAK() __builtin_trap()
 #endif
 
-bool failedAssertion(std::string_view file, std::string_view text, int line) 
+PHS_INLINE bool failedAssertion(std::string_view file, std::string_view text, int line) 
 {
 	std::cout << "\nAssertion failed: " << text << " file " << file << " line " << line << std::endl;
 	PHS_DEBUG_BREAK();

@@ -6,29 +6,28 @@
 namespace Phs
 {
 
-bool Log::_initialized = false;
-
-void Log::init()
-{
-   std::cout.sync_with_stdio(0);
-   _initialized = true;
-}
+#if PHS_FLUSH_OUTPUT
+#  define PHS_LOG_FLUSH_SPECIFIER std::flush
+#else
+#  define PHS_LOG_FLUSH_SPECIFIER NONE_TOKEN
+#endif
 
 template <typename... Ts>
 void Log::message(Log::messageLevel lvl, Ts&&... args)
 {
    PHS_ASSERT(_initialized);
+   PHS_STATIC_ASSERT(sizeof...(args) < _ArgumentLimit);
 
    const size_t msgval = static_cast<size_t>(lvl) - 1;
 
-   PHS_ASSERT(msgval < LvlCount);
+   PHS_ASSERT(msgval < _LevelCount);
 
-   std::cout << LevelStr[msgval] << ": ";
+   std::cout << _ANSIColor[msgval] << _LevelStr[msgval] << ": ";
 
    std::string format = getNthArgument<0>(args...);
    print_message_queue(std::move(format), std::forward<Ts>(args)...);
 
-   std::cout << '\n';
+   std::cout << _ANSIColorReset << PHS_LOG_FLUSH_SPECIFIER << '\n';
 }
 
 template <std::size_t N, typename... Ts>

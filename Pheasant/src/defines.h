@@ -21,11 +21,11 @@
 #endif
 
 #ifdef PHEASANT_PLATFORM_WINDOWS
-#  define PHS_WINDOWS
+#  define PHS_OS_WINDOWS
 #elif defined(PHEASANT_PLATFORM_LINUX)
-#  define PHS_LINUX
+#  define PHS_OS_LINUX
 #elif defined(PHEASANT_PLATFORM_MACOS)
-#  define PHS_MACOS
+#  define PHS_OS_MACOS
 #endif
 
 #if defined(DEBUG) or defined(_DEBUG)
@@ -79,4 +79,18 @@
 #  define CACHELINE_SIZE 64
 #else
 #  error "Only 64-bit architecture supported"
+#endif
+
+#ifdef _MSC_VER
+// Warning: 'Phs::Log::LevelStr': 'std::basic_string_view<char,std::char_traits<char>>' needs to have dll-interface to be used by clients of 'Phs::Log'
+// Phs::Log::LevelStr is already private, so safely ignore that warning.
+#pragma warning(disable: 4251)
+#endif
+
+#ifndef __PRETTY_FUNCTION__
+#  ifdef _MSC_VER
+#     define __PRETTY_FUNCTION__ __FUNCSIG__
+#  else
+#     define __PRETTY_FUNCTION__ __func__
+#  endif
 #endif

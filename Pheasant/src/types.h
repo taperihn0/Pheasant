@@ -6,6 +6,15 @@
 #include <cstdint>
 #include <limits>
 
+// Some libraries defines that, so undef them
+#undef max
+#undef min
+
+template <typename T1, typename T2>
+constexpr PHS_INLINE bool isSameType() {
+   return std::is_same_v<T1, T2>;
+};
+
 // Assert IEEE Standard is implemented
 PHS_STATIC_ASSERT(std::numeric_limits<float>::is_iec559);
 

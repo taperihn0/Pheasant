@@ -6,11 +6,9 @@ namespace Phs {
 
 void Application::run()
 {
-#ifdef PHS_WINDOWS
 	Log::init();
-	std::string tmp = "HERE I AM";
-	Log::message(Log::MSG_INFO, "Welcome to Pheasant on Windows: {}, {", tmp);
-#endif
+	PHS_CORE_LOG_TRACE("Welcome to Pheasant!");
+
 	while (true);
 }
 
