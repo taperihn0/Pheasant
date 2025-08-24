@@ -31,7 +31,7 @@ bool Window::init(uint width, uint height, const std::string& title)
 {
    PHS_CORE_LOG_INFO("Initializing a new Window...");
 
-   // initialize GLFW context
+   // Initialize GLFW context
    if (!glfwInit())
    {
       PHS_CORE_LOG_FATAL("Failed to initialize GLFW context!");
@@ -59,7 +59,7 @@ bool Window::init(uint width, uint height, const std::string& title)
 
 Window::~Window()
 {
-   if (_window != nullptr)
+   if (!_window)
       glfwDestroyWindow(_window);
 
    if (glfwIsInitialized())
@@ -71,6 +71,148 @@ Window::~Window()
 void Window::update()
 {
    glfwPollEvents();
+}
+
+void Window::setEventCallbacks(EventCallbacks* callbacks)
+{
+   glfwSetWindowUserPointer(_window, reinterpret_cast<void*>(callbacks));
+
+   glfwSetWindowSizeCallback(_window, [](PlatformWindow* window, int width, int height)
+      {
+         EventWindowResize ev;
+         ev.winsize.width = width;
+         ev.winsize.height = height;
+         const EventCallbacks* callbacks = reinterpret_cast<EventCallbacks*>(glfwGetWindowUserPointer(window));
+         callbacks->window_resize_callback(ev);
+      }
+   );
+   
+   glfwSetWindowPosCallback(_window, [](PlatformWindow* window, int xpos, int ypos)
+      {
+         EventWindowMove ev;
+         ev.winpos.x = xpos;
+         ev.winpos.y = ypos;
+         const EventCallbacks* callbacks = reinterpret_cast<EventCallbacks*>(glfwGetWindowUserPointer(window));
+         callbacks->window_move_callback(ev);
+      }
+   );
+   
+   glfwSetWindowFocusCallback(_window, [](PlatformWindow* window, int value)
+      {
+         EventWindowFocus ev;
+         ev.winfocus.value = value;
+         const EventCallbacks* callbacks = reinterpret_cast<EventCallbacks*>(glfwGetWindowUserPointer(window));
+         callbacks->window_focus_callback(ev);
+      }
+   );
+
+   glfwSetWindowCloseCallback(_window, [](PlatformWindow* window)
+      {
+         EventWindowClose ev;
+         const EventCallbacks* callbacks = reinterpret_cast<EventCallbacks*>(glfwGetWindowUserPointer(window));
+         callbacks->window_close_callback(ev);
+      }
+   );
+
+   glfwSetKeyCallback(_window, [](PlatformWindow* window, int key, int scancode, int action, int mods)
+      {
+         const EventCallbacks* callbacks = reinterpret_cast<EventCallbacks*>(glfwGetWindowUserPointer(window));
+
+         switch (action)
+         {
+         case GLFW_PRESS:
+         {
+            EventKeyPress ev;
+            ev.keybkeys.key = key;
+            ev.keybkeys.scancode = scancode;
+            ev.keybkeys.mods = mods;
+            callbacks->key_press_callback(ev);
+            break;
+         }
+         case GLFW_REPEAT:
+         {
+            EventKeyRepeat ev;
+            ev.keybkeys.key = key;
+            ev.keybkeys.scancode = scancode;
+            ev.keybkeys.mods = mods;
+            callbacks->key_repeat_callback(ev);
+            break;
+         }
+         case GLFW_RELEASE:
+         {
+            EventKeyRelease ev;
+            ev.keybkeys.key = key;
+            ev.keybkeys.scancode = scancode;
+            ev.keybkeys.mods = mods;
+            callbacks->key_release_callback(ev);
+            break;
+         }
+         default: break;
+         }
+      }
+   );
+
+   glfwSetCharCallback(_window, [](PlatformWindow* window, unsigned int codepoint)
+      {
+         EventKeyType ev;
+         ev.keybtype.code = codepoint;
+         const EventCallbacks* callbacks = reinterpret_cast<EventCallbacks*>(glfwGetWindowUserPointer(window));
+         callbacks->key_type_callback(ev);
+      }
+   );
+
+   glfwSetMouseButtonCallback(_window, [](PlatformWindow* window, int button, int action, int mods)
+      {
+         const EventCallbacks* callbacks = reinterpret_cast<EventCallbacks*>(glfwGetWindowUserPointer(window));
+
+         switch (action)
+         {
+         case GLFW_PRESS:
+         {
+            EventMousePress ev;
+            ev.micekeys.button = button;
+            ev.micekeys.mods = mods;
+            callbacks->mouse_press_callback(ev);
+            break;
+         }
+         case GLFW_REPEAT:
+         {
+            // Repeat action for mouse button currently 
+            // not supported by GLFW nor Pheasant 
+            break;
+         }
+         case GLFW_RELEASE:
+         {
+            EventMouseRelease ev;
+            ev.micekeys.button = button;
+            ev.micekeys.mods = mods;
+            callbacks->mouse_release_callback(ev);
+            break;
+         }
+         default: break;
+         }
+      }
+   );
+
+   glfwSetCursorPosCallback(_window, [](PlatformWindow* window, double xpos, double ypos)
+      {
+         EventMouseMove ev;
+         ev.cursor.x = xpos;
+         ev.cursor.y = ypos;
+         const EventCallbacks* callbacks = reinterpret_cast<EventCallbacks*>(glfwGetWindowUserPointer(window));
+         callbacks->mouse_move_callback(ev);
+      }
+   );
+
+   glfwSetScrollCallback(_window, [](PlatformWindow* window, double xoffset, double yoffset)
+      {
+         EventMouseScroll ev;
+         ev.micescroll.xoff = xoffset;
+         ev.micescroll.yoff = yoffset;
+         const EventCallbacks* callbacks = reinterpret_cast<EventCallbacks*>(glfwGetWindowUserPointer(window));
+         callbacks->mouse_scroll_callback(ev);
+      }
+   );
 }
 
 void Window::errorCallback(int error, const char* description) 

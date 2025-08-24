@@ -2,6 +2,14 @@
 
 #include "types.h"
 
+#ifndef __PRETTY_FUNCTION__
+#  ifdef _MSC_VER
+#     define __PRETTY_FUNCTION__ __FUNCSIG__
+#  else
+#     define __PRETTY_FUNCTION__ __func__
+#  endif
+#endif
+
 namespace Phs {
 
 template<std::size_t N, typename... Ts>

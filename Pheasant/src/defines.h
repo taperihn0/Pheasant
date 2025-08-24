@@ -76,11 +76,3 @@
 // Phs::Log::LevelStr is already private, so safely ignore that warning.
 #pragma warning(disable: 4251)
 #endif
-
-#ifndef __PRETTY_FUNCTION__
-#  ifdef _MSC_VER
-#     define __PRETTY_FUNCTION__ __FUNCSIG__
-#  else
-#     define __PRETTY_FUNCTION__ __func__
-#  endif
-#endif

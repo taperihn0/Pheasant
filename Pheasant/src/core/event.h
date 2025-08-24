@@ -6,6 +6,9 @@
 namespace Phs 
 {
 
+/* Numeric codes for Event class template.
+*  Each group is numered that each of them contain different shared bit.
+*/
 enum EventCode : uint16_t
 {
    // Invalid event
@@ -16,14 +19,14 @@ enum EventCode : uint16_t
    EV_WINDOW_RESIZE         = 0x1 << 1,
    EV_WINDOW_MOVE           = 0x3 << 1,
    EV_WINDOW_FOCUS          = 0x5 << 1,
-   EV_WINDOW_UNFOCUS        = 0x7 << 1,
-   EV_WINDOW_CLOSE          = 0x9 << 1, 
+   EV_WINDOW_CLOSE          = 0x7 << 1, 
 
    // EV_KEY_MIN_VALUE is equivalent to EV_KEY_PRESSED
    EV_KEY_MIN_VALUE         = 0x1 << 2,
    EV_KEY_PRESSED           = 0x1 << 2,
    EV_KEY_RELEASED          = 0x3 << 2,
-   EV_KEY_TYPED             = 0x5 << 2,
+   EV_KEY_REPEATED          = 0x5 << 2,
+   EV_KEY_TYPED             = 0x7 << 2,
 
    // EV_MOUSE_MIN_VALUE is equivalent to EV_MOUSE_BUTTON_PRESSED
    EV_MOUSE_MIN_VALUE       = 0x1 << 3,
@@ -33,6 +36,10 @@ enum EventCode : uint16_t
    EV_MOUSE_SCROLLED        = 0x7 << 3,
 };
 
+/* Event categories raw numeric values.
+*  Corresponds to minimal value of each of the groups representing
+*  different event (action) codes.
+*/
 enum EventCategory : uint16_t 
 {
    EV_CATEGORY_NONE         = EV_NONE,           
@@ -41,12 +48,15 @@ enum EventCategory : uint16_t
    EV_CATEGORY_MOUSE        = EV_MOUSE_MIN_VALUE,  
 };
 
-EventCategory getEventCodeCategory(EventCode ev)
+constexpr EventCategory getEventCodeCategory(EventCode ev)
 {
    uint16_t numcode = static_cast<uint16_t>(ev);
    return static_cast<EventCategory>(onebit(numcode));
 }
 
+/* Native, raw Event datatype.
+*  Stores information as event numeric code, its category and current handling state.
+*/
 template <EventCode Code>
 class Event 
 {
@@ -60,29 +70,98 @@ public:
    PHS_INLINE void                           unhandle()                  { _handled = false; }
 
    template <EventCode HandledEvent, typename Func>
-   void dispatch(Func& handler);
+   PHS_INLINE void                           dispatch(Func& handler);
+
+   /* Event can be treated in many ways.
+   *  Event context helps with accesing memory
+   *  representing different event states, like 
+   *  position or key parameters.
+   */
+   union /* EventContext */
+   {
+      struct alignas(16) WindowSizeParams
+      {
+         int width;
+         int height;
+      } winsize;
+
+      struct alignas(16) WindowPosParams
+      {
+         int x;
+         int y;
+      } winpos;
+
+      struct alignas(16) WindowFocusParams
+      {
+         bool value;
+      } winfocus;
+
+      // TODO: Custom types
+      struct alignas(16) KeyboardKeyParams
+      {
+         int key;
+         int scancode;
+         int mods;
+      } keybkeys;
+
+      // TODO: Custom types
+      struct alignas(16) KeyboardTypeParams
+      {
+         unsigned int code;
+      } keybtype;
+
+      // TODO: Custom types
+      struct alignas(16) MouseButtonParams
+      {
+         int button;
+         int mods;
+      } micekeys;
+
+      struct alignas(16) CursorParams
+      {
+         double x;
+         double y;
+      } cursor;
+
+      struct alignas(16) MouseScrollParams
+      {
+         double xoff;
+         double yoff;
+      } micescroll;
+
+      // Event context is 16 bytes long (128 bits)
+      byte __b[16];
+   };
 private:
    static constexpr EventCode     _EventCode = Code;
    static constexpr EventCategory _Category = getEventCodeCategory(_EventCode);
    bool                           _handled;
 };
 
+/* Aliases of Event class templates.
+*  Each alias corresponds to type Event<EVENT_CODE>, which is native, raw Event type.
+*/
+
 using EventNone          = Event<EV_NONE>;
 
-using EventWindowResize  = Event<EV_WINDOW_RESIZE>;
-using EventWindowMove    = Event<EV_WINDOW_MOVE>;
-using EventWindowFocus   = Event<EV_WINDOW_FOCUS>;
-using EventWindowUnfocus = Event<EV_WINDOW_UNFOCUS>;
-using EventWindowClose   = Event<EV_WINDOW_CLOSE>;
+// Aliases for window-group events
+using EventWindowResize = Event<EV_WINDOW_RESIZE>;
+using EventWindowMove   = Event<EV_WINDOW_MOVE>;
+using EventWindowFocus  = Event<EV_WINDOW_FOCUS>;
+using EventWindowClose  = Event<EV_WINDOW_CLOSE>;
 
-using EventKeyPressed    = Event<EV_KEY_PRESSED>;
-using EventKeyReleased   = Event<EV_KEY_RELEASED>;
-using EventKeyTyped      = Event<EV_KEY_TYPED>;
+// Aliases for key-group events
+using EventKeyPress     = Event<EV_KEY_PRESSED>;
+using EventKeyRelease   = Event<EV_KEY_RELEASED>;
+using EventKeyRepeat    = Event<EV_KEY_REPEATED>;
+using EventKeyType      = Event<EV_KEY_TYPED>;
 
-using EventMousePressed  = Event<EV_MOUSE_BUTTON_PRESSED>;
-using EventMouseReleased = Event<EV_MOUSE_BUTTON_RELEASED>;
-using EventMouseMoved    = Event<EV_MOUSE_MOVED>;
-using EventMouseScrolled = Event<EV_MOUSE_SCROLLED>;
+// Aliases for mouse-group events.
+// Mouse button and mouse actions are not differentiated.
+using EventMousePress   = Event<EV_MOUSE_BUTTON_PRESSED>;
+using EventMouseRelease = Event<EV_MOUSE_BUTTON_RELEASED>;
+using EventMouseMove    = Event<EV_MOUSE_MOVED>;
+using EventMouseScroll  = Event<EV_MOUSE_SCROLLED>;
 
 } // namespace Phs
 

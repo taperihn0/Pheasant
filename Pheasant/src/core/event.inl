@@ -5,14 +5,15 @@ namespace Phs
 {
 
 template <EventCode Code>
-Event<Code>::Event() : _handled(false) 
+Event<Code>::Event() 
+   : _handled(false) 
 {}
 
 template <EventCode Code>
 template <EventCode HandledEvent, typename Func>
-void Event<Code>::dispatch(Func& handler)
+PHS_INLINE void Event<Code>::dispatch(Func& handler)
 {
-   PHS_STATIC_ASSERT(isSameType<Func, bool()>());
+   PHS_STATIC_ASSERT((isSameType<Func, bool()>()));
 
    if constexpr (HandledEvent == _EventCode)
    { 
