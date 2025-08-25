@@ -31,7 +31,6 @@ private:
 	static void mouseScrollCallback(EventMouseScroll ev);
 
 	std::unique_ptr<Window>			  _window;
-	bool									  _running;
 	std::unique_ptr<EventCallbacks> _callbacks;
 };
 

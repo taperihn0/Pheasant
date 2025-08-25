@@ -18,6 +18,8 @@ Window::Window()
    , _focus(false)
    , _title(_DefaultWindowTitle)
    , _initialized(false)
+   , _input()
+   , _close(false)
 {}
 
 Window::Window(uint width, uint height, const std::string& title)
@@ -53,6 +55,8 @@ bool Window::init(uint width, uint height, const std::string& title)
       return false;
    }
 
+   _input.setWindow(_window);
+
    _initialized = true;
    return true;
 }
@@ -73,11 +77,16 @@ void Window::update()
    glfwPollEvents();
 }
 
+bool Window::isOpen()
+{
+   return !_close;
+}
+
 void Window::setEventCallbacks(EventCallbacks* callbacks)
 {
    glfwSetWindowUserPointer(_window, reinterpret_cast<void*>(callbacks));
 
-   glfwSetWindowSizeCallback(_window, [](PlatformWindow* window, int width, int height)
+   glfwSetWindowSizeCallback(_window, [](GLFWwindow* window, int width, int height)
       {
          EventWindowResize ev;
          ev.winsize.width = width;
@@ -87,7 +96,7 @@ void Window::setEventCallbacks(EventCallbacks* callbacks)
       }
    );
    
-   glfwSetWindowPosCallback(_window, [](PlatformWindow* window, int xpos, int ypos)
+   glfwSetWindowPosCallback(_window, [](GLFWwindow* window, int xpos, int ypos)
       {
          EventWindowMove ev;
          ev.winpos.x = xpos;
@@ -97,7 +106,7 @@ void Window::setEventCallbacks(EventCallbacks* callbacks)
       }
    );
    
-   glfwSetWindowFocusCallback(_window, [](PlatformWindow* window, int value)
+   glfwSetWindowFocusCallback(_window, [](GLFWwindow* window, int value)
       {
          EventWindowFocus ev;
          ev.winfocus.value = value;
@@ -106,7 +115,7 @@ void Window::setEventCallbacks(EventCallbacks* callbacks)
       }
    );
 
-   glfwSetWindowCloseCallback(_window, [](PlatformWindow* window)
+   glfwSetWindowCloseCallback(_window, [](GLFWwindow* window)
       {
          EventWindowClose ev;
          const EventCallbacks* callbacks = reinterpret_cast<EventCallbacks*>(glfwGetWindowUserPointer(window));
@@ -114,7 +123,7 @@ void Window::setEventCallbacks(EventCallbacks* callbacks)
       }
    );
 
-   glfwSetKeyCallback(_window, [](PlatformWindow* window, int key, int scancode, int action, int mods)
+   glfwSetKeyCallback(_window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
       {
          const EventCallbacks* callbacks = reinterpret_cast<EventCallbacks*>(glfwGetWindowUserPointer(window));
 
@@ -152,7 +161,7 @@ void Window::setEventCallbacks(EventCallbacks* callbacks)
       }
    );
 
-   glfwSetCharCallback(_window, [](PlatformWindow* window, unsigned int codepoint)
+   glfwSetCharCallback(_window, [](GLFWwindow* window, unsigned int codepoint)
       {
          EventKeyType ev;
          ev.keybtype.code = codepoint;
@@ -161,7 +170,7 @@ void Window::setEventCallbacks(EventCallbacks* callbacks)
       }
    );
 
-   glfwSetMouseButtonCallback(_window, [](PlatformWindow* window, int button, int action, int mods)
+   glfwSetMouseButtonCallback(_window, [](GLFWwindow* window, int button, int action, int mods)
       {
          const EventCallbacks* callbacks = reinterpret_cast<EventCallbacks*>(glfwGetWindowUserPointer(window));
 
@@ -194,7 +203,7 @@ void Window::setEventCallbacks(EventCallbacks* callbacks)
       }
    );
 
-   glfwSetCursorPosCallback(_window, [](PlatformWindow* window, double xpos, double ypos)
+   glfwSetCursorPosCallback(_window, [](GLFWwindow* window, double xpos, double ypos)
       {
          EventMouseMove ev;
          ev.cursor.x = xpos;
@@ -204,7 +213,7 @@ void Window::setEventCallbacks(EventCallbacks* callbacks)
       }
    );
 
-   glfwSetScrollCallback(_window, [](PlatformWindow* window, double xoffset, double yoffset)
+   glfwSetScrollCallback(_window, [](GLFWwindow* window, double xoffset, double yoffset)
       {
          EventMouseScroll ev;
          ev.micescroll.xoff = xoffset;

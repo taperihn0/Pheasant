@@ -12,7 +12,7 @@ file(GLOB_RECURSE PHEASANT_HEADERS CONFIGURE_DEPENDS
 add_library(Pheasant SHARED 
 	${PHEASANT_SOURCES}
 	${PHEASANT_HEADERS}
-)
+ )
 
 add_subdirectory(vendor/glfw)
 

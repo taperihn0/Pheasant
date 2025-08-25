@@ -10,7 +10,8 @@
 #  endif
 #endif
 
-namespace Phs {
+namespace Phs 
+{
 
 template<std::size_t N, typename... Ts>
 decltype(auto) getNthArgument(Ts&&... args)

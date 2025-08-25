@@ -67,7 +67,6 @@ void Application::mouseScrollCallback(EventMouseScroll ev)
 
 Application::Application()
 	: _window(std::make_unique<Window>())
-	, _running(true)
 	, _callbacks(std::make_unique<EventCallbacks>())
 {
 	// TODO: Move that instuction to a safe place.
@@ -96,7 +95,7 @@ void Application::run()
 {
 	PHS_CORE_LOG_TRACE("Welcome to Pheasant from Visual Studio with CMake!");
 
-	while (_running)
+	while (_window->isOpen())
 	{
 		_window->update();
 	}

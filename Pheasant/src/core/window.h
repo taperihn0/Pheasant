@@ -4,8 +4,7 @@
 #include "common.h"
 #include "types.h"
 #include "event.h"
-
-#include <GLFW/glfw3.h>
+#include "input.h"
 
 namespace Phs
 {
@@ -21,7 +20,7 @@ using WindowCloseCallback   = EventCallback<EV_WINDOW_CLOSE>;
 
 using KeyPressCallback      = EventCallback<EV_KEY_PRESSED>;
 using KeyReleaseCallback    = EventCallback<EV_KEY_RELEASED>;
-using KeyRepeateCallback   = EventCallback<EV_KEY_REPEATED>;
+using KeyRepeateCallback    = EventCallback<EV_KEY_REPEATED>;
 using KeyTypeCallback       = EventCallback<EV_KEY_TYPED>;
 
 using MousePressCallback    = EventCallback<EV_MOUSE_BUTTON_PRESSED>;
@@ -34,23 +33,21 @@ void _defaultEventCallback(PHS_UNUSED Event<Code>) {}
 
 struct EventCallbacks
 {
-   WindowResizeCallback  window_resize_callback  = _defaultEventCallback<EV_WINDOW_RESIZE>;
-   WindowMoveCallback    window_move_callback    = _defaultEventCallback<EV_WINDOW_MOVE>;
-   WindowFocusCallback   window_focus_callback   = _defaultEventCallback<EV_WINDOW_FOCUS>;
-   WindowCloseCallback   window_close_callback   = _defaultEventCallback<EV_WINDOW_CLOSE>;
+   WindowResizeCallback  window_resize_callback = _defaultEventCallback<EV_WINDOW_RESIZE>;
+   WindowMoveCallback    window_move_callback   = _defaultEventCallback<EV_WINDOW_MOVE>;
+   WindowFocusCallback   window_focus_callback  = _defaultEventCallback<EV_WINDOW_FOCUS>;
+   WindowCloseCallback   window_close_callback  = _defaultEventCallback<EV_WINDOW_CLOSE>;
 
-   KeyPressCallback      key_press_callback    = _defaultEventCallback<EV_KEY_PRESSED>;
+   KeyPressCallback      key_press_callback     = _defaultEventCallback<EV_KEY_PRESSED>;
    KeyReleaseCallback    key_release_callback   = _defaultEventCallback<EV_KEY_RELEASED>;
-   KeyRepeateCallback    key_repeat_callback   = _defaultEventCallback<EV_KEY_REPEATED>;
+   KeyRepeateCallback    key_repeat_callback    = _defaultEventCallback<EV_KEY_REPEATED>;
    KeyTypeCallback       key_type_callback      = _defaultEventCallback<EV_KEY_TYPED>;
 
-   MousePressCallback    mouse_press_callback    = _defaultEventCallback<EV_MOUSE_BUTTON_PRESSED>;
-   MouseReleaseCallback  mouse_release_callback  = _defaultEventCallback<EV_MOUSE_BUTTON_RELEASED>;
-   MouseMoveCallback     mouse_move_callback     = _defaultEventCallback<EV_MOUSE_MOVED>;
-   MouseScrollCallback   mouse_scroll_callback   = _defaultEventCallback<EV_MOUSE_SCROLLED>;
+   MousePressCallback    mouse_press_callback   = _defaultEventCallback<EV_MOUSE_BUTTON_PRESSED>;
+   MouseReleaseCallback  mouse_release_callback = _defaultEventCallback<EV_MOUSE_BUTTON_RELEASED>;
+   MouseMoveCallback     mouse_move_callback    = _defaultEventCallback<EV_MOUSE_MOVED>;
+   MouseScrollCallback   mouse_scroll_callback  = _defaultEventCallback<EV_MOUSE_SCROLLED>;
 };
-
-using PlatformWindow = GLFWwindow;
 
 /* Cross-platform window handler class based on GLFW library.
 */
@@ -64,6 +61,7 @@ public:
 
    bool        init(uint width, uint height, const std::string& title);
    void        update();
+   bool        isOpen();
 
    void        setEventCallbacks(EventCallbacks* callbacks);
 private:
@@ -73,12 +71,14 @@ private:
    static constexpr uint             _InvalidWindowHeight = 0;
    static constexpr std::string_view _DefaultWindowTitle = "Title";
 
-   PlatformWindow* _window;
-   uint            _width;
-   uint            _height;
-   bool            _focus;
-   std::string     _title;
-   bool            _initialized;
+   GLFWwindow* _window;
+   uint        _width;
+   uint        _height;
+   bool        _focus;
+   std::string _title;
+   bool        _initialized;
+   Input       _input;
+   bool        _close;
 };
 
 } // namespace Phs
