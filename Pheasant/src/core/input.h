@@ -131,33 +131,55 @@
 #define PHS_KEY_MENU               348
 
 /* From glfw3.h:
+*  Modifier key codes:
+*/
+#define PHS_MOD_SHIFT              0x0001
+#define PHS_MOD_CONTROL            0x0002
+#define PHS_MOD_ALT                0x0004
+#define PHS_MOD_SUPER              0x0008
+#define PHS_MOD_CAPS_LOCK          0x0010
+#define PHS_MOD_NUM_LOCK           0x0020
+
+/* From glfw3.h:
 *  Mouse button key codes:
 */
-#define 	PHS_MOUSE_BUTTON_1       0
-#define 	PHS_MOUSE_BUTTON_2       1
-#define 	PHS_MOUSE_BUTTON_3       2
-#define 	PHS_MOUSE_BUTTON_4       3
-#define 	PHS_MOUSE_BUTTON_5       4
-#define 	PHS_MOUSE_BUTTON_6       5
-#define 	PHS_MOUSE_BUTTON_7       6
-#define 	PHS_MOUSE_BUTTON_8       7
-#define 	PHS_MOUSE_BUTTON_LAST    PHS_MOUSE_BUTTON_8
-#define 	PHS_MOUSE_BUTTON_LEFT    PHS_MOUSE_BUTTON_1
-#define 	PHS_MOUSE_BUTTON_RIGHT   PHS_MOUSE_BUTTON_2
-#define 	PHS_MOUSE_BUTTON_MIDDLE  PHS_MOUSE_BUTTON_3
+#define 	PHS_MOUSE_BUTTON_1        0
+#define 	PHS_MOUSE_BUTTON_2        1
+#define 	PHS_MOUSE_BUTTON_3        2
+#define 	PHS_MOUSE_BUTTON_4        3
+#define 	PHS_MOUSE_BUTTON_5        4
+#define 	PHS_MOUSE_BUTTON_6        5
+#define 	PHS_MOUSE_BUTTON_7        6
+#define 	PHS_MOUSE_BUTTON_8        7
+#define 	PHS_MOUSE_BUTTON_LAST     PHS_MOUSE_BUTTON_8
+#define 	PHS_MOUSE_BUTTON_LEFT     PHS_MOUSE_BUTTON_1
+#define 	PHS_MOUSE_BUTTON_RIGHT    PHS_MOUSE_BUTTON_2
+#define 	PHS_MOUSE_BUTTON_MIDDLE   PHS_MOUSE_BUTTON_3
+
 
 namespace Phs
 {
 
-using key_int_t = int;
+// Keycode datatype
+using key_int_t              = int;
+// Keymode datatype (key/mouse modifiers - CTRL, SHIFT ...)
+using key_mode_int_t         = int;
+// Mouse button-code datatype
 using mouse_button_key_int_t = int;
+// Datatype for unicode-encoded character that was typed, shifted to 16 bits 
+// (that's is propably more than enought)
+using type_char_t            = char16_t;
 
+/* Input system managing the current state of the input devices for 
+*  single window. It's a part of the window implementation.
+*/
 class Input
 {
 public:
    Input() = default;
    Input(GLFWwindow* window);
 
+   // set handled window
    void        setWindow(GLFWwindow* window);
 
    bool        isMouseButtonDown(mouse_button_key_int_t button);

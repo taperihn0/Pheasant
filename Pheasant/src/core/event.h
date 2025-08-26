@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "common.h"
+#include "input.h"
 
 namespace Phs 
 {
@@ -96,25 +96,24 @@ public:
          bool value;
       } winfocus;
 
-      // TODO: Custom types
       struct alignas(16) KeyboardKeyParams
       {
-         int key;
-         int scancode;
-         int mods;
+         key_int_t key;
+         // int scancode; - unused for now
+         key_mode_int_t mods;
       } keybkeys;
 
-      // TODO: Custom types
       struct alignas(16) KeyboardTypeParams
       {
-         unsigned int code;
+         type_char_t code;
       } keybtype;
 
-      // TODO: Custom types
       struct alignas(16) MouseButtonParams
       {
-         int button;
-         int mods;
+         mouse_button_key_int_t button;
+         // Mouse button mods are the same as key mods,
+         // so the datatype is the same.
+         key_mode_int_t mods;
       } micekeys;
 
       struct alignas(16) CursorParams

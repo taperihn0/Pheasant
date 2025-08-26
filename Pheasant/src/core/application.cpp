@@ -27,22 +27,22 @@ void Application::windowCloseCallback(PHS_UNUSED EventWindowClose ev)
 
 void Application::keyPressCallback(EventKeyPress ev)
 {
-	PHS_CORE_LOG_DEBUG("Key press callback: key {}", ev.keybkeys.key);
+	PHS_CORE_LOG_DEBUG("Key press callback: key {}, mods {}", ev.keybkeys.key, ev.keybkeys.mods);
 }
 
 void Application::keyReleaseCallback(EventKeyRelease ev)
 {
-	PHS_CORE_LOG_DEBUG("Key release callback: key {}", ev.keybkeys.key);
+	PHS_CORE_LOG_DEBUG("Key release callback: key {}, mods {}", ev.keybkeys.key, ev.keybkeys.mods);
 }
 
 void Application::keyRepeatCallback(EventKeyRepeat ev) 
 {
-	PHS_CORE_LOG_DEBUG("Key repeat callback: key {}", ev.keybkeys.key);
+	PHS_CORE_LOG_DEBUG("Key repeat callback: key {}, mods {}", ev.keybkeys.key, ev.keybkeys.mods);
 }
 
 void Application::keyTypeCallback(EventKeyType ev)
 {
-	PHS_CORE_LOG_DEBUG("Key type callback: code {}", ev.keybtype.code);
+	PHS_CORE_LOG_DEBUG("Key type callback: code {}", static_cast<unsigned int>(ev.keybtype.code));
 }
 
 void Application::mousePressCallback(EventMousePress ev)
@@ -69,10 +69,13 @@ Application::Application()
 	: _window(std::make_unique<Window>())
 	, _callbacks(std::make_unique<EventCallbacks>())
 {
-	// TODO: Move that instuction to a safe place.
+	// initialize logging system
 	Log::init();
+
+	// initialize window
 	_window->init(800, 600, "Hello GLFW");
 
+	// initialize callback functions 
 	_callbacks->window_resize_callback  = windowResizeCallback;
 	_callbacks->window_move_callback    = windowMoveCallback;
 	_callbacks->window_focus_callback   = windowFocusCallback;

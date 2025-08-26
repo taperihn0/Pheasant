@@ -109,7 +109,7 @@ void Window::setEventCallbacks(EventCallbacks* callbacks)
    glfwSetWindowFocusCallback(_window, [](GLFWwindow* window, int value)
       {
          EventWindowFocus ev;
-         ev.winfocus.value = value;
+         ev.winfocus.value = static_cast<bool>(value);
          const EventCallbacks* callbacks = reinterpret_cast<EventCallbacks*>(glfwGetWindowUserPointer(window));
          callbacks->window_focus_callback(ev);
       }
@@ -123,7 +123,7 @@ void Window::setEventCallbacks(EventCallbacks* callbacks)
       }
    );
 
-   glfwSetKeyCallback(_window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
+   glfwSetKeyCallback(_window, [](GLFWwindow* window, int key, PHS_UNUSED int scancode, int action, int mods)
       {
          const EventCallbacks* callbacks = reinterpret_cast<EventCallbacks*>(glfwGetWindowUserPointer(window));
 
@@ -133,7 +133,6 @@ void Window::setEventCallbacks(EventCallbacks* callbacks)
          {
             EventKeyPress ev;
             ev.keybkeys.key = key;
-            ev.keybkeys.scancode = scancode;
             ev.keybkeys.mods = mods;
             callbacks->key_press_callback(ev);
             break;
@@ -142,7 +141,6 @@ void Window::setEventCallbacks(EventCallbacks* callbacks)
          {
             EventKeyRepeat ev;
             ev.keybkeys.key = key;
-            ev.keybkeys.scancode = scancode;
             ev.keybkeys.mods = mods;
             callbacks->key_repeat_callback(ev);
             break;
@@ -151,7 +149,6 @@ void Window::setEventCallbacks(EventCallbacks* callbacks)
          {
             EventKeyRelease ev;
             ev.keybkeys.key = key;
-            ev.keybkeys.scancode = scancode;
             ev.keybkeys.mods = mods;
             callbacks->key_release_callback(ev);
             break;
@@ -164,7 +161,7 @@ void Window::setEventCallbacks(EventCallbacks* callbacks)
    glfwSetCharCallback(_window, [](GLFWwindow* window, unsigned int codepoint)
       {
          EventKeyType ev;
-         ev.keybtype.code = codepoint;
+         ev.keybtype.code = static_cast<type_char_t>(codepoint);
          const EventCallbacks* callbacks = reinterpret_cast<EventCallbacks*>(glfwGetWindowUserPointer(window));
          callbacks->key_type_callback(ev);
       }

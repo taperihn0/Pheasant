@@ -2,9 +2,9 @@
 
 #include "defines.h"
 #include "assert.h"
-
 #include <cstdint>
 #include <limits>
+#include <uchar.h>
 
 // Some libraries defines that, so undef them
 #undef max
@@ -15,7 +15,8 @@ namespace Phs
 
 template <typename T1, typename T2>
 constexpr PHS_INLINE bool isSameType() {
-   return std::is_same_v<T1, T2>;
+   return std::is_same_v<std::remove_const<std::remove_reference<T1>>, 
+                         std::remove_const<std::remove_reference<T2>>>;
 };
 
 // Assert IEEE Standard is implemented

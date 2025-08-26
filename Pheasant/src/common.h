@@ -1,5 +1,9 @@
 #pragma once
 
+/* common.h:
+*  Profides some handy functions, just it.
+*/
+
 #include "types.h"
 
 #ifndef __PRETTY_FUNCTION__
@@ -13,6 +17,7 @@
 namespace Phs 
 {
 
+// Returns N-th argument of argument pack 'args'
 template<std::size_t N, typename... Ts>
 decltype(auto) getNthArgument(Ts&&... args)
 {
@@ -20,12 +25,12 @@ decltype(auto) getNthArgument(Ts&&... args)
    return std::get<N>(std::forward_as_tuple(std::forward<Ts>(args)...));
 }
 
-// Returns a mask with only one bit set with an offset equal to shift
+// Returns a mask with only one bit set with an offset equal to 'shift'
 constexpr PHS_INLINE uint64_t shiftbit(uint8_t shift) {
    return 1_u64 << shift;
 }
 
-// Returns a mask containing only the lowest set bit in mask
+// Returns a mask containing only the lowest set bit in 'mask'
 constexpr PHS_INLINE uint64_t onebit(int64_t mask) {
    return static_cast<uint64_t>(mask & -mask);
 }

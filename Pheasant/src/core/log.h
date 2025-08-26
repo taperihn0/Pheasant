@@ -2,20 +2,25 @@
 
 #include "precompile.h"
 #include "types.h"
-//#include "assert.h"
 
-// Sets line buffering.
-// It is rather slow, but useful for DEBUG builds
-// to obtain accurate information synchronized with other instructions.
-// For more efficient output set it to zero.
+/* Sets line buffering.
+*  It is rather slow, but useful for DEBUG builds
+*  to obtain accurate information synchronized with other instructions.
+*  For more efficient output set it to zero.
+*/
 #define PHS_FLUSH_OUTPUT 1
 
 namespace Phs
 {
 
+/* Main static logger.
+*  Its static methods are used rather internally - 
+*  external use of this class is done via macro defined below.
+*/
 class PHEASANT_API Log
 {
 public:
+   Log() = delete;
    static void init();
 
    enum messageLevel : uint8_t
@@ -32,15 +37,18 @@ public:
 
    PHS_STATIC_ASSERT_LOG(MSG_MIN == 1, "MSG_MAX is not equal to MSG_COUNT value.");
 
+   /* The arguments should be [string of format "Example 123 {}, {}, ..., {}"] where
+   *  each placeholder corresponds to one argument.
+   *  Passed arguments should have overloaded operator <<(const std::ostream&, T) for prininting.
+   */
    template <typename... Ts>
    static void message(messageLevel lvl, Ts&&... args);
 private:
    template <size_t N = 1, typename... Ts>
    static void print_message_queue(std::string format, Ts&&... queue);
 
-   static constexpr size_t _ArgumentLimit = 16;
-
-   static constexpr size_t _LevelCount = MSG_MAX;
+   static constexpr size_t           _ArgumentLimit = 16;
+   static constexpr size_t           _LevelCount = MSG_MAX;
 
    static constexpr std::string_view _LevelStr[_LevelCount] =
    {
@@ -84,6 +92,7 @@ private:
    static bool _initialized;
 };
 
+// Logger API for internal Pheasant development
 #define PHS_CORE_LOG_TRACE(...) Log::message(Log::MSG_TRACE, __VA_ARGS__)
 #define PHS_CORE_LOG_DEBUG(...) Log::message(Log::MSG_DEBUG, __VA_ARGS__)
 #define PHS_CORE_LOG_INFO(...)  Log::message(Log::MSG_INFO,  __VA_ARGS__)
@@ -91,12 +100,13 @@ private:
 #define PHS_CORE_LOG_ERROR(...) Log::message(Log::MSG_ERROR, __VA_ARGS__)
 #define PHS_CORE_LOG_FATAL(...) Log::message(Log::MSG_FATAL, __VA_ARGS__)
 
-#define PHS_LOG_TRACE(...)    ::Log::message(::Log::MSG_TRACE, __VA_ARGS__)
-#define PHS_LOG_DEBUG(...)    ::Log::message(::Log::MSG_DEBUG, __VA_ARGS__)
-#define PHS_LOG_INFO(...)     ::Log::message(::Log::MSG_INFO,  __VA_ARGS__)
-#define PHS_LOG_WARN(...)     ::Log::message(::Log::MSG_WARN,  __VA_ARGS__)
-#define PHS_LOG_ERROR(...)    ::Log::message(::Log::MSG_ERROR, __VA_ARGS__)
-#define PHS_LOG_FATAL(...)    ::Log::message(::Log::MSG_FATAL, __VA_ARGS__)
+// External logger API for clients
+#define PHS_LOG_TRACE(...)      ::Log::message(::Log::MSG_TRACE, __VA_ARGS__)
+#define PHS_LOG_DEBUG(...)      ::Log::message(::Log::MSG_DEBUG, __VA_ARGS__)
+#define PHS_LOG_INFO(...)       ::Log::message(::Log::MSG_INFO,  __VA_ARGS__)
+#define PHS_LOG_WARN(...)       ::Log::message(::Log::MSG_WARN,  __VA_ARGS__)
+#define PHS_LOG_ERROR(...)      ::Log::message(::Log::MSG_ERROR, __VA_ARGS__)
+#define PHS_LOG_FATAL(...)      ::Log::message(::Log::MSG_FATAL, __VA_ARGS__)
 
 } // namespace Phs
 
