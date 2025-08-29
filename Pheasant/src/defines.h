@@ -75,4 +75,6 @@
 // Warning: 'Phs::Log::LevelStr': 'std::basic_string_view<char,std::char_traits<char>>' needs to have dll-interface to be used by clients of 'Phs::Log'
 // Phs::Log::LevelStr is already private, so safely ignore that warning.
 #pragma warning(disable: 4251)
+// Warning : 'extern ' : ignored on left of 'Phs::Event<Code>::WindowPosParams' when no variable is declared
+#pragma warning(disable: 4091)
 #endif

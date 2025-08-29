@@ -21,7 +21,6 @@ class PHEASANT_API Log
 {
 public:
    Log() = delete;
-   static void init();
 
    enum messageLevel : uint8_t
    {
@@ -36,6 +35,8 @@ public:
    };
 
    PHS_STATIC_ASSERT_LOG(MSG_MIN == 1, "MSG_MAX is not equal to MSG_COUNT value.");
+
+   static void init();
 
    /* The arguments should be [string of format "Example 123 {}, {}, ..., {}"] where
    *  each placeholder corresponds to one argument.
@@ -60,7 +61,7 @@ private:
       "[FATAL]"
    };
 
-   // ANSI escape sequences for colors
+   // ANSI escape sequences for colored output
    static constexpr std::string_view _ANSIColorReset         = "\033[0m";
    static constexpr std::string_view _ANSIColorBlack         = "\033[30m";
    static constexpr std::string_view _ANSIColorRed           = "\033[31m";

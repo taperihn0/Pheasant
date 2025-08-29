@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <limits>
 #include <uchar.h>
+#include <type_traits>
 
 // Some libraries defines that, so undef them
 #undef max
@@ -14,13 +15,13 @@ namespace Phs
 {
 
 template <typename T1, typename T2>
-constexpr PHS_INLINE bool isSameType() {
-   return std::is_same_v<std::remove_const<std::remove_reference<T1>>, 
-                         std::remove_const<std::remove_reference<T2>>>;
-};
+constexpr bool same = std::is_same_v<std::remove_volatile_t<std::remove_const_t<std::remove_reference_t<T1>>>,
+                                     std::remove_volatile_t<std::remove_const_t<std::remove_reference_t<T2>>>>;
 
 // Assert IEEE Standard is implemented
 PHS_STATIC_ASSERT(std::numeric_limits<float>::is_iec559);
+
+#define PHS_IEEE_STANDARD 1
 
 // As IEEE is checked, these types exactly maps their size.
 using float32_t = float;

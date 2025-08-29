@@ -89,8 +89,9 @@ void Window::setEventCallbacks(EventCallbacks* callbacks)
    glfwSetWindowSizeCallback(_window, [](GLFWwindow* window, int width, int height)
       {
          EventWindowResize ev;
-         ev.winsize.width = width;
-         ev.winsize.height = height;
+         auto& winsize = ev.getWindowSizeParams();
+         winsize.width = width;
+         winsize.height = height;
          const EventCallbacks* callbacks = reinterpret_cast<EventCallbacks*>(glfwGetWindowUserPointer(window));
          callbacks->window_resize_callback(ev);
       }
@@ -99,8 +100,9 @@ void Window::setEventCallbacks(EventCallbacks* callbacks)
    glfwSetWindowPosCallback(_window, [](GLFWwindow* window, int xpos, int ypos)
       {
          EventWindowMove ev;
-         ev.winpos.x = xpos;
-         ev.winpos.y = ypos;
+         auto& winpos = ev.getWindowPosParams();
+         winpos.x = xpos;
+         winpos.y = ypos;
          const EventCallbacks* callbacks = reinterpret_cast<EventCallbacks*>(glfwGetWindowUserPointer(window));
          callbacks->window_move_callback(ev);
       }
@@ -109,7 +111,8 @@ void Window::setEventCallbacks(EventCallbacks* callbacks)
    glfwSetWindowFocusCallback(_window, [](GLFWwindow* window, int value)
       {
          EventWindowFocus ev;
-         ev.winfocus.value = static_cast<bool>(value);
+         auto& winfocus = ev.getWindowFocusParams();
+         winfocus.value = static_cast<bool>(value);
          const EventCallbacks* callbacks = reinterpret_cast<EventCallbacks*>(glfwGetWindowUserPointer(window));
          callbacks->window_focus_callback(ev);
       }
@@ -132,24 +135,27 @@ void Window::setEventCallbacks(EventCallbacks* callbacks)
          case GLFW_PRESS:
          {
             EventKeyPress ev;
-            ev.keybkeys.key = key;
-            ev.keybkeys.mods = mods;
+            auto& state = ev.getKeyboardKeyParams();
+            state.key = key;
+            state.mods = mods;
             callbacks->key_press_callback(ev);
             break;
          }
          case GLFW_REPEAT:
          {
             EventKeyRepeat ev;
-            ev.keybkeys.key = key;
-            ev.keybkeys.mods = mods;
+            auto& state = ev.getKeyboardKeyParams();
+            state.key = key;
+            state.mods = mods;
             callbacks->key_repeat_callback(ev);
             break;
          }
          case GLFW_RELEASE:
          {
             EventKeyRelease ev;
-            ev.keybkeys.key = key;
-            ev.keybkeys.mods = mods;
+            auto& state = ev.getKeyboardKeyParams();
+            state.key = key;
+            state.mods = mods;
             callbacks->key_release_callback(ev);
             break;
          }
@@ -161,7 +167,8 @@ void Window::setEventCallbacks(EventCallbacks* callbacks)
    glfwSetCharCallback(_window, [](GLFWwindow* window, unsigned int codepoint)
       {
          EventKeyType ev;
-         ev.keybtype.code = static_cast<type_char_t>(codepoint);
+         auto& state = ev.getKeyboardTypeParams();
+         state.code = static_cast<type_char_t>(codepoint);
          const EventCallbacks* callbacks = reinterpret_cast<EventCallbacks*>(glfwGetWindowUserPointer(window));
          callbacks->key_type_callback(ev);
       }
@@ -176,8 +183,9 @@ void Window::setEventCallbacks(EventCallbacks* callbacks)
          case GLFW_PRESS:
          {
             EventMousePress ev;
-            ev.micekeys.button = button;
-            ev.micekeys.mods = mods;
+            //auto& state = ev.getMouseButtonParams();
+            //state.button = button;
+            //state.mods = mods;
             callbacks->mouse_press_callback(ev);
             break;
          }
@@ -190,8 +198,9 @@ void Window::setEventCallbacks(EventCallbacks* callbacks)
          case GLFW_RELEASE:
          {
             EventMouseRelease ev;
-            ev.micekeys.button = button;
-            ev.micekeys.mods = mods;
+            //auto& state = ev.getMouseButtonParams();
+            //state.button = button;
+            //state.mods = mods;
             callbacks->mouse_release_callback(ev);
             break;
          }
@@ -203,8 +212,9 @@ void Window::setEventCallbacks(EventCallbacks* callbacks)
    glfwSetCursorPosCallback(_window, [](GLFWwindow* window, double xpos, double ypos)
       {
          EventMouseMove ev;
-         ev.cursor.x = xpos;
-         ev.cursor.y = ypos;
+         auto& cursor = ev.getCursorParams();
+         cursor.x = xpos;
+         cursor.y = ypos;
          const EventCallbacks* callbacks = reinterpret_cast<EventCallbacks*>(glfwGetWindowUserPointer(window));
          callbacks->mouse_move_callback(ev);
       }
@@ -213,8 +223,9 @@ void Window::setEventCallbacks(EventCallbacks* callbacks)
    glfwSetScrollCallback(_window, [](GLFWwindow* window, double xoffset, double yoffset)
       {
          EventMouseScroll ev;
-         ev.micescroll.xoff = xoffset;
-         ev.micescroll.yoff = yoffset;
+         auto& scroll = ev.getMouseScrollParams();
+         scroll.xoff = xoffset;
+         scroll.yoff = yoffset;
          const EventCallbacks* callbacks = reinterpret_cast<EventCallbacks*>(glfwGetWindowUserPointer(window));
          callbacks->mouse_scroll_callback(ev);
       }

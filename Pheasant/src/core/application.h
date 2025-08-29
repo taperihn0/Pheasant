@@ -11,7 +11,7 @@ class PHEASANT_API Application
 {
 public:
 	Application();
-	virtual ~Application() = default;
+	virtual		~Application() = default;
 
 	void			run();
 private:

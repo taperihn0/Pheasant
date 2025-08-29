@@ -7,62 +7,73 @@ namespace Phs
 
 void Application::windowResizeCallback(EventWindowResize ev)
 {
-	PHS_CORE_LOG_DEBUG("Window resize callback: width {}, height {}", ev.winsize.width, ev.winsize.height);
+	auto& winsize = ev.getWindowSizeParams();
+	PHS_CORE_LOG_DEBUG("Window resize callback: width {}, height {}", winsize.width, winsize.height);
 }
 
 void Application::windowMoveCallback(EventWindowMove ev)
 {
-	PHS_CORE_LOG_DEBUG("Window move callback: x {}, y {}", ev.winpos.x, ev.winpos.y);
+	auto& winpos = ev.getWindowPosParams();
+	PHS_CORE_LOG_DEBUG("Window move callback: x {}, y {}", winpos.x, winpos.y);
 }
 
 void Application::windowFocusCallback(EventWindowFocus ev)
 {
-	PHS_CORE_LOG_DEBUG("Window focus callback: focus {}", ev.winfocus.value ? "gained" : "lost");
+	auto& winfocus = ev.getWindowFocusParams();
+	PHS_CORE_LOG_DEBUG("Window focus callback: focus {}", winfocus.value ? "gained" : "lost");
 }
 
 void Application::windowCloseCallback(PHS_UNUSED EventWindowClose ev)
 {
-	PHS_CORE_LOG_DEBUG("Window callback: CLOSE");
+	PHS_CORE_LOG_DEBUG("Window callback: Window close");
 }
 
 void Application::keyPressCallback(EventKeyPress ev)
 {
-	PHS_CORE_LOG_DEBUG("Key press callback: key {}, mods {}", ev.keybkeys.key, ev.keybkeys.mods);
+	auto& state = ev.getKeyboardKeyParams();
+	PHS_CORE_LOG_DEBUG("Key press callback: key {}, mods {}", state.key, state.mods);
 }
 
 void Application::keyReleaseCallback(EventKeyRelease ev)
 {
-	PHS_CORE_LOG_DEBUG("Key release callback: key {}, mods {}", ev.keybkeys.key, ev.keybkeys.mods);
+	auto& state = ev.getKeyboardKeyParams();
+	PHS_CORE_LOG_DEBUG("Key release callback: key {}, mods {}", state.key, state.mods);
 }
 
 void Application::keyRepeatCallback(EventKeyRepeat ev) 
 {
-	PHS_CORE_LOG_DEBUG("Key repeat callback: key {}, mods {}", ev.keybkeys.key, ev.keybkeys.mods);
+	auto& state = ev.getKeyboardKeyParams();
+	PHS_CORE_LOG_DEBUG("Key repeat callback: key {}, mods {}", state.key, state.mods);
 }
 
 void Application::keyTypeCallback(EventKeyType ev)
 {
-	PHS_CORE_LOG_DEBUG("Key type callback: code {}", static_cast<unsigned int>(ev.keybtype.code));
+	auto& state = ev.getKeyboardTypeParams();
+	PHS_CORE_LOG_DEBUG("Key type callback: code {}", static_cast<unsigned int>(state.code));
 }
 
 void Application::mousePressCallback(EventMousePress ev)
 { 
-	PHS_CORE_LOG_DEBUG("Mouse press callback: button {}, mods {}", ev.micekeys.button, ev.micekeys.mods);
+	auto& mice = ev.getMouseButtonParams();
+	PHS_CORE_LOG_DEBUG("Mouse press callback: button {}, mods {}", mice.button, mice.mods);
 }
 
 void Application::mouseReleaseCallback(EventMouseRelease ev)
 {
-	PHS_CORE_LOG_DEBUG("Mouse release callback: button {}, mods {}", ev.micekeys.button, ev.micekeys.mods);
+	auto& mice = ev.getMouseButtonParams();
+	PHS_CORE_LOG_DEBUG("Mouse release callback: button {}, mods {}", mice.button, mice.mods);
 }
 
 void Application::mouseMoveCallback(EventMouseMove ev)
 {
-	PHS_CORE_LOG_DEBUG("Mouse move callback: x {}, y {}", ev.cursor.x, ev.cursor.y);
+	auto& cursor = ev.getCursorParams();
+	PHS_CORE_LOG_DEBUG("Mouse move callback: x {}, y {}", cursor.x, cursor.y);
 }
 
 void Application::mouseScrollCallback(EventMouseScroll ev)
 {
-	PHS_CORE_LOG_DEBUG("Mouse scoll callback: xoff {}, yoff {}", ev.micescroll.xoff, ev.micescroll.yoff);
+	auto& scroll = ev.getMouseScrollParams();
+	PHS_CORE_LOG_DEBUG("Mouse scoll callback: xoff {}, yoff {}", scroll.xoff, scroll.yoff);
 }
 
 Application::Application()
