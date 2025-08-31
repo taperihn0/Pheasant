@@ -113,7 +113,7 @@ Application::Application()
 
 void Application::run()
 {
-	PHS_CORE_LOG_TRACE("Welcome to Pheasant from Visual Studio with CMake!");
+	PHS_CORE_LOG_INFO("Welcome to Pheasant from Visual Studio with CMake!");
 
 	while (_window->isOpen())
 	{

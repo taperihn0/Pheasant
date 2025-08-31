@@ -3,10 +3,10 @@ cmake_minimum_required(VERSION 3.16)
 project(Pheasant CXX)
 
 file(GLOB_RECURSE PHEASANT_SOURCES CONFIGURE_DEPENDS
-	"*.h"
+	"src/*.cpp"
 )
 file(GLOB_RECURSE PHEASANT_HEADERS CONFIGURE_DEPENDS
-	"*.cpp"
+	"src/*.h"
 )
 
 add_library(Pheasant SHARED 
@@ -14,9 +14,13 @@ add_library(Pheasant SHARED
 	${PHEASANT_HEADERS}
 )
 
-add_subdirectory(vendor/glfw)
+add_subdirectory(vendor/GLFW)
+add_subdirectory(vendor/GLAD)
 
-target_link_libraries(Pheasant PUBLIC glfw)
+target_link_libraries(Pheasant PUBLIC 
+	glfw
+	glad
+)
 
 target_compile_definitions(Pheasant PUBLIC 
 	$<$<CONFIG:Debug>:PHEASANT_DEBUG>
@@ -40,7 +44,6 @@ endif ()
 target_include_directories(Pheasant PUBLIC
 	${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/src/
 	${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/src/core
-	${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/vendor/GLAD/include/
 )
 
 if (MSVC)
@@ -58,7 +61,6 @@ set_target_properties(Pheasant PROPERTIES
 # Copy library file into executable directory
 add_custom_command(TARGET Pheasant POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy
-    	${CMAKE_SOURCE_DIR}/bin/${PROJECT_NAME}/${CMAKE_BUILD_TYPE}/${TARGET_ARCHITECTURE}/${PROJECT_NAME}.dll
-        ${CMAKE_SOURCE_DIR}/bin/Testbed/${CMAKE_BUILD_TYPE}/${TARGET_ARCHITECTURE}/
+		 $<TARGET_FILE:Pheasant>
+       ${CMAKE_SOURCE_DIR}/bin/Testbed/${CMAKE_BUILD_TYPE}/${TARGET_ARCHITECTURE}/
 )
-

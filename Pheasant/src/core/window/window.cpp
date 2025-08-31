@@ -31,7 +31,7 @@ Window::Window(uint width, uint height, const std::string& title)
 
 bool Window::init(uint width, uint height, const std::string& title) 
 {
-   PHS_CORE_LOG_INFO("Initializing a new Window...");
+   PHS_ASSERT_LOG(!_initialized, "Trying to initialize already initialized window!");
 
    // Initialize GLFW context
    if (!glfwInit())
@@ -45,20 +45,17 @@ bool Window::init(uint width, uint height, const std::string& title)
    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
    glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
    glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);
    glfwWindowHint(GLFW_DECORATED, GLFW_TRUE);
    glfwWindowHint(GLFW_FOCUSED, GLFW_TRUE);
    glfwWindowHint(GLFW_CENTER_CURSOR, GLFW_TRUE);
    glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
-
 #ifdef PHS_DEBUG
    glfwWindowHint(GLFW_CONTEXT_DEBUG, GLFW_TRUE);
 #else
    glfwWindowHint(GLFW_CONTEXT_DEBUG, GLFW_FALSE);
 #endif
-
 #ifdef PHS_OS_WINDOWS
    glfwWindowHint(GLFW_WIN32_KEYBOARD_MENU, GLFW_TRUE);
 #elif defined(PHS_OS_MACOS)
@@ -73,9 +70,11 @@ bool Window::init(uint width, uint height, const std::string& title)
       return false;
    }
 
+   glfwMakeContextCurrent(_window);
    _input.setWindow(_window);
-
    _initialized = true;
+
+   PHS_CORE_LOG_INFO("Successfully initialized a new GLFW window.");
    return true;
 }
 
@@ -92,6 +91,7 @@ Window::~Window()
 
 void Window::update()
 {
+   PHS_ASSERT(_initialized);
    glfwPollEvents();
 }
 
@@ -102,6 +102,8 @@ bool Window::isOpen()
 
 void Window::setEventCallbacks(EventCallbacks* callbacks)
 {
+   PHS_ASSERT(_initialized);
+
    glfwSetWindowUserPointer(_window, reinterpret_cast<void*>(callbacks));
 
    glfwSetWindowSizeCallback(_window, [](GLFWwindow* window, int width, int height)

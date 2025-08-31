@@ -2,7 +2,6 @@
 
 #include "common.h"
 #include "render/render_types.h"
-#include "glad/glad.h"
 
 namespace Phs
 {
