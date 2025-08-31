@@ -44,6 +44,11 @@ public:
    */
    template <typename... Ts>
    static void message(messageLevel lvl, Ts&&... args);
+
+   /* Prints given message as MSG_FATAL with full debug info (function declaration, file and line)
+   */
+   template <typename... Ts>
+   static void fullInfoMessage(const char* file, uint line, const char* func, Ts&&... args);
 private:
    template <size_t N = 1, typename... Ts>
    static void print_message_queue(std::string format, Ts&&... queue);
@@ -55,8 +60,8 @@ private:
    {
       "[TRACE]",
       "[DEBUG]",
-      "[INFO]",
-      "[WARN]",
+      "[INFO] ",
+      "[WARN] ",
       "[ERROR]",
       "[FATAL]"
    };
@@ -83,10 +88,10 @@ private:
    static constexpr std::string_view _ANSIColor[_LevelCount] =
    {
         _ANSIColorBrightGreen,
-        _ANSIColorBlue,
+        _ANSIColorBrightBlue,
         _ANSIColorWhite,
-        _ANSIColorBrightYellow,
         _ANSIColorYellow,
+        _ANSIColorBrightYellow,
         _ANSIColorRed,
    };
 
@@ -100,6 +105,9 @@ private:
 #define PHS_CORE_LOG_WARN(...)  Log::message(Log::MSG_WARN,  __VA_ARGS__)
 #define PHS_CORE_LOG_ERROR(...) Log::message(Log::MSG_ERROR, __VA_ARGS__)
 #define PHS_CORE_LOG_FATAL(...) Log::message(Log::MSG_FATAL, __VA_ARGS__)
+
+#define PHS_CORE_LOG_FATAL_FULL_INFO(...) \
+                                Log::fullInfoMessage(__FILE__, __LINE__, __PRETTY_FUNCTION__, __VA_ARGS__)
 
 // External logger API for clients
 #define PHS_LOG_TRACE(...)      ::Log::message(::Log::MSG_TRACE, __VA_ARGS__)

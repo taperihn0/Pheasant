@@ -6,6 +6,11 @@ namespace Phs
 
 bool Log::_initialized = false;
 
+PHS_INLINE void testMessage(Log::messageLevel lvl)
+{
+   Log::message(lvl, "Test message");
+}
+
 void Log::init() 
 {
    std::cout.sync_with_stdio(0);
@@ -15,14 +20,14 @@ void Log::init()
 
    if (handle_out == INVALID_HANDLE_VALUE)
    {
-      PHS_CORE_LOG_ERROR("Invalid Windows-specific output handle value in {}.", __PRETTY_FUNCTION__);
+      PHS_CORE_LOG_ERROR("Invalid Windows-specific output handle value!");
       return;
    }
 
    DWORD mode_out;
    if (!GetConsoleMode(handle_out, &mode_out)) 
    {
-      PHS_CORE_LOG_ERROR("Failed to get Windows-specific output console mode in {}", __PRETTY_FUNCTION__);
+      PHS_CORE_LOG_ERROR("Failed to get Windows-specific output console mode!");
       return;
    }
 
@@ -31,13 +36,17 @@ void Log::init()
 
    if (!SetConsoleMode(handle_out, mode_out))
    {
-      PHS_CORE_LOG_ERROR("Failed to set Windows-specific output console mode in {}", __PRETTY_FUNCTION__);
+      PHS_CORE_LOG_ERROR("Failed to set Windows-specific output console mode!");
       return;
    }
 #endif
 
    _initialized = true;
 
+   for (uint8_t lvl = MSG_MIN; lvl <= MSG_MAX; lvl++)
+   {
+      testMessage(static_cast<messageLevel>(lvl));
+   }
 }
 
 } // namespace Phs

@@ -30,6 +30,14 @@ void Log::message(Log::messageLevel lvl, Ts&&... args)
    std::cout << _ANSIColorReset << PHS_LOG_FLUSH_SPECIFIER << '\n';
 }
 
+template <typename... Ts>
+void Log::fullInfoMessage(const char* file, uint line, const char* func, Ts&&... args)
+{
+   message(MSG_FATAL, std::forward<Ts>(args)...);
+   message(MSG_FATAL, "file {}, line {}", file, line);
+   message(MSG_FATAL, "func {}", func);
+}
+
 template <std::size_t N, typename... Ts>
 PHS_INLINE void Log::print_message_queue(std::string format, Ts&&... queue)
 {

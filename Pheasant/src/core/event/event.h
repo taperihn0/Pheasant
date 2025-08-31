@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "input.h"
+#include "input/input.h"
 
 namespace Phs 
 {

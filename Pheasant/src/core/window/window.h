@@ -2,9 +2,8 @@
 
 #include "defines.h"
 #include "common.h"
-#include "types.h"
-#include "event.h"
-#include "input.h"
+#include "event/event.h"
+#include "input/input.h"
 
 namespace Phs
 {

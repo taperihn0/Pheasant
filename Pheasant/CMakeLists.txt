@@ -3,10 +3,10 @@ cmake_minimum_required(VERSION 3.16)
 project(Pheasant CXX)
 
 file(GLOB_RECURSE PHEASANT_SOURCES CONFIGURE_DEPENDS
-	"${CMAKE_CURRENT_SOURCE_DIR}/src/*.h"
+	"*.h"
 )
 file(GLOB_RECURSE PHEASANT_HEADERS CONFIGURE_DEPENDS
-	"${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
+	"*.cpp"
 )
 
 add_library(Pheasant SHARED 
@@ -37,7 +37,11 @@ else ()
 	message(FATAL_ERROR "Platform not recognised.")
 endif ()
 
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src")
+target_include_directories(Pheasant PUBLIC
+	${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/src/
+	${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/src/core
+	${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/vendor/GLAD/include/
+)
 
 if (MSVC)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zc:__cplusplus")

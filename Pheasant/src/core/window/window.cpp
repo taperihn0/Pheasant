@@ -1,6 +1,6 @@
 #include "window.h"
 #include "assert.h"
-#include "log.h"
+#include "logger/log.h"
 
 namespace Phs
 {
@@ -42,10 +42,28 @@ bool Window::init(uint width, uint height, const std::string& title)
 
    glfwSetErrorCallback(errorCallback);
 
-   // Using modern GLFW version (3)
    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+   glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
+   glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);
+   glfwWindowHint(GLFW_DECORATED, GLFW_TRUE);
+   glfwWindowHint(GLFW_FOCUSED, GLFW_TRUE);
+   glfwWindowHint(GLFW_CENTER_CURSOR, GLFW_TRUE);
+   glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
+
+#ifdef PHS_DEBUG
+   glfwWindowHint(GLFW_CONTEXT_DEBUG, GLFW_TRUE);
+#else
+   glfwWindowHint(GLFW_CONTEXT_DEBUG, GLFW_FALSE);
+#endif
+
+#ifdef PHS_OS_WINDOWS
+   glfwWindowHint(GLFW_WIN32_KEYBOARD_MENU, GLFW_TRUE);
+#elif defined(PHS_OS_MACOS)
+   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
 
    _window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
 
@@ -183,9 +201,9 @@ void Window::setEventCallbacks(EventCallbacks* callbacks)
          case GLFW_PRESS:
          {
             EventMousePress ev;
-            //auto& state = ev.getMouseButtonParams();
-            //state.button = button;
-            //state.mods = mods;
+            auto& state = ev.getMouseButtonParams();
+            state.button = button;
+            state.mods = mods;
             callbacks->mouse_press_callback(ev);
             break;
          }
@@ -198,9 +216,9 @@ void Window::setEventCallbacks(EventCallbacks* callbacks)
          case GLFW_RELEASE:
          {
             EventMouseRelease ev;
-            //auto& state = ev.getMouseButtonParams();
-            //state.button = button;
-            //state.mods = mods;
+            auto& state = ev.getMouseButtonParams();
+            state.button = button;
+            state.mods = mods;
             callbacks->mouse_release_callback(ev);
             break;
          }

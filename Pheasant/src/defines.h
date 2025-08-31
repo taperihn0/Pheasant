@@ -58,6 +58,7 @@
 
 #define PHS_NORETURN              [[noreturn]]
 #define PHS_UNUSED                [[maybe_unused]]
+#define PHS_FALLTHROUGH           [[fallthrough]]
 
 #if defined(PHS_STANDARD_20)
 #  define PHS_UNLIKELY            [[unlikely]]

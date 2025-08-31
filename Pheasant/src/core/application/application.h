@@ -2,7 +2,7 @@
 
 #include "precompile.h"
 #include "defines.h"
-#include "window.h"
+#include "window/window.h"
 
 namespace Phs
 {
