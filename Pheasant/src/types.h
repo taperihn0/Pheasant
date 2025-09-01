@@ -29,6 +29,7 @@ using float64_t = double;
 
 // Define some handy aliases
 using byte      = uint8_t;
+using uchar     = unsigned char;
 using ll        = long long;
 using ull       = unsigned long long;
 using uint      = unsigned int;

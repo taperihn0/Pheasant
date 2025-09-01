@@ -4,6 +4,7 @@
 #include "common.h"
 #include "event/event.h"
 #include "input/input.h"
+#include "render/render_swapchain.h"
 
 namespace Phs
 {
@@ -66,18 +67,19 @@ public:
 private:
    static void errorCallback(int error, const char* description);
 
-   static constexpr uint             _InvalidWindowWidth = 0;
-   static constexpr uint             _InvalidWindowHeight = 0;
-   static constexpr std::string_view _DefaultWindowTitle = "Title";
+   static constexpr uint              _InvalidWindowWidth = 0;
+   static constexpr uint              _InvalidWindowHeight = 0;
+   static constexpr std::string_view  _DefaultWindowTitle = "Title";
 
-   GLFWwindow* _window;
-   uint        _width;
-   uint        _height;
-   bool        _focus;
-   std::string _title;
-   bool        _initialized;
-   Input       _input;
-   bool        _close;
+   GLFWwindow*                        _window;
+   uint                               _width;
+   uint                               _height;
+   bool                               _focus;
+   std::string                        _title;
+   bool                               _initialized;
+   Input                              _input;
+   bool                               _close;
+   std::unique_ptr<PlatformSwapchain> _swapchain;
 };
 
 } // namespace Phs

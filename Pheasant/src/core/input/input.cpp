@@ -64,6 +64,11 @@ bool Input::isKeyUp(key_int_t key)
    return state == PHS_RELEASE;
 }
 
+void Input::pollEvents()
+{
+   glfwPollEvents();
+}
+
 Input::state_int_t Input::mouseButtonState(mouse_button_key_int_t button)
 {
    PHS_ASSERT(_window);

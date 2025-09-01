@@ -8,13 +8,13 @@ namespace Phs
 
 void Application::windowResizeCallback(EventWindowResize ev)
 {
-	auto& winsize = ev.getWindowSizeParams();
+	//auto& winsize = ev.getWindowSizeParams();
 	//PHS_CORE_LOG_DEBUG("Window resize callback: width {}, height {}", winsize.width, winsize.height);
 }
 
 void Application::windowMoveCallback(EventWindowMove ev)
 {
-	auto& winpos = ev.getWindowPosParams();
+	//auto& winpos = ev.getWindowPosParams();
 	//PHS_CORE_LOG_DEBUG("Window move callback: x {}, y {}", winpos.x, winpos.y);
 }
 
@@ -31,49 +31,49 @@ void Application::windowCloseCallback(PHS_UNUSED EventWindowClose ev)
 
 void Application::keyPressCallback(EventKeyPress ev)
 {
-	auto& state = ev.getKeyboardKeyParams();
+	//auto& state = ev.getKeyboardKeyParams();
 	//PHS_CORE_LOG_DEBUG("Key press callback: key {}, mods {}", state.key, state.mods);
 }
 
 void Application::keyReleaseCallback(EventKeyRelease ev)
 {
-	auto& state = ev.getKeyboardKeyParams();
+	//auto& state = ev.getKeyboardKeyParams();
 	//PHS_CORE_LOG_DEBUG("Key release callback: key {}, mods {}", state.key, state.mods);
 }
 
 void Application::keyRepeatCallback(EventKeyRepeat ev) 
 {
-	auto& state = ev.getKeyboardKeyParams();
+	//auto& state = ev.getKeyboardKeyParams();
 	//PHS_CORE_LOG_DEBUG("Key repeat callback: key {}, mods {}", state.key, state.mods);
 }
 
 void Application::keyTypeCallback(EventKeyType ev)
 {
-	auto& state = ev.getKeyboardTypeParams();
+	//auto& state = ev.getKeyboardTypeParams();
 	//PHS_CORE_LOG_DEBUG("Key type callback: code {}", static_cast<unsigned int>(state.code));
 }
 
 void Application::mousePressCallback(EventMousePress ev)
 { 
-	auto& mice = ev.getMouseButtonParams();
+	//auto& mice = ev.getMouseButtonParams();
 	//PHS_CORE_LOG_DEBUG("Mouse press callback: button {}, mods {}", mice.button, mice.mods);
 }
 
 void Application::mouseReleaseCallback(EventMouseRelease ev)
 {
-	auto& mice = ev.getMouseButtonParams();
+	//auto& mice = ev.getMouseButtonParams();
 	//PHS_CORE_LOG_DEBUG("Mouse release callback: button {}, mods {}", mice.button, mice.mods);
 }
 
 void Application::mouseMoveCallback(EventMouseMove ev)
 {
-	auto& cursor = ev.getCursorParams();
+	//auto& cursor = ev.getCursorParams();
 	//PHS_CORE_LOG_DEBUG("Mouse move callback: x {}, y {}", cursor.x, cursor.y);
 }
 
 void Application::mouseScrollCallback(EventMouseScroll ev)
 {
-	auto& scroll = ev.getMouseScrollParams();
+	//auto& scroll = ev.getMouseScrollParams();
 	//PHS_CORE_LOG_DEBUG("Mouse scoll callback: xoff {}, yoff {}", scroll.xoff, scroll.yoff);
 }
 
@@ -107,7 +107,6 @@ Application::Application()
 
 	// initialize render state
 	bool render_init_status = Render::initialize(RENDER_GRAPHICS_API_OPENGL);
-
 	PHS_ASSERT(render_init_status);
 }
 
@@ -117,6 +116,7 @@ void Application::run()
 
 	while (_window->isOpen())
 	{
+		Render::drawFrame(RenderData{ 0 });
 		_window->update();
 	}
 }

@@ -34,8 +34,9 @@ template <typename... Ts>
 void Log::fullInfoMessage(const char* file, uint line, const char* func, Ts&&... args)
 {
    message(MSG_FATAL, std::forward<Ts>(args)...);
-   message(MSG_FATAL, "file {}, line {}", file, line);
-   message(MSG_FATAL, "func {}", func);
+   message(MSG_FATAL, "\tfile {}", file);
+   message(MSG_FATAL, "\tline {}", line);
+   message(MSG_FATAL, "\tfunc {}", func);
 }
 
 template <std::size_t N, typename... Ts>

@@ -1,6 +1,8 @@
 #include "window.h"
 #include "assert.h"
 #include "logger/log.h"
+// TODO: make it configurable
+#include "render/opengl/opengl_swapchain.h"
 
 namespace Phs
 {
@@ -20,6 +22,7 @@ Window::Window()
    , _initialized(false)
    , _input()
    , _close(false)
+   , _swapchain(nullptr)
 {}
 
 Window::Window(uint width, uint height, const std::string& title)
@@ -72,6 +75,10 @@ bool Window::init(uint width, uint height, const std::string& title)
 
    glfwMakeContextCurrent(_window);
    _input.setWindow(_window);
+
+   // TODO: make it configurable
+   _swapchain = std::make_unique<SwapchainOpenGL>(_window);
+
    _initialized = true;
 
    PHS_CORE_LOG_INFO("Successfully initialized a new GLFW window.");
@@ -80,7 +87,7 @@ bool Window::init(uint width, uint height, const std::string& title)
 
 Window::~Window()
 {
-   if (!_window)
+   if (_window)
       glfwDestroyWindow(_window);
 
    if (glfwIsInitialized())
@@ -92,7 +99,8 @@ Window::~Window()
 void Window::update()
 {
    PHS_ASSERT(_initialized);
-   glfwPollEvents();
+   _input.pollEvents();
+   _swapchain->present();
 }
 
 bool Window::isOpen()

@@ -191,6 +191,9 @@ public:
 
    bool        isKeyDown(key_int_t key);
    bool        isKeyUp(key_int_t key);
+
+   // TODO: move it to a proper place (EventQueue)
+   void        pollEvents();
 private:
    using state_int_t = int;
 

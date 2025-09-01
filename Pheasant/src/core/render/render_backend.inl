@@ -72,7 +72,7 @@ PHS_INLINE bool RenderBackend<GraphicsPlatform>::backendBeginFrame(RenderData& d
 
    if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_OPENGL)
    {
-      success = BackendOpenGL::platformInitialize();
+      success = BackendOpenGL::platformBeginFrame(data);
    }
    else if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_VULKAN)
    {
@@ -95,7 +95,7 @@ PHS_INLINE bool RenderBackend<GraphicsPlatform>::backendEndFrame(RenderData& dat
 
    if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_OPENGL)
    {
-      success = BackendOpenGL::platformInitialize();
+      success = BackendOpenGL::platformEndFrame(data);
    }
    else if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_VULKAN)
    {

@@ -65,6 +65,16 @@ bool Render::drawFrame(RenderData& data)
    return true;
 }
 
+template <RenderGraphicsAPI GraphicsPlatform>
+void Render::BackendFunctions::initializePlatformCallbacks()
+{
+   initialize  = RenderBackend<GraphicsPlatform>::backendInitialize;
+   shutdown    = RenderBackend<GraphicsPlatform>::backendShutdown;
+   resize      = RenderBackend<GraphicsPlatform>::backendWindowResize;
+   begin_frame = RenderBackend<GraphicsPlatform>::backendBeginFrame;
+   end_frame   = RenderBackend<GraphicsPlatform>::backendEndFrame;
+}
+
 void Render::loadBackend(RenderGraphicsAPI platform)
 {
    PHS_ASSERT_LOG(isValid(platform), "Failed to load backend for undefined graphics API!");
@@ -72,25 +82,13 @@ void Render::loadBackend(RenderGraphicsAPI platform)
    switch (platform)
    {
    case RENDER_GRAPHICS_API_OPENGL:
-      _backend.initialize  = RenderBackend<RENDER_GRAPHICS_API_OPENGL>::backendInitialize;
-      _backend.shutdown    = RenderBackend<RENDER_GRAPHICS_API_OPENGL>::backendShutdown;
-      _backend.resize      = RenderBackend<RENDER_GRAPHICS_API_OPENGL>::backendWindowResize;
-      _backend.begin_frame = RenderBackend<RENDER_GRAPHICS_API_OPENGL>::backendBeginFrame;
-      _backend.end_frame   = RenderBackend<RENDER_GRAPHICS_API_OPENGL>::backendEndFrame;
+      _backend.initializePlatformCallbacks<RENDER_GRAPHICS_API_OPENGL>();
       break;
    case RENDER_GRAPHICS_API_VULKAN:
-      _backend.initialize  = RenderBackend<RENDER_GRAPHICS_API_VULKAN>::backendInitialize;
-      _backend.shutdown    = RenderBackend<RENDER_GRAPHICS_API_VULKAN>::backendShutdown;
-      _backend.resize      = RenderBackend<RENDER_GRAPHICS_API_VULKAN>::backendWindowResize;
-      _backend.begin_frame = RenderBackend<RENDER_GRAPHICS_API_VULKAN>::backendBeginFrame;
-      _backend.end_frame   = RenderBackend<RENDER_GRAPHICS_API_VULKAN>::backendEndFrame;
+      _backend.initializePlatformCallbacks<RENDER_GRAPHICS_API_VULKAN>();
       break;
    case RENDER_GRAPHICS_API_DIRECTX:
-      _backend.initialize  = RenderBackend<RENDER_GRAPHICS_API_DIRECTX>::backendInitialize;
-      _backend.shutdown    = RenderBackend<RENDER_GRAPHICS_API_DIRECTX>::backendShutdown;
-      _backend.resize      = RenderBackend<RENDER_GRAPHICS_API_DIRECTX>::backendWindowResize;
-      _backend.begin_frame = RenderBackend<RENDER_GRAPHICS_API_DIRECTX>::backendBeginFrame;
-      _backend.end_frame   = RenderBackend<RENDER_GRAPHICS_API_DIRECTX>::backendEndFrame;
+      _backend.initializePlatformCallbacks<RENDER_GRAPHICS_API_DIRECTX>();
       break;
    case RENDER_GRAPHICS_API_UNDEF:
    default:
