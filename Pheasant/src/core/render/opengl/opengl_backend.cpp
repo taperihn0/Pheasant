@@ -1,8 +1,6 @@
 #pragma once
 
 #include "opengl_backend.h"
-#include "glad/glad.h"
-#include "GLFW/glfw3.h"
 #include "logger/log.h"
 
 namespace Phs
@@ -45,26 +43,26 @@ bool BackendOpenGL::platformInitialize()
    return true;
 }
 
-PHS_INLINE void BackendOpenGL::platformShutdown()
+void BackendOpenGL::platformShutdown()
 {
    return;
 }
 
-PHS_INLINE void BackendOpenGL::platformWindowResize()
+void BackendOpenGL::platformWindowResize(uint width, uint height)
 {
-   return;
+   glViewport(0, 0, width, height);
+   // TODO: catch GL-specific errors
 }
 
-PHS_INLINE bool BackendOpenGL::platformBeginFrame(RenderData& data)
+bool BackendOpenGL::platformBeginFrame(RenderData& data)
 {
    // TODO: remove that
-   glViewport(0, 0, 800, 600);
    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
    glClear(GL_COLOR_BUFFER_BIT);
    return true;
 }
 
-PHS_INLINE bool BackendOpenGL::platformEndFrame(RenderData& data)
+bool BackendOpenGL::platformEndFrame(RenderData& data)
 {
    // TODO
    return true;

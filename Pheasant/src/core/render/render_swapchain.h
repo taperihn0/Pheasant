@@ -13,9 +13,10 @@ namespace Phs
 class PlatformSwapchain
 {
 public:
-   virtual void     present()          = 0;
-   virtual uint32_t nextImage()        = 0;
-   virtual uint32_t imageCount() const = 0;
+   virtual bool     resize(uint width, uint height) = 0;
+   virtual void     present()                       = 0;
+   virtual uint32_t nextImage()                     = 0;
+   virtual uint32_t imageCount() const              = 0;
 private:
    static constexpr RenderGraphicsAPI _GraphicsPlatform = RENDER_GRAPHICS_API_UNDEF;
 };

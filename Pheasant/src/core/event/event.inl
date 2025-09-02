@@ -5,21 +5,27 @@ namespace Phs
 {
 
 template <>
+PHS_INLINE EventError::ErrorParams& EventError::getErrorParams()
+{
+   return _error;
+}
+
+template <>
 PHS_INLINE EventWindowResize::WindowSizeParams& EventWindowResize::getWindowSizeParams()
 {
-   return winsize;
+   return _winsize;
 }
 
 template <>
 PHS_INLINE EventWindowMove::WindowPosParams& EventWindowMove::getWindowPosParams()
 {
-   return winpos;
+   return _winpos;
 }
 
 template <>
 PHS_INLINE EventWindowFocus::WindowFocusParams& EventWindowFocus::getWindowFocusParams()
 {
-   return winfocus;
+   return _winfocus;
 }
 
 template <EventCode Code>
@@ -28,13 +34,13 @@ PHS_INLINE typename Event<Code>::KeyboardKeyParams& Event<Code>::getKeyboardKeyP
    PHS_STATIC_ASSERT(Code == EV_KEY_PRESSED  or
                      Code == EV_KEY_RELEASED or
                      Code == EV_KEY_REPEATED);
-   return keybkeys;
+   return _keybkeys;
 }
 
 template <>
 PHS_INLINE EventKeyType::KeyboardTypeParams& EventKeyType::getKeyboardTypeParams()
 {
-   return keybtype;
+   return _keybtype;
 }
 
 template <EventCode Code>
@@ -42,19 +48,19 @@ PHS_INLINE typename Event<Code>::MouseButtonParams& Event<Code>::getMouseButtonP
 {
    PHS_STATIC_ASSERT(Code == EV_MOUSE_BUTTON_PRESSED or
                      Code == EV_MOUSE_BUTTON_RELEASED);
-   return micekeys;
+   return _micekeys;
 }
 
 template <>
 PHS_INLINE EventMouseMove::CursorParams& EventMouseMove::getCursorParams()
 {
-   return cursor;
+   return _cursor;
 }
 
 template <>
 PHS_INLINE EventMouseScroll::MouseScrollParams& EventMouseScroll::getMouseScrollParams()
 {
-   return micescroll;
+   return _micescroll;
 }
 
 } // namespace Phs

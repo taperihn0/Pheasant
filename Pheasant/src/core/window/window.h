@@ -13,6 +13,10 @@ namespace Phs
 template <EventCode Code>
 using EventCallback = void(*)(Event<Code>);
 
+using WindowErrorCallback   = EventCallback<EV_NONE>;
+
+using ErrorCallback         = EventCallback<EV_ERROR>;
+
 using WindowResizeCallback  = EventCallback<EV_WINDOW_RESIZE>;
 using WindowMoveCallback    = EventCallback<EV_WINDOW_MOVE>;
 using WindowFocusCallback   = EventCallback<EV_WINDOW_FOCUS>;
@@ -28,25 +32,29 @@ using MouseReleaseCallback  = EventCallback<EV_MOUSE_BUTTON_RELEASED>;
 using MouseMoveCallback     = EventCallback<EV_MOUSE_MOVED>;
 using MouseScrollCallback   = EventCallback<EV_MOUSE_SCROLLED>;
 
+// default code for handling each event
+// does nothing for default (except error event - see template specialization in window.cpp)
 template <EventCode Code>
-void _defaultEventCallback(PHS_UNUSED Event<Code>) {}
+void __defaultEventCallback(PHS_UNUSED Event<Code>) {}
 
 struct EventCallbacks
 {
-   WindowResizeCallback  window_resize_callback = _defaultEventCallback<EV_WINDOW_RESIZE>;
-   WindowMoveCallback    window_move_callback   = _defaultEventCallback<EV_WINDOW_MOVE>;
-   WindowFocusCallback   window_focus_callback  = _defaultEventCallback<EV_WINDOW_FOCUS>;
-   WindowCloseCallback   window_close_callback  = _defaultEventCallback<EV_WINDOW_CLOSE>;
+   static ErrorCallback  error_callback;
 
-   KeyPressCallback      key_press_callback     = _defaultEventCallback<EV_KEY_PRESSED>;
-   KeyReleaseCallback    key_release_callback   = _defaultEventCallback<EV_KEY_RELEASED>;
-   KeyRepeateCallback    key_repeat_callback    = _defaultEventCallback<EV_KEY_REPEATED>;
-   KeyTypeCallback       key_type_callback      = _defaultEventCallback<EV_KEY_TYPED>;
+   WindowResizeCallback  window_resize_callback = __defaultEventCallback<EV_WINDOW_RESIZE>;
+   WindowMoveCallback    window_move_callback   = __defaultEventCallback<EV_WINDOW_MOVE>;
+   WindowFocusCallback   window_focus_callback  = __defaultEventCallback<EV_WINDOW_FOCUS>;
+   WindowCloseCallback   window_close_callback  = __defaultEventCallback<EV_WINDOW_CLOSE>;
 
-   MousePressCallback    mouse_press_callback   = _defaultEventCallback<EV_MOUSE_BUTTON_PRESSED>;
-   MouseReleaseCallback  mouse_release_callback = _defaultEventCallback<EV_MOUSE_BUTTON_RELEASED>;
-   MouseMoveCallback     mouse_move_callback    = _defaultEventCallback<EV_MOUSE_MOVED>;
-   MouseScrollCallback   mouse_scroll_callback  = _defaultEventCallback<EV_MOUSE_SCROLLED>;
+   KeyPressCallback      key_press_callback     = __defaultEventCallback<EV_KEY_PRESSED>;
+   KeyReleaseCallback    key_release_callback   = __defaultEventCallback<EV_KEY_RELEASED>;
+   KeyRepeateCallback    key_repeat_callback    = __defaultEventCallback<EV_KEY_REPEATED>;
+   KeyTypeCallback       key_type_callback      = __defaultEventCallback<EV_KEY_TYPED>;
+
+   MousePressCallback    mouse_press_callback   = __defaultEventCallback<EV_MOUSE_BUTTON_PRESSED>;
+   MouseReleaseCallback  mouse_release_callback = __defaultEventCallback<EV_MOUSE_BUTTON_RELEASED>;
+   MouseMoveCallback     mouse_move_callback    = __defaultEventCallback<EV_MOUSE_MOVED>;
+   MouseScrollCallback   mouse_scroll_callback  = __defaultEventCallback<EV_MOUSE_SCROLLED>;
 };
 
 /* Cross-platform window handler class based on GLFW library.
@@ -63,15 +71,39 @@ public:
    void        update();
    bool        isOpen();
 
-   void        setEventCallbacks(EventCallbacks* callbacks);
-private:
-   static void errorCallback(int error, const char* description);
+   /* __setWidth / __setHeight methods do not really *resize* the window, but
+   *  rather change internal state fields to match the actual size.
+   *  Used internally by callbacks function on resize event.
+   */
+   void        __setWidth(uint width);
+   void        __setHeight(uint height);
+   /* Internal usage method.
+   *  For more explanations, see Phs::Window::__setWidth and Phs::Window::__setHeight.
+   */
+   void        __setFocus(bool value);
+   /* Internal usage method.
+   *  For more explanations, see Phs::Window::__setWidth and Phs::Window::__setHeight.
+   */
+   void        __setClose(bool value);
+   uint        getWidth();
+   uint        getHeight();
 
+   void        setEventCallbacks(EventCallbacks* callbacks);
+
+   /* Internal data for callbacks.
+   *  window pointer should be set to this.
+   */
+   struct __CallbackData
+   {
+      Window* const   window;
+      EventCallbacks* callbacks;
+   };
+private:
    static constexpr uint              _InvalidWindowWidth = 0;
    static constexpr uint              _InvalidWindowHeight = 0;
    static constexpr std::string_view  _DefaultWindowTitle = "Title";
 
-   GLFWwindow*                        _window;
+   GLFWwindow*                        _native_window;
    uint                               _width;
    uint                               _height;
    bool                               _focus;
@@ -80,6 +112,7 @@ private:
    Input                              _input;
    bool                               _close;
    std::unique_ptr<PlatformSwapchain> _swapchain;
+   __CallbackData                     _callback_ptrs;
 };
 
 } // namespace Phs

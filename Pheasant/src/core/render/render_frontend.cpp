@@ -8,7 +8,7 @@ namespace Phs
 
 RenderGraphicsAPI        Render::_graphics_platform = RENDER_GRAPHICS_API_UNDEF;
 bool                     Render::_initialized = false;
-Render::BackendFunctions Render::_backend = {};
+Render::BackendFunctions Render::_backend;
 
 bool Render::initialize(RenderGraphicsAPI platform)
 {

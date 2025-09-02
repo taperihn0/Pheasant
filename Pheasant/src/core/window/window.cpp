@@ -1,20 +1,31 @@
 #include "window.h"
 #include "assert.h"
 #include "logger/log.h"
+#include "render/render_frontend.h"
 // TODO: make it configurable
 #include "render/opengl/opengl_swapchain.h"
 
 namespace Phs
 {
 
+// specify default error handling code
+template <EventCode EV_ERROR>
+void __defaultEventCallback(EventError ev) 
+{
+   auto& err_data = ev.getErrorParams();
+   PHS_CORE_LOG_ERROR("Error detected: code {}, description \"{}\"", err_data.code, err_data.description);
+}
+
+ErrorCallback EventCallbacks::error_callback = __defaultEventCallback<EV_ERROR>;
+
 // https://github.com/glfw/glfw/issues/2036 by @wintertime
 bool glfwIsInitialized() {
-   (void)glfwGetKeyScancode(0);
+   (void)glfwGetKeyScancode(GLFW_KEY_0);
    return glfwGetError(nullptr) != GLFW_NOT_INITIALIZED;
 }
 
 Window::Window()
-   : _window(nullptr)
+   : _native_window(nullptr)
    , _width(_InvalidWindowWidth)
    , _height(_InvalidWindowHeight)
    , _focus(false)
@@ -23,6 +34,7 @@ Window::Window()
    , _input()
    , _close(false)
    , _swapchain(nullptr)
+   , _callback_ptrs({ this, nullptr })
 {}
 
 Window::Window(uint width, uint height, const std::string& title)
@@ -42,8 +54,6 @@ bool Window::init(uint width, uint height, const std::string& title)
       PHS_CORE_LOG_FATAL("Failed to initialize GLFW context!");
       return false;
    }
-
-   glfwSetErrorCallback(errorCallback);
 
    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -65,20 +75,33 @@ bool Window::init(uint width, uint height, const std::string& title)
    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-   _window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
+   _width = width;
+   _height = height;
 
-   if (!_window)
+   _native_window = glfwCreateWindow(_width, _height, title.c_str(), nullptr, nullptr);
+
+   if (!_native_window)
    {
       PHS_CORE_LOG_FATAL("Failed to create a new GLFW window!");
       return false;
    }
 
-   glfwMakeContextCurrent(_window);
-   _input.setWindow(_window);
+   glfwMakeContextCurrent(_native_window);
 
+   // _callback_ptrs lifetime is same as the lifetime of *this object.
+   void* data = reinterpret_cast<void*>(&_callback_ptrs);
+   glfwSetWindowUserPointer(_native_window, data);
+
+   // initialize render state
    // TODO: make it configurable
-   _swapchain = std::make_unique<SwapchainOpenGL>(_window);
+   bool render_init_status = Render::initialize(RENDER_GRAPHICS_API_OPENGL);
+   PHS_ASSERT_LOG(render_init_status, "Failed to initialize render");
+   _swapchain = std::make_unique<SwapchainOpenGL>(_native_window, _width, _height);
 
+   _input.setWindow(_native_window);
+
+   // GLFW_FOCUSED set
+   _focus = true;
    _initialized = true;
 
    PHS_CORE_LOG_INFO("Successfully initialized a new GLFW window.");
@@ -87,8 +110,10 @@ bool Window::init(uint width, uint height, const std::string& title)
 
 Window::~Window()
 {
-   if (_window)
-      glfwDestroyWindow(_window);
+   // Destroyed window can be defacto not-initialized.
+
+   if (_native_window) 
+      glfwDestroyWindow(_native_window);
 
    if (glfwIsInitialized())
       glfwTerminate();
@@ -105,58 +130,138 @@ void Window::update()
 
 bool Window::isOpen()
 {
+   PHS_ASSERT(_initialized);
    return !_close;
+}
+
+void Window::__setWidth(uint width)
+{
+   PHS_ASSERT(_initialized);
+   _width = width;
+}
+
+void Window::__setHeight(uint height)
+{
+   PHS_ASSERT(_initialized);
+   _height = height;
+}
+
+void Window::__setFocus(bool value)
+{
+   PHS_ASSERT(_initialized);
+   _focus = value;
+}
+
+void Window::__setClose(bool value)
+{
+   PHS_ASSERT(_initialized);
+   _close = value;
+}
+
+uint Window::getWidth()
+{
+   PHS_ASSERT(_initialized);
+   return _width;
+}
+
+uint Window::getHeight()
+{
+   PHS_ASSERT(_initialized);
+   return _height;
 }
 
 void Window::setEventCallbacks(EventCallbacks* callbacks)
 {
    PHS_ASSERT(_initialized);
 
-   glfwSetWindowUserPointer(_window, reinterpret_cast<void*>(callbacks));
+   // GLFW user pointer is already binded, just change callbacks to these provided by the external caller
+   _callback_ptrs.callbacks = callbacks;
 
-   glfwSetWindowSizeCallback(_window, [](GLFWwindow* window, int width, int height)
+   glfwSetErrorCallback(
+      [](int code, const char* desc)
+      {
+         EventError ev;
+         auto& err_data = ev.getErrorParams();
+         err_data.code = code;
+         err_data.description = desc;
+
+         EventCallbacks::error_callback(ev);
+      }
+   );
+
+   glfwSetWindowSizeCallback(_native_window,
+      [](GLFWwindow* platform_native_window, int width, int height)
       {
          EventWindowResize ev;
          auto& winsize = ev.getWindowSizeParams();
          winsize.width = width;
          winsize.height = height;
-         const EventCallbacks* callbacks = reinterpret_cast<EventCallbacks*>(glfwGetWindowUserPointer(window));
+
+         Window::__CallbackData* data = reinterpret_cast<Window::__CallbackData*>(glfwGetWindowUserPointer(platform_native_window));
+         Window* window = data->window;
+         const EventCallbacks* callbacks = data->callbacks;
+
+         window->__setWidth(width);
+         window->__setHeight(width);
+
          callbacks->window_resize_callback(ev);
       }
    );
    
-   glfwSetWindowPosCallback(_window, [](GLFWwindow* window, int xpos, int ypos)
+   glfwSetWindowPosCallback(_native_window, 
+      [](GLFWwindow* platform_native_window, int xpos, int ypos)
       {
          EventWindowMove ev;
          auto& winpos = ev.getWindowPosParams();
          winpos.x = xpos;
          winpos.y = ypos;
-         const EventCallbacks* callbacks = reinterpret_cast<EventCallbacks*>(glfwGetWindowUserPointer(window));
+         
+         Window::__CallbackData* data = reinterpret_cast<Window::__CallbackData*>(glfwGetWindowUserPointer(platform_native_window));
+         PHS_UNUSED Window* window = data->window;
+         const EventCallbacks* callbacks = data->callbacks;
+
          callbacks->window_move_callback(ev);
       }
    );
    
-   glfwSetWindowFocusCallback(_window, [](GLFWwindow* window, int value)
+   glfwSetWindowFocusCallback(_native_window, 
+      [](GLFWwindow* platform_native_window, int value)
       {
          EventWindowFocus ev;
          auto& winfocus = ev.getWindowFocusParams();
          winfocus.value = static_cast<bool>(value);
-         const EventCallbacks* callbacks = reinterpret_cast<EventCallbacks*>(glfwGetWindowUserPointer(window));
+         
+         Window::__CallbackData* data = reinterpret_cast<Window::__CallbackData*>(glfwGetWindowUserPointer(platform_native_window));
+         Window* window = data->window;
+         const EventCallbacks* callbacks = data->callbacks;
+
+         window->__setFocus(value);
+
          callbacks->window_focus_callback(ev);
       }
    );
 
-   glfwSetWindowCloseCallback(_window, [](GLFWwindow* window)
+   glfwSetWindowCloseCallback(_native_window, 
+      [](GLFWwindow* platform_native_window)
       {
          EventWindowClose ev;
-         const EventCallbacks* callbacks = reinterpret_cast<EventCallbacks*>(glfwGetWindowUserPointer(window));
+         
+         Window::__CallbackData* data = reinterpret_cast<Window::__CallbackData*>(glfwGetWindowUserPointer(platform_native_window));
+         Window* window = data->window;
+         const EventCallbacks* callbacks = data->callbacks;
+
+         window->__setClose(true);
+
          callbacks->window_close_callback(ev);
       }
    );
 
-   glfwSetKeyCallback(_window, [](GLFWwindow* window, int key, PHS_UNUSED int scancode, int action, int mods)
+   glfwSetKeyCallback(_native_window, 
+      [](GLFWwindow* platform_native_window, int key, PHS_UNUSED int scancode, int action, int mods)
       {
-         const EventCallbacks* callbacks = reinterpret_cast<EventCallbacks*>(glfwGetWindowUserPointer(window));
+         Window::__CallbackData* data = reinterpret_cast<Window::__CallbackData*>(glfwGetWindowUserPointer(platform_native_window));
+         PHS_UNUSED Window* window = data->window;
+         const EventCallbacks* callbacks = data->callbacks;
 
          switch (action)
          {
@@ -192,19 +297,27 @@ void Window::setEventCallbacks(EventCallbacks* callbacks)
       }
    );
 
-   glfwSetCharCallback(_window, [](GLFWwindow* window, unsigned int codepoint)
+   glfwSetCharCallback(_native_window, 
+      [](GLFWwindow* platform_native_window, unsigned int codepoint)
       {
          EventKeyType ev;
          auto& state = ev.getKeyboardTypeParams();
          state.code = static_cast<type_char_t>(codepoint);
-         const EventCallbacks* callbacks = reinterpret_cast<EventCallbacks*>(glfwGetWindowUserPointer(window));
+         
+         Window::__CallbackData* data = reinterpret_cast<Window::__CallbackData*>(glfwGetWindowUserPointer(platform_native_window));
+         PHS_UNUSED Window* window = data->window;
+         const EventCallbacks* callbacks = data->callbacks;
+
          callbacks->key_type_callback(ev);
       }
    );
 
-   glfwSetMouseButtonCallback(_window, [](GLFWwindow* window, int button, int action, int mods)
+   glfwSetMouseButtonCallback(_native_window, 
+      [](GLFWwindow* platform_native_window, int button, int action, int mods)
       {
-         const EventCallbacks* callbacks = reinterpret_cast<EventCallbacks*>(glfwGetWindowUserPointer(window));
+         Window::__CallbackData* data = reinterpret_cast<Window::__CallbackData*>(glfwGetWindowUserPointer(platform_native_window));
+         PHS_UNUSED Window* window = data->window;
+         const EventCallbacks* callbacks = data->callbacks;
 
          switch (action)
          {
@@ -237,33 +350,37 @@ void Window::setEventCallbacks(EventCallbacks* callbacks)
       }
    );
 
-   glfwSetCursorPosCallback(_window, [](GLFWwindow* window, double xpos, double ypos)
+   glfwSetCursorPosCallback(_native_window, 
+      [](GLFWwindow* platform_native_window, double xpos, double ypos)
       {
          EventMouseMove ev;
          auto& cursor = ev.getCursorParams();
          cursor.x = xpos;
          cursor.y = ypos;
-         const EventCallbacks* callbacks = reinterpret_cast<EventCallbacks*>(glfwGetWindowUserPointer(window));
+         
+         Window::__CallbackData* data = reinterpret_cast<Window::__CallbackData*>(glfwGetWindowUserPointer(platform_native_window));
+         PHS_UNUSED Window* window = data->window;
+         const EventCallbacks* callbacks = data->callbacks;
+
          callbacks->mouse_move_callback(ev);
       }
    );
 
-   glfwSetScrollCallback(_window, [](GLFWwindow* window, double xoffset, double yoffset)
+   glfwSetScrollCallback(_native_window, 
+      [](GLFWwindow* platform_native_window, double xoffset, double yoffset)
       {
          EventMouseScroll ev;
          auto& scroll = ev.getMouseScrollParams();
          scroll.xoff = xoffset;
          scroll.yoff = yoffset;
-         const EventCallbacks* callbacks = reinterpret_cast<EventCallbacks*>(glfwGetWindowUserPointer(window));
+         
+         Window::__CallbackData* data = reinterpret_cast<Window::__CallbackData*>(glfwGetWindowUserPointer(platform_native_window));
+         PHS_UNUSED Window* window = data->window;
+         const EventCallbacks* callbacks = data->callbacks;
+
          callbacks->mouse_scroll_callback(ev);
       }
    );
-}
-
-void Window::errorCallback(int error, const char* description) 
-{
-   // TODO: Proper error handling by the app abstraction
-   PHS_CORE_LOG_ERROR("GLFW error detected: code {}, description {}", error, description);
 }
 
 } // namespace Phs

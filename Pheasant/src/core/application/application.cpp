@@ -6,6 +6,12 @@
 namespace Phs 
 {
 
+void Application::errorCallback(EventError ev)
+{
+	auto& err_data = ev.getErrorParams();
+	PHS_CORE_LOG_ERROR("GLFW error detected: code {}, description \"{}\"", err_data.code, err_data.description);
+}
+
 void Application::windowResizeCallback(EventWindowResize ev)
 {
 	//auto& winsize = ev.getWindowSizeParams();
@@ -88,6 +94,8 @@ Application::Application()
 	_window->init(800, 600, "Hello GLFW");
 
 	// initialize callback functions 
+	_callbacks->error_callback				= errorCallback;
+
 	_callbacks->window_resize_callback  = windowResizeCallback;
 	_callbacks->window_move_callback    = windowMoveCallback;
 	_callbacks->window_focus_callback   = windowFocusCallback;
@@ -104,10 +112,6 @@ Application::Application()
 	_callbacks->mouse_scroll_callback   = mouseScrollCallback;
 
 	_window->setEventCallbacks(_callbacks.get());
-
-	// initialize render state
-	bool render_init_status = Render::initialize(RENDER_GRAPHICS_API_OPENGL);
-	PHS_ASSERT(render_init_status);
 }
 
 void Application::run()

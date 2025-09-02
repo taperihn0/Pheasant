@@ -1,6 +1,10 @@
 #pragma once
 
-#include "common.h"
+/* opengl_backend.h already includes crucial files
+*  for managing graphics platform context.
+*/ 
+#include "glad/glad.h"
+#include "GLFW/glfw3.h"
 #include "render/render_types.h"
 
 namespace Phs
@@ -14,11 +18,11 @@ public:
    /* Initialize OpenGL rendering context and store initialization data
    *  for future read.
    */
-   static            bool platformInitialize();
-   static PHS_INLINE void platformShutdown();
-   static PHS_INLINE void platformWindowResize();
-   static PHS_INLINE bool platformBeginFrame(RenderData& data);
-   static PHS_INLINE bool platformEndFrame(RenderData& data);
+   static bool platformInitialize();
+   static void platformShutdown();
+   static void platformWindowResize(uint width, uint height);
+   static bool platformBeginFrame(RenderData& data);
+   static bool platformEndFrame(RenderData& data);
 private:
    struct GLContext
    {
@@ -34,5 +38,3 @@ private:
 };
 
 } // namespace Phs
-
-#include "opengl_backend.inl"

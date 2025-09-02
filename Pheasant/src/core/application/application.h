@@ -15,6 +15,8 @@ public:
 
 	void			run();
 private:
+	static void errorCallback(EventError ev);
+
 	static void windowResizeCallback(EventWindowResize ev);
 	static void windowMoveCallback(EventWindowMove ev);
 	static void windowFocusCallback(EventWindowFocus ev);

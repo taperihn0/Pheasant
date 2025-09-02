@@ -13,6 +13,8 @@ enum EventCode : uint16_t
 {
    // Invalid event
    EV_NONE                  = 0x0,
+   // Error event
+   EV_ERROR                 = 0x1,
 
    // EV_WINDOW_MIN_VALUE is equivalent EV_WINDOW_RESIZE
    EV_WINDOW_MIN_VALUE      = 0x1 << 1,
@@ -42,7 +44,8 @@ enum EventCode : uint16_t
 */
 enum EventCategory : uint16_t 
 {
-   EV_CATEGORY_NONE         = EV_NONE,           
+   EV_CATEGORY_NONE         = EV_NONE,
+   EV_CATEGORY_ERROR        = EV_ERROR,
    EV_CATEGORY_WINDOW       = EV_WINDOW_MIN_VALUE, 
    EV_CATEGORY_KEY          = EV_KEY_MIN_VALUE,    
    EV_CATEGORY_MOUSE        = EV_MOUSE_MIN_VALUE,  
@@ -64,6 +67,7 @@ class Event
 public:
    Event() = default;
 
+   struct ErrorParams;
    struct WindowSizeParams;
    struct WindowPosParams;
    struct WindowFocusParams;
@@ -89,6 +93,7 @@ public:
    *  -----------------------------------------
    *  Linking error indicates a method is not implemented for given event.
    */
+   PHS_INLINE ErrorParams&                   getErrorParams();
    PHS_INLINE WindowSizeParams&              getWindowSizeParams();
    PHS_INLINE WindowPosParams&               getWindowPosParams();
    PHS_INLINE WindowFocusParams&             getWindowFocusParams();
@@ -103,6 +108,12 @@ public:
    *  representing different event states, like 
    *  position or key parameters.
    */
+
+   struct alignas(16) ErrorParams
+   {
+      int code;
+      const char* description;
+   };
 
    struct alignas(16) WindowSizeParams
    {
@@ -159,17 +170,18 @@ private:
 
    union /* EventContext */
    {
-      WindowSizeParams   winsize;
-      WindowPosParams    winpos;
-      WindowFocusParams  winfocus;
-      KeyboardKeyParams  keybkeys;
-      KeyboardTypeParams keybtype;
-      MouseButtonParams  micekeys;
-      CursorParams       cursor;
-      MouseScrollParams  micescroll;
+      ErrorParams        _error;
+      WindowSizeParams   _winsize;
+      WindowPosParams    _winpos;
+      WindowFocusParams  _winfocus;
+      KeyboardKeyParams  _keybkeys;
+      KeyboardTypeParams _keybtype;
+      MouseButtonParams  _micekeys;
+      CursorParams       _cursor;
+      MouseScrollParams  _micescroll;
 
       // Event context is 16 bytes long (128 bits)
-      byte __b[16];
+      byte               __b[16];
    };
 };
 
@@ -177,7 +189,9 @@ private:
 *  Each alias corresponds to type Event<EVENT_CODE>, which is native, raw Event type.
 */
 
-using EventNone          = Event<EV_NONE>;
+using EventNone         = Event<EV_NONE>;
+
+using EventError        = Event<EV_ERROR>;
 
 // Aliases for window-group events
 using EventWindowResize = Event<EV_WINDOW_RESIZE>;

@@ -1,33 +1,50 @@
 #pragma once
 
 #include "opengl_swapchain.h"
-#include "GLFW/glfw3.h"
 #include "logger/log.h"
+#include "opengl_backend.h"
+#include "window/window.h"
 
 namespace Phs
 {
 
-SwapchainOpenGL::SwapchainOpenGL(GLFWwindow* window)
+SwapchainOpenGL::SwapchainOpenGL(GLFWwindow* native, uint width, uint height)
 {
-   PHS_ASSERT(window);
-   _window = window;
-   PHS_CORE_LOG_TRACE("Successfully initialized swapchain for OpenGL platform");
+   PHS_ASSERT(native);
+
+   _platform_native_window = native;
+
+   bool status = resize(width, height);
+
+   if (!status)
+      PHS_CORE_LOG_FATAL_FULL_INFO("Failed to set size of the framebuffer");
+
+   PHS_CORE_LOG_INFO("Successfully initialized swapchain for OpenGL platform");
+}
+
+bool SwapchainOpenGL::resize(uint width, uint height)
+{
+   PHS_ASSERT(_platform_native_window);
+   glViewport(0, 0, width, height);
+   GLenum status = glGetError();
+   return status == GL_NO_ERROR;
 }
 
 void SwapchainOpenGL::present()
 {
-   PHS_ASSERT(_window);
-   glfwSwapBuffers(_window);
+   PHS_ASSERT(_platform_native_window);
+   glfwSwapBuffers(_platform_native_window);
 }
 
 uint32_t SwapchainOpenGL::nextImage()
 {
-   PHS_ASSERT(_window);
+   PHS_ASSERT(_platform_native_window);
    return 0;
 }
 
 uint32_t SwapchainOpenGL::imageCount() const
 {
+   PHS_ASSERT(_platform_native_window);
    return _GLImageCount;
 }
 

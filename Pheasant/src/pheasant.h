@@ -1,5 +1,5 @@
 #pragma once
 
-#include "core/application/application.h"
-#include "core/entry.h"
-#include "core/logger/log.h"
+#include "application/application.h"
+#include "entry.h"
+#include "logger/log.h"
