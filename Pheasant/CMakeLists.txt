@@ -12,7 +12,7 @@ file(GLOB_RECURSE PHEASANT_HEADERS CONFIGURE_DEPENDS
 add_library(Pheasant SHARED 
 	${PHEASANT_SOURCES}
 	${PHEASANT_HEADERS}
- )
+)
 
 add_subdirectory(vendor/GLFW)
 add_subdirectory(vendor/GLAD)
@@ -48,6 +48,8 @@ target_include_directories(Pheasant PUBLIC
 
 if (MSVC)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zc:__cplusplus")
+else()
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fms-extensions")
 endif()
 
 set_target_properties(Pheasant PROPERTIES

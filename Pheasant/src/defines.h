@@ -50,10 +50,12 @@
 #  define PHS_INLINE              inline 
 #  define PHS_FORCEINLINE		    __forceinline
 #  define PHS_LAMBDA_FORCEINLINE  [[msvc::forceinline]] 
-#elif defined(__GNUC__)
+#  define PHS_NODISCARD           [[nodiscard]]
+#elif defined(__GNUG__)
 #  define PHS_INLINE				    inline
 #  define PHS_FORCEINLINE		    __attribute__((always_inline))
 #  define PHS_LAMBDA_FORCEINLINE  NONE_TOKEN
+#  define PHS_NODISCARD           [[nodiscard]]
 #endif
 
 #define PHS_NORETURN              [[noreturn]]
@@ -79,3 +81,18 @@
 // Warning : 'extern ' : ignored on left of 'Phs::Event<Code>::WindowPosParams' when no variable is declared
 #pragma warning(disable: 4091)
 #endif
+
+// Check for language extensions.
+// Language extensions are turned on by default under MSVC and GCC
+#ifdef _MSC_VER
+#  define PHS_EXTENSIONS
+#elif defined(__GNUG__)
+#  define PHS_EXTENSIONS
+#endif
+
+// Extension features
+#ifdef PHS_EXTENSIONS
+#  define PHS_USE_ANONYMOUS_STRUCT
+#endif
+
+#define PHS_MATH_USE_NOEXCEPT 1

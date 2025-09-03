@@ -20,7 +20,7 @@ public:
    */
    static bool platformInitialize();
    static void platformShutdown();
-   static void platformWindowResize(uint width, uint height);
+   static bool platformWindowResize(uint width, uint height);
    static bool platformBeginFrame(RenderData& data);
    static bool platformEndFrame(RenderData& data);
 private:

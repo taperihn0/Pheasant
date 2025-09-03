@@ -48,23 +48,24 @@ void BackendOpenGL::platformShutdown()
    return;
 }
 
-void BackendOpenGL::platformWindowResize(uint width, uint height)
+bool BackendOpenGL::platformWindowResize(uint width, uint height)
 {
    glViewport(0, 0, width, height);
-   // TODO: catch GL-specific errors
+   GLenum status = glGetError();
+   return status == GL_NO_ERROR;
 }
 
 bool BackendOpenGL::platformBeginFrame(RenderData& data)
 {
    // TODO: remove that
    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-   glClear(GL_COLOR_BUFFER_BIT);
    return true;
 }
 
 bool BackendOpenGL::platformEndFrame(RenderData& data)
 {
    // TODO
+   glClear(GL_COLOR_BUFFER_BIT);
    return true;
 }
 

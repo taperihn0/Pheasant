@@ -18,9 +18,19 @@ template <typename T1, typename T2>
 constexpr bool same = std::is_same_v<std::remove_volatile_t<std::remove_const_t<std::remove_reference_t<T1>>>,
                                      std::remove_volatile_t<std::remove_const_t<std::remove_reference_t<T2>>>>;
 
+template <typename T>
+constexpr bool is_integral = std::is_integral_v<T>;
+
+template <typename T>
+constexpr bool is_real = std::is_floating_point_v<T>;
+
+template <typename T>
+constexpr bool is_numeric = (is_real<T> or is_integral<T>);
+
 // Assert IEEE Standard is implemented
 PHS_STATIC_ASSERT(std::numeric_limits<float>::is_iec559);
 
+// IEEE Standard is provided
 #define PHS_IEEE_STANDARD 1
 
 // As IEEE is checked, these types exactly maps their size.
@@ -77,14 +87,14 @@ static constexpr int64_t operator"" _i64(uintmax_t v)
 template <typename T>
 constexpr PHS_INLINE T maxof()
 {
-   PHS_STATIC_ASSERT(std::is_floating_point_v<T> or std::is_integral_v<T>);
+   PHS_STATIC_ASSERT(is_numeric<T>);
    return std::numeric_limits<T>::max();
 }
 
 template <typename T>
 constexpr PHS_INLINE T minof()
 {
-   PHS_STATIC_ASSERT(std::is_floating_point_v<T> or std::is_integral_v<T>);
+   PHS_STATIC_ASSERT(is_numeric<T>);
    return std::numeric_limits<T>::lowest();
 }
 

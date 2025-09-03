@@ -47,22 +47,26 @@ PHS_INLINE void RenderBackend<GraphicsPlatform>::backendShutdown()
 }
 
 template <RenderGraphicsAPI GraphicsPlatform>
-PHS_INLINE void RenderBackend<GraphicsPlatform>::backendWindowResize()
+PHS_INLINE bool RenderBackend<GraphicsPlatform>::backendWindowResize()
 {
+   bool status = false;
+
    if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_OPENGL)
    {
-      BackendOpenGL::platformInitialize();
+      status = BackendOpenGL::platformInitialize();
    }
    else if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_VULKAN)
    {
       // TODO: support VULKAN API
-      return;
+      return false;
    }
    else if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_DIRECTX)
    {
       // TODO: support DIRECTX API
-      return;
+      return false;
    }
+
+   return status;
 }
 
 template <RenderGraphicsAPI GraphicsPlatform>

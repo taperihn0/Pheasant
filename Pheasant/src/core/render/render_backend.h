@@ -26,7 +26,7 @@ public:
 
    /* Calls platform-specific resize policy.
    */
-   static PHS_INLINE void backendWindowResize();
+   static PHS_INLINE bool backendWindowResize();
 
    /* Calls platform-specific frame drawing.
    */

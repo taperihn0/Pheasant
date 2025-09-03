@@ -202,7 +202,12 @@ void Window::setEventCallbacks(EventCallbacks* callbacks)
          const EventCallbacks* callbacks = data->callbacks;
 
          window->__setWidth(width);
-         window->__setHeight(width);
+         window->__setHeight(height);
+
+         bool status = Render::windowResize(width, height);
+
+         if (!status)
+            PHS_CORE_LOG_FATAL_FULL_INFO("Got error code from resize code");
 
          callbacks->window_resize_callback(ev);
       }

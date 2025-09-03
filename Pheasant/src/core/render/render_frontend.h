@@ -30,7 +30,7 @@ public:
    /* Adjusting rendering window to a new width and height.
    *  Required to call this function on window resize event.
    */
-   static void windowResize(uint width, uint height);
+   static bool windowResize(uint width, uint height);
 
    /* Main rendering utility -
    *  submits a frame with a given data.
@@ -48,7 +48,7 @@ private:
    {
       using backend_initialize_func          = bool(*)();
       using backend_shutdown_func            = void(*)();
-      using backend_window_resize_func       = void(*)();
+      using backend_window_resize_func       = bool(*)();
       using backend_begin_frame_func         = bool(*)(RenderData&);
       using backend_end_frame_func           = bool(*)(RenderData&);
 

@@ -3,6 +3,8 @@
 #include "logger/log.h"
 #include "render/render_frontend.h"
 
+#include "math/vec.h"
+
 namespace Phs 
 {
 
