@@ -36,6 +36,12 @@ using dim_int_t = uint;
 template<dim_int_t Dim, typename T>
 struct vec;
 
+template<dim_int_t Dim, typename T>
+struct vec
+{
+   PHS_STATIC_ASSERT(Dim >= 2);
+};
+
 template <typename T>
 using vec2 = vec<2, T>;
 

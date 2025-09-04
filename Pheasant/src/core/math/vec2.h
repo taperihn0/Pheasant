@@ -13,13 +13,13 @@ struct vec<2, T>
 {
    PHS_STATIC_ASSERT(is_numeric<T>);
 
-   constexpr PHS_INLINE vec()                                                     PHS_MATH_NOEXCEPT;
+   constexpr PHS_INLINE                        vec()                              PHS_MATH_NOEXCEPT;
                                                                             
    template <dim_int_t Dim>                                                 
-   constexpr PHS_INLINE vec(const vec<Dim, T>& v)                                 PHS_MATH_NOEXCEPT;
+   constexpr PHS_INLINE                        vec(const vec<Dim, T>& v)          PHS_MATH_NOEXCEPT;
                                                                             
-   constexpr PHS_INLINE explicit vec(T s)                                         PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE explicit vec(T s1, T s2)                                  PHS_MATH_NOEXCEPT;
+   constexpr PHS_INLINE explicit               vec(T s)                           PHS_MATH_NOEXCEPT;
+   constexpr PHS_INLINE explicit               vec(T s1, T s2)                    PHS_MATH_NOEXCEPT;
                                                                             
    constexpr PHS_INLINE PHS_NODISCARD vec2<T>& dim()                              PHS_MATH_NOEXCEPT;
    constexpr PHS_INLINE PHS_NODISCARD vec2<T>& normalize()                        PHS_MATH_NOEXCEPT;
@@ -29,7 +29,7 @@ struct vec<2, T>
    constexpr PHS_INLINE PHS_NODISCARD vec2<T>& length()                     const PHS_MATH_NOEXCEPT;
 
    template <dim_int_t Dim>
-   constexpr PHS_INLINE vec2<T>& operator=(const vec<Dim, T>& v)                  PHS_MATH_NOEXCEPT;
+   constexpr PHS_INLINE vec2<T>&               operator=(const vec<Dim, T>& v)    PHS_MATH_NOEXCEPT;
 
    constexpr PHS_INLINE PHS_NODISCARD vec2<T>  operator+(const vec2<T>& v)  const PHS_MATH_NOEXCEPT;
    constexpr PHS_INLINE PHS_NODISCARD vec2<T>  operator-(const vec2<T>& v)  const PHS_MATH_NOEXCEPT;
@@ -75,11 +75,11 @@ template <typename T>
 PHS_INLINE std::ostream& operator<<(std::ostream& out, const vec2<T>& v);
 
 template <typename T>
-constexpr PHS_INLINE vec2<T> dot(const vec2<T>& a, const vec2<T>& b) PHS_MATH_NOEXCEPT;
+constexpr PHS_INLINE T dot(const vec2<T>& a, const vec2<T>& b) PHS_MATH_NOEXCEPT;
 
 using vec2f = vec2<float32_t>;
 using vec2i = vec2<int32_t>;
 
 } // namespace Phs
 
-#include "vec.inl"
+#include "vec2.inl"

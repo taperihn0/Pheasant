@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vec.h"
+#include "vec2.h"
 #include "precompile.h"
 
 namespace Phs
@@ -8,14 +8,14 @@ namespace Phs
 
 template <typename T>
 constexpr PHS_INLINE vec2<T>::vec() PHS_MATH_NOEXCEPT
-   : x(static_cast<T>(0)), y(static_cast<T>(0))
+   : x(static_cast<T>(0))
+   , y(static_cast<T>(0))
 {}
 
 template <typename T>
 template <dim_int_t Dim>
 constexpr PHS_INLINE vec2<T>::vec(const vec<Dim, T>& v) PHS_MATH_NOEXCEPT
 {
-   PHS_STATIC_ASSERT(Dim >= 2);
    x = v.x;
    y = v.y;
 }
@@ -164,7 +164,7 @@ constexpr PHS_INLINE vec2<T>& vec2<T>::operator/=(const vec2<T>&v)
 template <typename T>
 constexpr PHS_INLINE T& vec2<T>::operator[](size_t i) PHS_MATH_NOEXCEPT
 {
-   PHS_ASSERT(i <= 1);
+   PHS_ASSERT(i < _Dimension);
    return *((&x) + i * sizeof(T));
 }
 
@@ -188,10 +188,10 @@ PHS_INLINE std::ostream& operator<<(std::ostream& out, const vec2<T>& v)
 }
 
 template <typename T>
-constexpr PHS_INLINE vec2<T> dot(const vec2<T>& a, const vec2<T>& b) PHS_MATH_NOEXCEPT
+constexpr PHS_INLINE T dot(const vec2<T>& a, const vec2<T>& b) PHS_MATH_NOEXCEPT
 {
-   vec2<T> res = a * b;
-   return res;
+   const T sum = a.x * b.x + a.y * b.y;
+   return sum;
 }
 
 } // namespace Phs

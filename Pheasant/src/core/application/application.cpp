@@ -3,8 +3,6 @@
 #include "logger/log.h"
 #include "render/render_frontend.h"
 
-#include "math/vec.h"
-
 namespace Phs 
 {
 
@@ -117,7 +115,7 @@ Application::Application()
 }
 
 void Application::run()
-{
+{	
 	PHS_CORE_LOG_INFO("Welcome to Pheasant from Visual Studio with CMake!");
 
 	while (_window->isOpen())
