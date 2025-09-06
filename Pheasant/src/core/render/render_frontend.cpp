@@ -39,7 +39,7 @@ void Render::shutdown()
 bool Render::windowResize(uint width, uint height)
 {
    PHS_ASSERT_LOG(_initialized, "Trying to call window resize on uninitialized render context!");
-   return _backend.resize();
+   return _backend.resize(width, height);
 }
 
 bool Render::drawFrame(RenderData& data)

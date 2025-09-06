@@ -2,16 +2,16 @@
 
 #include "common.h"
 #include "types.h"
-#include "math_utils.h"
+#include "vec_common.h"
 #include "assert.h"
 
 namespace Phs
 {
 
 template<typename T>
-struct vec<3, T>
+struct vec<3, T> : public vecbase<3, T>
 {
-   PHS_STATIC_ASSERT(is_numeric<T>);
+   friend struct vecbase<3, T>;
 
    constexpr PHS_INLINE                        vec()                              PHS_MATH_NOEXCEPT;
 
@@ -19,18 +19,17 @@ struct vec<3, T>
    constexpr PHS_INLINE                        vec(const vec<Dim, T>& v)          PHS_MATH_NOEXCEPT;
 
    constexpr PHS_INLINE explicit               vec(T s)                           PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE explicit               vec(T s1, T s2)                    PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE explicit               vec(T s1, T s2, T s3)              PHS_MATH_NOEXCEPT;
+   constexpr PHS_INLINE                        vec(T s1, T s2)                    PHS_MATH_NOEXCEPT;
+   constexpr PHS_INLINE                        vec(T s1, T s2, T s3)              PHS_MATH_NOEXCEPT;
 
-   constexpr PHS_INLINE PHS_NODISCARD vec3<T>& dim()                              PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE PHS_NODISCARD vec3<T>& normalize()                        PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE PHS_NODISCARD vec3<T>& round()                            PHS_MATH_NOEXCEPT;
+   constexpr PHS_INLINE PHS_NODISCARD vec3<T>& normalize();
+   constexpr PHS_INLINE PHS_NODISCARD vec3<T>& round();
 
    constexpr PHS_INLINE PHS_NODISCARD vec3<T>& lengthSquared()              const PHS_MATH_NOEXCEPT;
    constexpr PHS_INLINE PHS_NODISCARD vec3<T>& length()                     const PHS_MATH_NOEXCEPT;
 
    template <dim_int_t Dim>
-   constexpr PHS_INLINE vec3<T>& operator=(const vec<Dim, T>& v)                  PHS_MATH_NOEXCEPT;
+   constexpr PHS_INLINE vec3<T>&               operator=(const vec<Dim, T>& v)    PHS_MATH_NOEXCEPT;
 
    constexpr PHS_INLINE PHS_NODISCARD vec3<T>  operator+(const vec3<T>& v)  const PHS_MATH_NOEXCEPT;
    constexpr PHS_INLINE PHS_NODISCARD vec3<T>  operator-(const vec3<T>& v)  const PHS_MATH_NOEXCEPT;
@@ -39,17 +38,7 @@ struct vec<3, T>
    constexpr PHS_INLINE PHS_NODISCARD vec3<T>  operator*(const vec3<T>& v)  const PHS_MATH_NOEXCEPT;
    constexpr PHS_INLINE PHS_NODISCARD vec3<T>  operator/(const vec3<T>& v)  const;
 
-   constexpr PHS_INLINE vec3<T>& operator+=(const vec3<T>& v)                     PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE vec3<T>& operator-=(const vec3<T>& v)                     PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE vec3<T>& operator*=(T s)                                  PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE vec3<T>& operator/=(T s);
-   constexpr PHS_INLINE vec3<T>& operator*=(const vec3<T>& v)                     PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE vec3<T>& operator/=(const vec3<T>& v);
-
-   constexpr PHS_INLINE PHS_NODISCARD T& operator[](size_t i)                     PHS_MATH_NOEXCEPT;
-
    constexpr PHS_INLINE PHS_NODISCARD bool     operator==(const vec3<T>& v) const PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE PHS_NODISCARD bool     operator!=(const vec3<T>& v) const PHS_MATH_NOEXCEPT;
 
 #if defined(PHS_EXTENSIONS) and defined(PHS_USE_ANONYMOUS_STRUCT)
    union

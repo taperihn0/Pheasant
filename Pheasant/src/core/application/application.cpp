@@ -2,6 +2,7 @@
 #include "application.h"
 #include "logger/log.h"
 #include "render/render_frontend.h"
+#include "math/math.h"
 
 namespace Phs 
 {
@@ -116,6 +117,14 @@ Application::Application()
 
 void Application::run()
 {	
+	// TODO: TEMPORARY
+	mat3f m0(1.f);
+	mat3f m1(2.f);
+	m0 += m1;
+	uint r = m0.rows();
+	uint c = m0.cols();
+	PHS_CORE_LOG_INFO("{} {}", m0[0][0], m0[1][1], m0[2][2]);
+	mat4f m2 = static_cast<mat4f>(m0);
 	PHS_CORE_LOG_INFO("Welcome to Pheasant from Visual Studio with CMake!");
 
 	while (_window->isOpen())

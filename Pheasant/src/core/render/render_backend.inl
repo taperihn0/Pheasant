@@ -47,13 +47,13 @@ PHS_INLINE void RenderBackend<GraphicsPlatform>::backendShutdown()
 }
 
 template <RenderGraphicsAPI GraphicsPlatform>
-PHS_INLINE bool RenderBackend<GraphicsPlatform>::backendWindowResize()
+PHS_INLINE bool RenderBackend<GraphicsPlatform>::backendWindowResize(uint width, uint height)
 {
    bool status = false;
 
    if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_OPENGL)
    {
-      status = BackendOpenGL::platformInitialize();
+      status = BackendOpenGL::platformWindowResize(width, height);
    }
    else if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_VULKAN)
    {

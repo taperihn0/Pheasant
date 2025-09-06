@@ -30,6 +30,8 @@ template <typename T>
 constexpr PHS_INLINE vec3<T>::vec(T s) PHS_MATH_NOEXCEPT
 {
    x = s;
+   y = static_cast<T>(0);
+   z = static_cast<T>(0);
 }
 
 template <typename T>
@@ -49,13 +51,7 @@ constexpr PHS_INLINE vec3<T>::vec(T s1, T s2, T s3) PHS_MATH_NOEXCEPT
 }
 
 template <typename T>
-constexpr PHS_INLINE vec3<T>& vec3<T>::dim() PHS_MATH_NOEXCEPT
-{
-   return _Dimension;
-}
-
-template <typename T>
-constexpr PHS_INLINE vec3<T>& vec3<T>::normalize() PHS_MATH_NOEXCEPT
+constexpr PHS_INLINE vec3<T>& vec3<T>::normalize()
 {
    const float64_t len = length();
    *this /= len;
@@ -63,7 +59,7 @@ constexpr PHS_INLINE vec3<T>& vec3<T>::normalize() PHS_MATH_NOEXCEPT
 }
 
 template <typename T>
-constexpr PHS_INLINE vec3<T>& vec3<T>::round() PHS_MATH_NOEXCEPT
+constexpr PHS_INLINE vec3<T>& vec3<T>::round()
 {
    if constexpr (is_real<T>)
    {
@@ -136,64 +132,9 @@ constexpr PHS_INLINE vec3<T> vec3<T>::operator/(const vec3<T>& v) const
 }
 
 template <typename T>
-constexpr PHS_INLINE vec3<T>& vec3<T>::operator+=(const vec3<T>& v) PHS_MATH_NOEXCEPT
-{
-   *this = *this + v;
-   return *this;
-}
-
-template <typename T>
-constexpr PHS_INLINE vec3<T>& vec3<T>::operator-=(const vec3<T>& v) PHS_MATH_NOEXCEPT
-{
-   *this = *this - v;
-   return *this;
-}
-
-template <typename T>
-constexpr PHS_INLINE vec3<T>& vec3<T>::operator*=(T s) PHS_MATH_NOEXCEPT
-{
-   *this = *this * s;
-   return *this;
-}
-
-template <typename T>
-constexpr PHS_INLINE vec3<T>& vec3<T>::operator/=(T s)
-{
-   *this = *this / s;
-   return *this;
-}
-
-template <typename T>
-constexpr PHS_INLINE vec3<T>& vec3<T>::operator*=(const vec3<T>& v) PHS_MATH_NOEXCEPT
-{
-   *this = *this * v;
-   return *this;
-}
-
-template <typename T>
-constexpr PHS_INLINE vec3<T>& vec3<T>::operator/=(const vec3<T>& v)
-{
-   *this = *this / v;
-   return *this;
-}
-
-template <typename T>
-constexpr PHS_INLINE T& vec3<T>::operator[](size_t i) PHS_MATH_NOEXCEPT
-{
-   PHS_ASSERT(i < Dimension);
-   return *((&x) + i * sizeof(T));
-}
-
-template <typename T>
 constexpr PHS_INLINE bool vec3<T>::operator==(const vec3<T>& v) const PHS_MATH_NOEXCEPT
 {
    return x == v.x and y == v.y and z == v.z;
-}
-
-template <typename T>
-constexpr PHS_INLINE bool vec3<T>::operator!=(const vec3<T>& v) const PHS_MATH_NOEXCEPT
-{
-   return x != v.x or y != v.y or z != v.z;
 }
 
 template <typename T>

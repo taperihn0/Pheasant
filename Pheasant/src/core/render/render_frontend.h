@@ -48,7 +48,7 @@ private:
    {
       using backend_initialize_func          = bool(*)();
       using backend_shutdown_func            = void(*)();
-      using backend_window_resize_func       = bool(*)();
+      using backend_window_resize_func       = bool(*)(uint, uint);
       using backend_begin_frame_func         = bool(*)(RenderData&);
       using backend_end_frame_func           = bool(*)(RenderData&);
 
