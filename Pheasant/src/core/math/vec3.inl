@@ -8,9 +8,9 @@ namespace Phs
 
 template <typename T>
 constexpr PHS_INLINE vec3<T>::vec() PHS_MATH_NOEXCEPT
-   : x(static_cast<T>(0))
-   , y(static_cast<T>(0))
-   , z(static_cast<T>(0))
+   : x(__Zero)
+   , y(__Zero)
+   , z(__Zero)
 {}
 
 template <typename T>
@@ -27,36 +27,11 @@ constexpr PHS_INLINE vec3<T>::vec(const vec<Dim, T>& v) PHS_MATH_NOEXCEPT
 }
 
 template <typename T>
-constexpr PHS_INLINE vec3<T>::vec(T s) PHS_MATH_NOEXCEPT
-{
-   x = s;
-   y = static_cast<T>(0);
-   z = static_cast<T>(0);
-}
-
-template <typename T>
-constexpr PHS_INLINE vec3<T>::vec(T s1, T s2) PHS_MATH_NOEXCEPT
-{
-   x = s1;
-   y = s2;
-   z = static_cast<T>(0);
-}
-
-template <typename T>
 constexpr PHS_INLINE vec3<T>::vec(T s1, T s2, T s3) PHS_MATH_NOEXCEPT
-{
-   x = s1;
-   y = s2;
-   z = s3;
-}
-
-template <typename T>
-constexpr PHS_INLINE vec3<T>& vec3<T>::normalize()
-{
-   const float64_t len = length();
-   *this /= len;
-   return *this;
-}
+   : x(s1)
+   , y(s2)
+   , z(s3)
+{}
 
 template <typename T>
 constexpr PHS_INLINE vec3<T>& vec3<T>::round()
@@ -78,15 +53,9 @@ constexpr PHS_INLINE vec3<T>& vec3<T>::round()
 }
 
 template <typename T>
-constexpr PHS_INLINE vec3<T>& vec3<T>::lengthSquared() const PHS_MATH_NOEXCEPT
+constexpr PHS_INLINE float64_t vec3<T>::lengthSquared() const PHS_MATH_NOEXCEPT
 {
    return sq(x) + sq(y) + sq(z);
-}
-
-template <typename T>
-constexpr PHS_INLINE vec3<T>& vec3<T>::length() const PHS_MATH_NOEXCEPT
-{
-   return std::sqrt(lengthSquared());
 }
 
 template <typename T>

@@ -125,7 +125,10 @@ void Application::run()
 	uint c = m0.cols();
 	PHS_CORE_LOG_INFO("{} {}", m0[0][0], m0[1][1], m0[2][2]);
 	mat4f m2 = static_cast<mat4f>(m0);
-	PHS_CORE_LOG_INFO("Welcome to Pheasant from Visual Studio with CMake!");
+	vec4f v0;
+	quat4f q0(5.1415f);
+
+	PHS_CORE_LOG_INFO("Welcome to Pheasant from Visual Studio with CMake! {}", q0);
 
 	while (_window->isOpen())
 	{

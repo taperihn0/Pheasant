@@ -31,6 +31,13 @@ PHS_FORCEINLINE T sq(T x) PHS_MATH_NOEXCEPT
    return x * x;
 }
 
+template <typename T>
+PHS_INLINE T sqrt(float64_t x)
+{
+   PHS_STATIC_ASSERT(is_numeric<T>);
+   return std::sqrt<T>(x);
+}
+
 using dim_int_t = uint;
 
 } // namespace Phs

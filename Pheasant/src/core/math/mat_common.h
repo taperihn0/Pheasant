@@ -23,6 +23,8 @@ struct matbase
    PHS_STATIC_ASSERT_LOG(Rows >= 2 and Cols >= 2, "1x1 matrix is not supported!");
    PHS_STATIC_ASSERT_LOG(is_numeric<T>, "Only numeric types in matrix are allowed!");
 
+   constexpr                                              matbase()                                      PHS_MATH_NOEXCEPT;
+
    static constexpr PHS_INLINE PHS_NODISCARD uint         rows()                                         PHS_MATH_NOEXCEPT;
    static constexpr PHS_INLINE PHS_NODISCARD uint         cols()                                         PHS_MATH_NOEXCEPT;
 

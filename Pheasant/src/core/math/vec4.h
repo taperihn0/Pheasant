@@ -13,21 +13,18 @@ struct vec<4, T> : public vecbase<4, T>
 {
    friend struct vecbase<4, T>;
 
+   static constexpr T __Zero = static_cast<T>(0);
+
    constexpr PHS_INLINE                        vec()                              PHS_MATH_NOEXCEPT;
 
    template <dim_int_t Dim>
-   constexpr PHS_INLINE                        vec(const vec<Dim, T>& v)          PHS_MATH_NOEXCEPT;
+   constexpr PHS_INLINE explicit               vec(const vec<Dim, T>& v)          PHS_MATH_NOEXCEPT;
+   constexpr PHS_INLINE explicit               vec(T s1         , T s2 = __Zero,
+                                                   T s3 = __Zero, T s4 = __Zero)  PHS_MATH_NOEXCEPT;
 
-   constexpr PHS_INLINE explicit               vec(T s)                           PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE                        vec(T s1, T s2)                    PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE                        vec(T s1, T s2, T s3)              PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE                        vec(T s1, T s2, T s3, T s4)        PHS_MATH_NOEXCEPT;
-
-   constexpr PHS_INLINE PHS_NODISCARD vec4<T>& normalize();
    constexpr PHS_INLINE PHS_NODISCARD vec4<T>& round();
 
    constexpr PHS_INLINE PHS_NODISCARD vec4<T>& lengthSquared()              const PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE PHS_NODISCARD vec4<T>& length()                     const PHS_MATH_NOEXCEPT;
 
    template <dim_int_t Dim>
    constexpr PHS_INLINE vec3<T>&               operator=(const vec<Dim, T>& v)    PHS_MATH_NOEXCEPT;

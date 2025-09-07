@@ -14,6 +14,8 @@ struct mat<4, 4, T> : public matbase<4, 4, T>
 {
    friend struct matbase<4, 4, T>;
 
+   static constexpr T __Zero = static_cast<T>(0);
+
    constexpr PHS_INLINE                        mat()                              PHS_MATH_NOEXCEPT;
    constexpr PHS_INLINE                        mat(const vec4<T>& r1,
                                                    const vec4<T>& r2,

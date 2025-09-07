@@ -8,6 +8,12 @@ namespace Phs
 {
 
 template <dim_int_t Rows, dim_int_t Cols, typename T>
+constexpr matbase<Rows, Cols, T>::matbase() PHS_MATH_NOEXCEPT
+{
+   NONE_TOKEN;
+}
+
+template <dim_int_t Rows, dim_int_t Cols, typename T>
 constexpr PHS_INLINE mat<Rows, Cols, T>& matbase<Rows, Cols, T>::__asDerived(matbase<Rows, Cols, T>& self)
 {
    return static_cast<mat<Rows, Cols, T>&>(self);

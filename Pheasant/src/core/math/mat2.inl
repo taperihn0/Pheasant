@@ -23,14 +23,14 @@ constexpr PHS_INLINE mat2<T>::mat(const vec2<T>& r1,
 
 template <typename T>
 constexpr PHS_INLINE mat2<T>::mat(T s) PHS_MATH_NOEXCEPT
-   : _m{ { s,                 static_cast<T>(0) } ,
-         { static_cast<T>(0), s                 } }
+   : _m{ vec2<T>{ s,      __Zero } ,
+         vec2<T>{ __Zero, s      } }
 {}
 
 template <typename T>
 constexpr PHS_INLINE mat2<T>::mat(T s00, T s01, T s10, T s11) PHS_MATH_NOEXCEPT
-   : _m{ { s00, s01 } ,
-         { s10, s11 } }
+   : _m{ vec2<T>{ s00, s01 } ,
+         vec2<T>{ s10, s11 } }
 {}
 
 template <typename T>

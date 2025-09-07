@@ -15,7 +15,7 @@ namespace Phs
 {
 
 template <typename T1, typename T2>
-constexpr bool same = std::is_same_v<std::remove_volatile_t<std::remove_const_t<std::remove_reference_t<T1>>>,
+constexpr bool is_same = std::is_same_v<std::remove_volatile_t<std::remove_const_t<std::remove_reference_t<T1>>>,
                                      std::remove_volatile_t<std::remove_const_t<std::remove_reference_t<T2>>>>;
 
 template <typename T>

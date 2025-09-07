@@ -20,10 +20,10 @@ namespace Phs
 
    template <typename T>
    constexpr PHS_INLINE mat4<T>::mat(T s) PHS_MATH_NOEXCEPT
-      : _m{ { s,                 static_cast<T>(0), static_cast<T>(0), static_cast<T>(0) } ,
-            { static_cast<T>(0), s,                 static_cast<T>(0), static_cast<T>(0) } ,
-            { static_cast<T>(0), static_cast<T>(0), s                , static_cast<T>(0) } ,
-            { static_cast<T>(0), static_cast<T>(0), static_cast<T>(0), s                 } }
+      : _m{ vec4<T>{ s,      __Zero, __Zero, __Zero } ,
+            vec4<T>{ __Zero, s,      __Zero, __Zero } ,
+            vec4<T>{ __Zero, __Zero, s,      __Zero } ,
+            vec4<T>{ __Zero, __Zero, __Zero, s      } }
    {}
 
    template <typename T>
@@ -31,10 +31,10 @@ namespace Phs
                                      T s10, T s11, T s12, T s13,
                                      T s20, T s21, T s22, T s23,
                                      T s30, T s31, T s32, T s33) PHS_MATH_NOEXCEPT
-      : _m{ { s00, s01, s02, s03 } ,
-            { s10, s11, s12, s13 } ,
-            { s20, s21, s22, s23 } ,
-            { s30, s31, s32, s33 } }
+      : _m{ vec4<T>{ s00, s01, s02, s03 } ,
+            vec4<T>{ s10, s11, s12, s13 } ,
+            vec4<T>{ s20, s21, s22, s23 } ,
+            vec4<T>{ s30, s31, s32, s33 } }
    {}
 
    template <typename T>

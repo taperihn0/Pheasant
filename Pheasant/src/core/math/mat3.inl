@@ -19,18 +19,18 @@ constexpr PHS_INLINE mat3<T>::mat(const vec3<T>& r1,
 
 template <typename T>
 constexpr PHS_INLINE mat3<T>::mat(T s) PHS_MATH_NOEXCEPT
-   : _m{ { s,                 static_cast<T>(0), static_cast<T>(0) } ,
-         { static_cast<T>(0), s,                 static_cast<T>(0) } ,
-         { static_cast<T>(0), static_cast<T>(0), s                 } }
+   : _m{ vec3<T>{ s,      __Zero, __Zero } ,
+         vec3<T>{ __Zero, s,      __Zero } ,
+         vec3<T>{ __Zero, __Zero, s      } }
 {}
 
 template <typename T>
 constexpr PHS_INLINE mat3<T>::mat(T s00, T s01, T s02,
                                   T s10, T s11, T s12,
                                   T s20, T s21, T s22) PHS_MATH_NOEXCEPT
-   : _m{ { s00, s01, s02 } ,
-         { s10, s11, s12 } ,
-         { s20, s21, s22 } }
+   : _m{ vec3<T>{ s00, s01, s02 } ,
+         vec3<T>{ s10, s11, s12 } ,
+         vec3<T>{ s20, s21, s22 } }
 {}
 
 template <typename T>
