@@ -30,6 +30,7 @@ struct mat<2, 2, T> : public matbase<2, 2, T>
    constexpr PHS_INLINE PHS_NODISCARD mat2<T> operator*(T s)               const PHS_MATH_NOEXCEPT;
    constexpr PHS_INLINE PHS_NODISCARD mat2<T> operator/(T s)               const;
    constexpr PHS_INLINE PHS_NODISCARD mat2<T> operator*(const mat2<T>& m)  const PHS_MATH_NOEXCEPT;
+   constexpr PHS_INLINE PHS_NODISCARD vec2<T> operator*(const vec2<T>& v)  const PHS_MATH_NOEXCEPT;
 
    constexpr PHS_INLINE PHS_NODISCARD bool    operator==(const mat2<T>& m) const PHS_MATH_NOEXCEPT;
 private:

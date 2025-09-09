@@ -33,7 +33,7 @@ void Application::windowFocusCallback(EventWindowFocus ev)
 
 void Application::windowCloseCallback(PHS_UNUSED EventWindowClose ev)
 {
-	PHS_CORE_LOG_DEBUG("Window callback: Window close");
+	PHS_CORE_LOG_DEBUG("Window callback: window close");
 }
 
 void Application::keyPressCallback(EventKeyPress ev)
@@ -121,14 +121,26 @@ void Application::run()
 	mat3f m0(1.f);
 	mat3f m1(2.f);
 	m0 += m1;
-	uint r = m0.rows();
-	uint c = m0.cols();
 	PHS_CORE_LOG_INFO("{} {}", m0[0][0], m0[1][1], m0[2][2]);
+
 	mat4f m2 = static_cast<mat4f>(m0);
 	vec4f v0;
 	quat4f q0(5.1415f);
+	PHS_CORE_LOG_INFO("{}", q0);
 
-	PHS_CORE_LOG_INFO("Welcome to Pheasant from Visual Studio with CMake! {}", q0);
+	mat2i m3(3, 2, 5, 6);
+	vec2i v1(9, 5);
+	vec2i v2 = m3 * v1;
+	PHS_CORE_LOG_INFO("{}", v2);
+
+	quat4f q1 = q0.inversed();
+	quat4f q2 = q0 * q1;
+	PHS_CORE_LOG_INFO("{}", q2);
+
+	vec3f v3;
+	v0 = static_cast<vec4f>(v3);
+
+	PHS_CORE_LOG_INFO("Welcome to Pheasant from Visual Studio with CMake!");
 
 	while (_window->isOpen())
 	{

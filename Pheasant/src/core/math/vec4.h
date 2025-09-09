@@ -9,34 +9,31 @@ namespace Phs
 {
 
 template<typename T>
-struct vec<4, T> : public vecbase<4, T>
+struct PHS_ALIGN(16) vec<4, T> : public vecbase<4, T>
 {
    friend struct vecbase<4, T>;
 
    static constexpr T __Zero = static_cast<T>(0);
 
-   constexpr PHS_INLINE                        vec()                              PHS_MATH_NOEXCEPT;
+   constexpr PHS_INLINE                          vec()                              PHS_MATH_NOEXCEPT;
 
    template <dim_int_t Dim>
-   constexpr PHS_INLINE explicit               vec(const vec<Dim, T>& v)          PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE explicit               vec(T s1         , T s2 = __Zero,
-                                                   T s3 = __Zero, T s4 = __Zero)  PHS_MATH_NOEXCEPT;
+   constexpr PHS_INLINE explicit                 vec(const vec<Dim, T>& v)          PHS_MATH_NOEXCEPT;
+   constexpr PHS_INLINE explicit                 vec(T s1         , T s2 = __Zero,
+                                                     T s3 = __Zero, T s4 = __Zero)  PHS_MATH_NOEXCEPT;
 
-   constexpr PHS_INLINE PHS_NODISCARD vec4<T>& round();
+   constexpr PHS_INLINE PHS_NODISCARD vec4<T>&   round();
 
-   constexpr PHS_INLINE PHS_NODISCARD vec4<T>& lengthSquared()              const PHS_MATH_NOEXCEPT;
-
-   template <dim_int_t Dim>
-   constexpr PHS_INLINE vec3<T>&               operator=(const vec<Dim, T>& v)    PHS_MATH_NOEXCEPT;
-
-   constexpr PHS_INLINE PHS_NODISCARD vec4<T>  operator+(const vec4<T>& v)  const PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE PHS_NODISCARD vec4<T>  operator-(const vec4<T>& v)  const PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE PHS_NODISCARD vec4<T>  operator*(T s)               const PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE PHS_NODISCARD vec4<T>  operator/(T s)               const;
-   constexpr PHS_INLINE PHS_NODISCARD vec4<T>  operator*(const vec4<T>& v)  const PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE PHS_NODISCARD vec4<T>  operator/(const vec4<T>& v)  const;
-
-   constexpr PHS_INLINE PHS_NODISCARD bool     operator==(const vec4<T>& v) const PHS_MATH_NOEXCEPT;
+   constexpr PHS_INLINE PHS_NODISCARD float32_t  lengthSquared()              const PHS_MATH_NOEXCEPT;
+                                                 
+   constexpr PHS_INLINE PHS_NODISCARD vec4<T>    operator+(const vec4<T>& v)  const PHS_MATH_NOEXCEPT;
+   constexpr PHS_INLINE PHS_NODISCARD vec4<T>    operator-(const vec4<T>& v)  const PHS_MATH_NOEXCEPT;
+   constexpr PHS_INLINE PHS_NODISCARD vec4<T>    operator*(T s)               const PHS_MATH_NOEXCEPT;
+   constexpr PHS_INLINE PHS_NODISCARD vec4<T>    operator/(T s)               const;
+   constexpr PHS_INLINE PHS_NODISCARD vec4<T>    operator*(const vec4<T>& v)  const PHS_MATH_NOEXCEPT;
+   constexpr PHS_INLINE PHS_NODISCARD vec4<T>    operator/(const vec4<T>& v)  const;
+                                                 
+   constexpr PHS_INLINE PHS_NODISCARD bool       operator==(const vec4<T>& v) const PHS_MATH_NOEXCEPT;
 
 #if defined(PHS_EXTENSIONS) and defined(PHS_USE_ANONYMOUS_STRUCT)
    union
@@ -53,6 +50,8 @@ struct vec<4, T> : public vecbase<4, T>
 #endif
 private:
    static constexpr dim_int_t _Dimension = 4;
+   static constexpr bool      _Real = is_real<T>;
+   static constexpr bool      _Integral = is_integral<T>;
 };
 
 template <typename T>

@@ -72,10 +72,32 @@ constexpr PHS_INLINE PHS_NODISCARD mat2<T> mat2<T>::operator/(T s) const
 template <typename T>
 constexpr PHS_INLINE PHS_NODISCARD mat2<T> mat2<T>::operator*(const mat2<T>& m) const PHS_MATH_NOEXCEPT
 {
-   const mat2<T> res(_m[0].x * m._m[0].x + _m[0].y * m._m[1].x,
-                     _m[0].x * m._m[0].y + _m[0].y * m._m[1].y,
-                     _m[1].x * m._m[0].x + _m[1].y * m._m[1].x,
-                     _m[1].x * m._m[0].y + _m[1].y * m._m[1].y);
+   mat2<T> res;
+
+#ifdef PHS_SIMD_SSE4_1
+   __m128 ps4a = _mm_load_ps((float32_t*)this);
+   __m128 ps4b = _mm_setr_ps(m[0].x, m[1].x, m[0].y, m[1].y);
+   __m128 ps4br= _mm_setr_ps(m[0].y, m[1].y, m[0].x, m[1].x);
+
+   res[0].x = _mm_cvtss_f32(_mm_dp_ps(ps4a, ps4b, 0x21));
+   res[1].y = _mm_cvtss_f32(_mm_dp_ps(ps4a, ps4b, 0xC1));
+   res[0].y = _mm_cvtss_f32(_mm_dp_ps(ps4a, ps4br, 0x21));
+   res[1].x = _mm_cvtss_f32(_mm_dp_ps(ps4a, ps4br, 0xC1));
+#else
+   res = mat2<T>(_m[0].x * m._m[0].x + _m[0].y * m._m[1].x,
+                 _m[0].x * m._m[0].y + _m[0].y * m._m[1].y,
+                 _m[1].x * m._m[0].x + _m[1].y * m._m[1].x,
+                 _m[1].x * m._m[0].y + _m[1].y * m._m[1].y);
+#endif
+
+   return res;
+}
+
+template <typename T>
+constexpr PHS_INLINE PHS_NODISCARD vec2<T> mat2<T>::operator*(const vec2<T>& v) const PHS_MATH_NOEXCEPT
+{
+   const vec2<T> res(_m[0].x * v.x + _m[0].y * v.y,
+                     _m[1].x * v.x + _m[1].y * v.y);
    return res;
 }
 

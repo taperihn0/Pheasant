@@ -68,10 +68,17 @@
 #  define PHS_UNLIKELY
 #endif
 
-#ifdef ARCHITECTURE_64
+#ifdef PHEASANT_ARCHITECTURE_64
+#  define PHS_ARCHITECTURE_64
 #  define CACHELINE_SIZE 64
 #else
 #  error "Only 64-bit architecture supported"
+#endif
+
+#ifdef _MSC_VER
+#  define PHS_ALIGN(x) __declspec(align((x)))
+#else
+#  define PHS_ALIGN(x) __attribute__((aligned((x))))
 #endif
 
 #ifdef _MSC_VER

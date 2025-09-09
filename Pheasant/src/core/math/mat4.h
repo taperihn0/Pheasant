@@ -34,6 +34,7 @@ struct mat<4, 4, T> : public matbase<4, 4, T>
    constexpr PHS_INLINE PHS_NODISCARD mat4<T>  operator*(T s)               const PHS_MATH_NOEXCEPT;
    constexpr PHS_INLINE PHS_NODISCARD mat4<T>  operator/(T s)               const;
    constexpr PHS_INLINE PHS_NODISCARD mat4<T>  operator*(const mat4<T>& m)  const PHS_MATH_NOEXCEPT;
+   constexpr PHS_INLINE PHS_NODISCARD vec4<T>  operator*(const vec4<T>& v)  const PHS_MATH_NOEXCEPT;
 
    constexpr PHS_INLINE PHS_NODISCARD bool     operator==(const mat4<T>& m) const PHS_MATH_NOEXCEPT;
 

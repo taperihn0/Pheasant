@@ -26,9 +26,6 @@ struct vec<3, T> : public vecbase<3, T>
    constexpr PHS_INLINE PHS_NODISCARD vec3<T>&  round();
 
    constexpr PHS_INLINE PHS_NODISCARD float64_t lengthSquared()              const PHS_MATH_NOEXCEPT;
-
-   template <dim_int_t Dim>
-   constexpr PHS_INLINE vec3<T>&                operator=(const vec<Dim, T>& v)    PHS_MATH_NOEXCEPT;
                                                 
    constexpr PHS_INLINE PHS_NODISCARD vec3<T>   operator+(const vec3<T>& v)  const PHS_MATH_NOEXCEPT;
    constexpr PHS_INLINE PHS_NODISCARD vec3<T>   operator-(const vec3<T>& v)  const PHS_MATH_NOEXCEPT;

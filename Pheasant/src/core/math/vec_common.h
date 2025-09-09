@@ -28,7 +28,8 @@ struct vecbase
 {
    PHS_STATIC_ASSERT_LOG(Dimension >= 2, "1-Dimensional vector is not supported!");
    PHS_STATIC_ASSERT_LOG(is_numeric<T>, "Can't create non-numeric vector!");
-   PHS_STATIC_ASSERT_LOG((!is_same<Derived<Dimension, T>, quat<Dimension, T>> or Dimension == 4), "Can't create other than 4-dimensional quaternion!");
+   PHS_STATIC_ASSERT_LOG((!is_same<Derived<Dimension, T>, quat<Dimension, T>> or Dimension == 4), 
+                         "Can't create other than 4-dimensional quaternion!");
 
    constexpr                                          vecbase()                                        PHS_MATH_NOEXCEPT;
 

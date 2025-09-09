@@ -6,7 +6,7 @@ namespace Phs
 {
 
 template <typename T>
-struct quat<4, T> : vecbase<4, T, quat>
+struct PHS_ALIGN(16) quat<4, T> : vecbase<4, T, quat>
 {
    friend struct vecbase<4, T>;
 
@@ -20,10 +20,10 @@ struct quat<4, T> : vecbase<4, T, quat>
 
    static constexpr PHS_INLINE PHS_NODISCARD quat4<T> quatwxyz(T w, T x, T y, T z)       PHS_MATH_NOEXCEPT;
 
-   constexpr PHS_INLINE PHS_NODISCARD quat4<T>&       inversed()                   const;
-   constexpr PHS_INLINE PHS_NODISCARD quat4<T>&       inverse();
-   constexpr PHS_INLINE PHS_NODISCARD quat4<T>&       conjugated()                 const PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE PHS_NODISCARD quat4<T>&       conjugate();
+   constexpr PHS_INLINE PHS_NODISCARD quat4<T>        inversed()                   const;
+   constexpr PHS_INLINE PHS_NODISCARD quat4<T>        inverse();
+   constexpr PHS_INLINE PHS_NODISCARD quat4<T>        conjugated()                 const PHS_MATH_NOEXCEPT;
+   constexpr PHS_INLINE PHS_NODISCARD quat4<T>        conjugate();
 
    constexpr PHS_INLINE PHS_NODISCARD float64_t       lengthSquared()              const PHS_MATH_NOEXCEPT;
 
@@ -51,6 +51,8 @@ struct quat<4, T> : vecbase<4, T, quat>
 #endif
 private:
    static constexpr dim_int_t _Dimension = 4;
+   static constexpr bool      _Real = is_real<T>;
+   static constexpr bool      _Integral = is_integral<T>;
 };
 
 template <typename T>

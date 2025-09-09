@@ -75,14 +75,26 @@ constexpr PHS_INLINE PHS_NODISCARD mat3<T> mat3<T>::operator*(const mat3<T>& m) 
 {
    mat3<T> res;
 
-   for (uint i = 0; i < _Rows; i++) {
-      for (uint j = 0; j < _Cols; j++) {
-         for (uint k = 0; k < _Rows; k++) {
+   for (uint i = 0; i < _Rows; i++) 
+   {
+      for (uint j = 0; j < _Cols; j++) 
+      {
+         for (uint k = 0; k < _Rows; k++) 
+         {
             res[j][i] += this[j][k] * m[k][i];
          }
       }
    }
 
+   return res;
+}
+
+template <typename T>
+constexpr PHS_INLINE PHS_NODISCARD vec3<T> mat3<T>::operator*(const vec3<T>& v)  const PHS_MATH_NOEXCEPT
+{
+   const vec3<T> res(dot(_m[0], v),
+                     dot(_m[1], v),
+                     dot(_m[2], v));
    return res;
 }
 

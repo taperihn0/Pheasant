@@ -20,7 +20,18 @@
          "buildCommandArgs": "",
          "ctestCommandArgs": "",
          "inheritEnvironments": [ "msvc_x64_x64" ],
-         "variables": []
+         "variables": [
+            {
+               "name": "ENABLE_SIMD_AVX2",
+               "value": "True",
+               "type": "BOOL"
+            },
+            {
+               "name": "FORCE_PURE",
+               "value": "False",
+               "type": "BOOL"
+            }
+         ]
       }
    ]
 }
