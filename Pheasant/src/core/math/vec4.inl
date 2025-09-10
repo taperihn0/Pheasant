@@ -16,21 +16,21 @@ constexpr PHS_INLINE vec4<T>::vec() PHS_MATH_NOEXCEPT
 {}
 
 template <typename T>
-template <dim_int_t Dim>
-constexpr PHS_INLINE vec4<T>::vec(const vec<Dim, T>& v) PHS_MATH_NOEXCEPT
+template <dim_int_t Dim, typename CastT>
+constexpr PHS_INLINE vec4<T>::vec(const vec<Dim, CastT>& v) PHS_MATH_NOEXCEPT
 {
-   x = v.x;
-   y = v.y;
+   x = static_cast<T>(v.x);
+   y = static_cast<T>(v.y);
 
    if constexpr (Dim <= 2)
       z = __Zero;
    else
-      z = v.z;
+      z = static_cast<T>(v.z);
 
    if constexpr (Dim <= 3)
       w = __Zero;
    else
-      w = v.w;
+      w = static_cast<T>(v.w);
 }
 
 template <typename T>
@@ -79,12 +79,12 @@ constexpr PHS_INLINE vec4<T> vec4<T>::operator+(const vec4<T>& v) const PHS_MATH
 #ifdef PHS_SIMD_SSE2
    if constexpr (_Real)
    {
-      _mm_store_ps((float32_t*)&res, _mm_add_ps(_mm_load_ps((float32_t*)&res),
+      _mm_store_ps((float32_t*)&res, _mm_add_ps(_mm_load_ps((float32_t*)this),
                                                 _mm_load_ps((float32_t*)&v)));
    }
    if constexpr (_Integral)
    {
-      _mm_storeu_si128((void*)&res, _mm_add_epi32(_mm_loadu_si128((void*)&res),
+      _mm_storeu_si128((void*)&res, _mm_add_epi32(_mm_loadu_si128((void*)this),
                                                   _mm_loadu_si128((void*)&v)));
    }
 #else
@@ -102,12 +102,12 @@ constexpr PHS_INLINE vec4<T> vec4<T>::operator-(const vec4<T>& v) const PHS_MATH
 #ifdef PHS_SIMD_SSE2
    if constexpr (_Real)
    {
-      _mm_store_ps((float32_t*)&res, _mm_sub_ps(_mm_load_ps((float32_t*)&res),
+      _mm_store_ps((float32_t*)&res, _mm_sub_ps(_mm_load_ps((float32_t*)this),
                                                 _mm_load_ps((float32_t*)&v)));
    }
    if constexpr (_Integral)
    {
-      _mm_storeu_si128((void*)&res, _mm_sub_epi32(_mm_loadu_si128((void*)&res),
+      _mm_storeu_si128((void*)&res, _mm_sub_epi32(_mm_loadu_si128((void*)this),
                                                   _mm_loadu_si128((void*)&v)));
    }
 #else
@@ -125,12 +125,12 @@ constexpr PHS_INLINE vec4<T> vec4<T>::operator*(T s) const PHS_MATH_NOEXCEPT
 #ifdef PHS_SIMD_SSE4_1
    if constexpr (_Real)
    {
-      _mm_store_ps((float32_t*)&res, _mm_mul_ps(_mm_load_ps((float32_t*)&res),
+      _mm_store_ps((float32_t*)&res, _mm_mul_ps(_mm_load_ps((float32_t*)this),
                                                 _mm_load_ps1((float32_t*)&s)));
    }
    if constexpr (_Integral)
    {
-      _mm_storeu_si128((void*)&res, _mm_mul_epi32(_mm_loadu_si128((void*)&res),
+      _mm_storeu_si128((void*)&res, _mm_mul_epi32(_mm_loadu_si128((void*)this),
                                                   _mm_loadu_si32((void*)&s)));
    }
 #else
@@ -148,12 +148,12 @@ constexpr PHS_INLINE vec4<T> vec4<T>::operator/(T s) const
 #ifdef PHS_SIMD_SSE2
    if constexpr (_Real)
    {
-      _mm_store_ps((float32_t*)&res, _mm_div_ps(_mm_load_ps((float32_t*)&res),
+      _mm_store_ps((float32_t*)&res, _mm_div_ps(_mm_load_ps((float32_t*)this),
                                                 _mm_load_ps1((float32_t*)&s)));
    }
    if constexpr (_Integral)
    {
-      _mm_storeu_si128((void*)&res, _mm_div_epi32(_mm_loadu_si128((void*)&res),
+      _mm_storeu_si128((void*)&res, _mm_div_epi32(_mm_loadu_si128((void*)this),
                                                   _mm_loadu_si32((void*)&s)));
    }
 #else
@@ -171,12 +171,12 @@ constexpr PHS_INLINE vec4<T> vec4<T>::operator*(const vec4<T>& v) const PHS_MATH
 #ifdef PHS_SIMD_SSE4_1
    if constexpr (_Real)
    {
-      _mm_store_ps((float32_t*)&res, _mm_mul_ps(_mm_load_ps((float32_t*)&res),
+      _mm_store_ps((float32_t*)&res, _mm_mul_ps(_mm_load_ps((float32_t*)this),
                                                 _mm_load_ps((float32_t*)&v)));
    }
    if constexpr (_Integral)
    {
-      _mm_storeu_si128((void*)&res, _mm_mul_epi32(_mm_loadu_si128((void*)&res),
+      _mm_storeu_si128((void*)&res, _mm_mul_epi32(_mm_loadu_si128((void*)this),
                                                   _mm_loadu_si128((void*)&v)));
    }
 #else
@@ -194,12 +194,12 @@ constexpr PHS_INLINE vec4<T> vec4<T>::operator/(const vec4<T>& v) const
 #ifdef PHS_SIMD_SSE2
    if constexpr (_Real)
    {
-      _mm_store_ps((float32_t*)&res, _mm_div_ps(_mm_load_ps((float32_t*)&res),
+      _mm_store_ps((float32_t*)&res, _mm_div_ps(_mm_load_ps((float32_t*)this),
                                                 _mm_load_ps((float32_t*)&v)));
    }
    if constexpr (_Integral)
    {
-      _mm_storeu_si128((void*)&res, _mm_div_epi32(_mm_loadu_si128((void*)&res),
+      _mm_storeu_si128((void*)&res, _mm_div_epi32(_mm_loadu_si128((void*)this),
                                                   _mm_loadu_si128((void*)&v)));
    }
 #else
@@ -241,5 +241,16 @@ constexpr PHS_INLINE T dot(const vec4<T>& a, const vec4<T>& b) PHS_MATH_NOEXCEPT
    return sum;
 }
 
+template <typename T>
+constexpr PHS_INLINE bool approxEqual(const vec4<T>& a, const vec4<T>& b) PHS_MATH_NOEXCEPT
+{
+   if constexpr (is_integral<T>)
+      return a == b;
+
+   return approxEqual64f(a.x, b.x) and
+          approxEqual64f(a.y, b.y) and
+          approxEqual64f(a.z, b.z) and
+          approxEqual64f(a.w, b.w);
+}
 
 } // namespace Phs

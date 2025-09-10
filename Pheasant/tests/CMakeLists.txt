@@ -1,0 +1,20 @@
+file(GLOB TEST_SOURCES CONFIGURE_DEPENDS
+    "test_*.cpp"
+)
+
+add_executable(TestPlatform 
+	${TEST_SOURCES}
+)
+
+target_link_libraries(TestPlatform PUBLIC Pheasant)
+
+set_target_properties(TestPlatform PROPERTIES
+	RUNTIME_OUTPUT_DIRECTORY 
+	"${CMAKE_SOURCE_DIR}/bin/${PROJECT_NAME}/${CMAKE_BUILD_TYPE}/${TARGET_ARCHITECTURE}"
+	LIBRARY_OUTPUT_DIRECTORY
+	"${CMAKE_SOURCE_DIR}/bin/${PROJECT_NAME}/${CMAKE_BUILD_TYPE}/${TARGET_ARCHITECTURE}"
+	ARCHIVE_OUTPUT_DIRECTORY 
+	"${CMAKE_SOURCE_DIR}/bin/intermediates/${PROJECT_NAME}/${CMAKE_BUILD_TYPE}/${TARGET_ARCHITECTURE}"
+)
+
+add_test(NAME PheasantMath COMMAND TestPlatform)

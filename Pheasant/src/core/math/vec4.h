@@ -17,8 +17,8 @@ struct PHS_ALIGN(16) vec<4, T> : public vecbase<4, T>
 
    constexpr PHS_INLINE                          vec()                              PHS_MATH_NOEXCEPT;
 
-   template <dim_int_t Dim>
-   constexpr PHS_INLINE explicit                 vec(const vec<Dim, T>& v)          PHS_MATH_NOEXCEPT;
+   template <dim_int_t Dim, typename CastT>
+   constexpr PHS_INLINE explicit                 vec(const vec<Dim, CastT>& v)      PHS_MATH_NOEXCEPT;
    constexpr PHS_INLINE explicit                 vec(T s1         , T s2 = __Zero,
                                                      T s3 = __Zero, T s4 = __Zero)  PHS_MATH_NOEXCEPT;
 
@@ -59,6 +59,9 @@ PHS_INLINE std::ostream& operator<<(std::ostream& out, const vec4<T>& v);
 
 template <typename T>
 constexpr PHS_INLINE T dot(const vec4<T>& a, const vec4<T>& b) PHS_MATH_NOEXCEPT;
+
+template <typename T>
+constexpr PHS_INLINE bool approxEqual(const vec4<T>& a, const vec4<T>& b) PHS_MATH_NOEXCEPT;
 
 using vec4f = vec4<float32_t>;
 using vec4i = vec4<int32_t>;

@@ -17,6 +17,13 @@ add_library(Pheasant SHARED
 add_subdirectory(vendor/GLFW)
 add_subdirectory(vendor/GLAD)
 
+option(PHEASANT_BUILD_TESTS "Build test executables" OFF)
+
+if (PHEASANT_BUILD_TESTS)
+    enable_testing()
+    add_subdirectory(tests)
+endif()
+
 target_link_libraries(Pheasant PUBLIC 
 	glfw
 	glad
@@ -28,7 +35,7 @@ target_compile_definitions(Pheasant PUBLIC
 )
 
 # Build it as a library
-target_compile_definitions(Pheasant PUBLIC PHEASANT_BUILD_EXPORT)
+target_compile_definitions(Pheasant PRIVATE PHEASANT_BUILD_EXPORT)
 
 # Platform detection
 if (WIN32)
@@ -46,12 +53,6 @@ target_include_directories(Pheasant PUBLIC
 	${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/src/core
 )
 
-if (MSVC)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zc:__cplusplus")
-else()
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fms-extensions")
-endif()
-
 set_target_properties(Pheasant PROPERTIES
 	RUNTIME_OUTPUT_DIRECTORY 
 	"${CMAKE_SOURCE_DIR}/bin/${PROJECT_NAME}/${CMAKE_BUILD_TYPE}/${TARGET_ARCHITECTURE}"
@@ -65,4 +66,5 @@ add_custom_command(TARGET Pheasant POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy
 		 $<TARGET_FILE:Pheasant>
        ${CMAKE_SOURCE_DIR}/bin/Testbed/${CMAKE_BUILD_TYPE}/${TARGET_ARCHITECTURE}/
+		 ${CMAKE_SOURCE_DIR}/bin/TestPlatform/${CMAKE_BUILD_TYPE}/${TARGET_ARCHITECTURE}/
 )

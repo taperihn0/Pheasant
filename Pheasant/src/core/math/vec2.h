@@ -17,9 +17,9 @@ struct vec<2, T> : public vecbase<2, T>
 
    constexpr PHS_INLINE                         vec()                              PHS_MATH_NOEXCEPT;
                                                                              
-   template <dim_int_t Dim>                                                  
-   constexpr PHS_INLINE explicit                vec(const vec<Dim, T>& v)          PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE explicit                vec(T s1, T s2 = __Zero)  PHS_MATH_NOEXCEPT;
+   template <dim_int_t Dim, typename CastT>                                                  
+   constexpr PHS_INLINE explicit                vec(const vec<Dim, CastT>& v)      PHS_MATH_NOEXCEPT;
+   constexpr PHS_INLINE explicit                vec(T s1, T s2 = __Zero)           PHS_MATH_NOEXCEPT;
                                                                                                   
    constexpr PHS_INLINE PHS_NODISCARD vec2<T>&  round();
                                                                             
@@ -60,6 +60,9 @@ PHS_INLINE std::ostream& operator<<(std::ostream& out, const vec2<T>& v);
 
 template <typename T>
 constexpr PHS_INLINE T dot(const vec2<T>& a, const vec2<T>& b) PHS_MATH_NOEXCEPT;
+
+template <typename T>
+constexpr PHS_INLINE bool approxEqual(const vec2<T>& a, const vec2<T>& b) PHS_MATH_NOEXCEPT;
 
 using vec2f = vec2<float32_t>;
 using vec2i = vec2<int32_t>;

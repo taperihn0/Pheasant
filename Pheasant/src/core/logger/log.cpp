@@ -42,11 +42,6 @@ void Log::init()
 #endif
 
    _initialized = true;
-
-   for (uint8_t lvl = MSG_MIN; lvl <= MSG_MAX; lvl++)
-   {
-      testMessage(static_cast<messageLevel>(lvl));
-   }
 }
 
 } // namespace Phs

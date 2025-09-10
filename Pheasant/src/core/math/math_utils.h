@@ -14,6 +14,22 @@
 namespace Phs
 {
 
+static constexpr float64_t __Epsilon64f = 1e-6_f64;
+
+template <typename T>
+constexpr PHS_INLINE T abs(T a)
+{
+   PHS_STATIC_ASSERT(is_numeric<T>);
+   return a < 0 ? -a : a;
+}
+
+constexpr PHS_INLINE bool approxEqual64f(float64_t a, float64_t b)
+{
+   const float64_t diff = abs(a - b);
+   return diff <= __Epsilon64f;
+}
+
+// TODO: make them compile-time
 PHS_INLINE float32_t round32f(float32_t x)
 {
    return std::round(x);

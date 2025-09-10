@@ -7,10 +7,6 @@
 #include <uchar.h>
 #include <type_traits>
 
-// Some libraries defines that, so undef them
-#undef max
-#undef min
-
 namespace Phs
 {
 
@@ -36,6 +32,7 @@ PHS_STATIC_ASSERT(std::numeric_limits<float>::is_iec559);
 // As IEEE is checked, these types exactly maps their size.
 using float32_t = float;
 using float64_t = double;
+using floatmax_t = long double;
 
 // Define some handy aliases
 using byte      = uint8_t;
@@ -82,6 +79,16 @@ static constexpr int32_t operator"" _i32(uintmax_t v)
 static constexpr int64_t operator"" _i64(uintmax_t v)
 {
    return static_cast<int64_t>(v);
+}
+
+static constexpr float32_t operator"" _f32(floatmax_t v)
+{
+   return static_cast<float32_t>(v);
+}
+
+static constexpr float64_t operator"" _f64(floatmax_t v)
+{
+   return static_cast<float64_t>(v);
 }
 
 template <typename T>

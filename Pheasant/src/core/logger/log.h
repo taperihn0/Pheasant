@@ -110,12 +110,15 @@ private:
                                 Log::fullInfoMessage(__FILE__, __LINE__, __PRETTY_FUNCTION__, __VA_ARGS__)
 
 // External logger API for clients
-#define PHS_LOG_TRACE(...)      ::Log::message(::Log::MSG_TRACE, __VA_ARGS__)
-#define PHS_LOG_DEBUG(...)      ::Log::message(::Log::MSG_DEBUG, __VA_ARGS__)
-#define PHS_LOG_INFO(...)       ::Log::message(::Log::MSG_INFO,  __VA_ARGS__)
-#define PHS_LOG_WARN(...)       ::Log::message(::Log::MSG_WARN,  __VA_ARGS__)
-#define PHS_LOG_ERROR(...)      ::Log::message(::Log::MSG_ERROR, __VA_ARGS__)
-#define PHS_LOG_FATAL(...)      ::Log::message(::Log::MSG_FATAL, __VA_ARGS__)
+#define PHS_LOG_TRACE(...)      ::Phs::Log::message(::Phs::Log::MSG_TRACE, __VA_ARGS__)
+#define PHS_LOG_DEBUG(...)      ::Phs::Log::message(::Phs::Log::MSG_DEBUG, __VA_ARGS__)
+#define PHS_LOG_INFO(...)       ::Phs::Log::message(::Phs::Log::MSG_INFO,  __VA_ARGS__)
+#define PHS_LOG_WARN(...)       ::Phs::Log::message(::Phs::Log::MSG_WARN,  __VA_ARGS__)
+#define PHS_LOG_ERROR(...)      ::Phs::Log::message(::Phs::Log::MSG_ERROR, __VA_ARGS__)
+#define PHS_LOG_FATAL(...)      ::Phs::Log::message(::Phs::Log::MSG_FATAL, __VA_ARGS__)
+
+#define PHS_LOG_FATAL_FULL_INFO(...) \
+                                ::Phs::Log::fullInfoMessage(__FILE__, __LINE__, __PRETTY_FUNCTION__, __VA_ARGS__)
 
 } // namespace Phs
 

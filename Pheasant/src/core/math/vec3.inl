@@ -14,16 +14,16 @@ constexpr PHS_INLINE vec3<T>::vec() PHS_MATH_NOEXCEPT
 {}
 
 template <typename T>
-template <dim_int_t Dim>
-constexpr PHS_INLINE vec3<T>::vec(const vec<Dim, T>& v) PHS_MATH_NOEXCEPT
+template <dim_int_t Dim, typename CastT>
+constexpr PHS_INLINE vec3<T>::vec(const vec<Dim, CastT>& v) PHS_MATH_NOEXCEPT
 {
-   x = v.x;
-   y = v.y;
+   x = static_cast<T>(v.x);
+   y = static_cast<T>(v.y);
 
    if constexpr (Dim == 2)
-      z = static_cast<T>(0);
+      z = __Zero;
    else
-      z = v.z;
+      z = static_cast<T>(v.z);
 }
 
 template <typename T>
@@ -128,6 +128,17 @@ constexpr PHS_INLINE vec3<T> cross(const vec3<T>& a, const vec3<T>& b) PHS_MATH_
    res.y = b.x * a.z - b.z * a.x;
    res.z = a.x * b.y - a.y * b.x;
    return res;
+}
+
+template <typename T>
+constexpr PHS_INLINE bool approxEqual(const vec3<T>& a, const vec3<T>& b) PHS_MATH_NOEXCEPT
+{
+   if constexpr (is_integral<T>)
+      return a == b;
+
+   return approxEqual64f(a.x, b.x) and
+          approxEqual64f(a.y, b.y) and
+          approxEqual64f(a.z, b.z);
 }
 
 } // namespace Phs

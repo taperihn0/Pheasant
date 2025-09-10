@@ -30,6 +30,11 @@
                "name": "FORCE_PURE",
                "value": "False",
                "type": "BOOL"
+            },
+            {
+               "name": "GLFW_BUILD_TESTS",
+               "value": "True",
+               "type": "BOOL"
             }
          ]
       }

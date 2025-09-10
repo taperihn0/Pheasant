@@ -25,9 +25,8 @@ SwapchainOpenGL::SwapchainOpenGL(GLFWwindow* native, uint width, uint height)
 bool SwapchainOpenGL::resize(uint width, uint height)
 {
    PHS_ASSERT(_platform_native_window);
-   glViewport(0, 0, width, height);
-   GLenum status = glGetError();
-   return status == GL_NO_ERROR;
+   bool status = BackendOpenGL::platformWindowResize(width, height);
+   return status;
 }
 
 void SwapchainOpenGL::present()

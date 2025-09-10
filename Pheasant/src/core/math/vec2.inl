@@ -13,11 +13,11 @@ constexpr PHS_INLINE vec2<T>::vec() PHS_MATH_NOEXCEPT
 {}
 
 template <typename T>
-template <dim_int_t Dim>
-constexpr PHS_INLINE vec2<T>::vec(const vec<Dim, T>& v) PHS_MATH_NOEXCEPT
+template <dim_int_t Dim, typename CastT>
+constexpr PHS_INLINE vec2<T>::vec(const vec<Dim, CastT>& v) PHS_MATH_NOEXCEPT
 {
-   x = v.x;
-   y = v.y;
+   x = static_cast<T>(v.x);
+   y = static_cast<T>(v.y);
 }
 
 template <typename T>
@@ -110,6 +110,16 @@ constexpr PHS_INLINE T dot(const vec2<T>& a, const vec2<T>& b) PHS_MATH_NOEXCEPT
 {
    const T sum = a.x * b.x + a.y * b.y;
    return sum;
+}
+
+template <typename T>
+constexpr PHS_INLINE bool approxEqual(const vec2<T>& a, const vec2<T>& b) PHS_MATH_NOEXCEPT
+{
+   if constexpr (is_integral<T>)
+      return a == b;
+
+   return approxEqual64f(a.x, b.x) and
+          approxEqual64f(a.y, b.y);
 }
 
 } // namespace Phs

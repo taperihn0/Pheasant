@@ -16,8 +16,20 @@ message(${CMAKE_BUILD_TYPE})
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+if (MSVC)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zc:__cplusplus")
+else()
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fms-extensions")
+endif()
+
+# Currently, only x64 architecture is supported
+set(TARGET_ARCHITECTURE PHEASANT_ARCHITECTURE_64)
+
 add_subdirectory(Pheasant)
 add_subdirectory(Testbed)
+
+target_compile_definitions(Pheasant PUBLIC ${TARGET_ARCHITECTURE})
+target_compile_definitions(Testbed  PUBLIC ${TARGET_ARCHITECTURE})
 
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release;Final" CACHE STRING "" FORCE)
 
@@ -126,9 +138,3 @@ elseif (ENABLE_SIMD_AVX512)
 
 	message(STATUS "SIMD instructions enabled - AVX512 instruction set")
 endif()
-
-# Currently, only x64 architecture is supported
-set(TARGET_ARCHITECTURE PHEASANT_ARCHITECTURE_64)
-
-target_compile_definitions(Pheasant PUBLIC ${TARGET_ARCHITECTURE})
-target_compile_definitions(Testbed  PUBLIC ${TARGET_ARCHITECTURE})

@@ -17,8 +17,8 @@ struct vec<3, T> : public vecbase<3, T>
 
    constexpr PHS_INLINE                         vec()                              PHS_MATH_NOEXCEPT;
                                                 
-   template <dim_int_t Dim>                     
-   constexpr PHS_INLINE explicit                vec(const vec<Dim, T>& v)          PHS_MATH_NOEXCEPT;
+   template <dim_int_t Dim, typename CastT>                     
+   constexpr PHS_INLINE explicit                vec(const vec<Dim, CastT>& v)      PHS_MATH_NOEXCEPT;
    constexpr PHS_INLINE explicit                vec(T s1,
                                                     T s2 = __Zero, 
                                                     T s3 = __Zero)                 PHS_MATH_NOEXCEPT;
@@ -69,6 +69,9 @@ constexpr PHS_INLINE T dot(const vec3<T>& a, const vec3<T>& b) PHS_MATH_NOEXCEPT
 
 template <typename T>
 constexpr PHS_INLINE vec3<T> cross(const vec3<T>& a, const vec3<T>& b) PHS_MATH_NOEXCEPT;
+
+template <typename T>
+constexpr PHS_INLINE bool approxEqual(const vec3<T>& a, const vec3<T>& b) PHS_MATH_NOEXCEPT;
 
 using vec3f = vec3<float32_t>;
 using vec3i = vec3<int32_t>;
