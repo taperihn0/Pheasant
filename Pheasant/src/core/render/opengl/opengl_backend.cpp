@@ -6,6 +6,9 @@
 namespace Phs
 {
 
+static constexpr bool PhsGlSUCCESS = 1;
+static constexpr bool PhsGlFAILURE = 0;
+
 BackendOpenGL::GLContext BackendOpenGL::_gl_context;
 
 bool BackendOpenGL::platformInitialize()
@@ -15,7 +18,7 @@ bool BackendOpenGL::platformInitialize()
 
    if (!glad_status) {
       PHS_CORE_LOG_FATAL("Failed to initialize OpenGL context using GLAD!");
-      return false;
+      return PhsGlFAILURE;
    }
    
    // store OpenGL state and report it to the console
@@ -40,7 +43,7 @@ bool BackendOpenGL::platformInitialize()
    PHS_CORE_LOG_TRACE("\tCurrent available GL extension count (unloaded): {}", _gl_context.extension_count);
 
    PHS_CORE_LOG_INFO("Successfully loaded OpenGL context using GLAD.");
-   return true;
+   return PhsGlSUCCESS;
 }
 
 void BackendOpenGL::platformShutdown()
@@ -52,21 +55,26 @@ bool BackendOpenGL::platformWindowResize(uint width, uint height)
 {
    glViewport(0, 0, width, height);
    GLenum status = glGetError();
+   PHS_CORE_LOG_TRACE("GL backend resize to ({}, {}): {}", width, height, status == GL_NO_ERROR ? "success" : "failure");
    return status == GL_NO_ERROR;
 }
 
 bool BackendOpenGL::platformBeginFrame(RenderData& data)
 {
-   // TODO: remove that
-   glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-   return true;
+   return PhsGlFAILURE;
 }
 
 bool BackendOpenGL::platformEndFrame(RenderData& data)
 {
-   // TODO
+   return PhsGlFAILURE;
+}
+
+bool BackendOpenGL::platformClearScreen(float32_t red, float32_t green,
+                                        float32_t blue, float32_t alpha)
+{
+   glClearColor(red, green, blue, alpha);
    glClear(GL_COLOR_BUFFER_BIT);
-   return true;
+   return PhsGlSUCCESS;
 }
 
 } // namespace Phs

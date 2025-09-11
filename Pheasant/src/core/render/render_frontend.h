@@ -36,6 +36,11 @@ public:
    *  submits a frame with a given data.
    */
    static bool drawFrame(RenderData& data);
+
+   /* Clearing the screen.
+   */
+   static bool clearScreen(float32_t red, float32_t green, 
+                           float32_t blue, float32_t alpha);
 private:
    static void loadBackend(RenderGraphicsAPI platform);
 
@@ -46,20 +51,22 @@ private:
    */
    struct BackendFunctions 
    {
+      template <RenderGraphicsAPI GraphicsPlatform>
+      void initializePlatformCallbacks();
+
       using backend_initialize_func          = bool(*)();
       using backend_shutdown_func            = void(*)();
       using backend_window_resize_func       = bool(*)(uint, uint);
       using backend_begin_frame_func         = bool(*)(RenderData&);
       using backend_end_frame_func           = bool(*)(RenderData&);
-
-      template <RenderGraphicsAPI GraphicsPlatform>
-      void initializePlatformCallbacks();
+      using backend_clear_func               = bool(*)(float32_t, float32_t, float32_t, float32_t);
 
       backend_initialize_func    initialize  = nullptr;
       backend_shutdown_func      shutdown    = nullptr;
       backend_window_resize_func resize      = nullptr;
       backend_begin_frame_func   begin_frame = nullptr;
       backend_end_frame_func     end_frame   = nullptr;
+      backend_clear_func         clear_scr   = nullptr;
    };
 
    static BackendFunctions _backend;

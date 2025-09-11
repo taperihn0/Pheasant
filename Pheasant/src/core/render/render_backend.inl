@@ -4,27 +4,30 @@
 namespace Phs
 {
 
+static constexpr bool PhsBackendSUCCESS = 1;
+static constexpr bool PhsBackendFAILURE = 0;
+
 template <RenderGraphicsAPI GraphicsPlatform>
 PHS_INLINE bool RenderBackend<GraphicsPlatform>::backendInitialize()
 {
-   bool success = false;
+   bool status = PhsBackendFAILURE;
 
    if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_OPENGL)
    {
-      success = BackendOpenGL::platformInitialize();
+      status = BackendOpenGL::platformInitialize();
    }
    else if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_VULKAN)
    {
       // TODO: support VULKAN API
-      success = false;
+      status = PhsBackendFAILURE;
    }
    else if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_DIRECTX)
    {
       // TODO: support DIRECTX API
-      success = false;
+      status = PhsBackendFAILURE;
    }
 
-   return success;
+   return status;
 }
 
 template <RenderGraphicsAPI GraphicsPlatform>
@@ -49,7 +52,7 @@ PHS_INLINE void RenderBackend<GraphicsPlatform>::backendShutdown()
 template <RenderGraphicsAPI GraphicsPlatform>
 PHS_INLINE bool RenderBackend<GraphicsPlatform>::backendWindowResize(uint width, uint height)
 {
-   bool status = false;
+   bool status = PhsBackendFAILURE;
 
    if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_OPENGL)
    {
@@ -58,12 +61,12 @@ PHS_INLINE bool RenderBackend<GraphicsPlatform>::backendWindowResize(uint width,
    else if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_VULKAN)
    {
       // TODO: support VULKAN API
-      return false;
+      return PhsBackendFAILURE;
    }
    else if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_DIRECTX)
    {
       // TODO: support DIRECTX API
-      return false;
+      return PhsBackendFAILURE;
    }
 
    return status;
@@ -72,47 +75,71 @@ PHS_INLINE bool RenderBackend<GraphicsPlatform>::backendWindowResize(uint width,
 template <RenderGraphicsAPI GraphicsPlatform>
 PHS_INLINE bool RenderBackend<GraphicsPlatform>::backendBeginFrame(RenderData& data)
 {
-   bool success = false;
+   bool status = PhsBackendFAILURE;
 
    if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_OPENGL)
    {
-      success = BackendOpenGL::platformBeginFrame(data);
+      status = BackendOpenGL::platformBeginFrame(data);
    }
    else if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_VULKAN)
    {
       // TODO: support VULKAN API
-      return false;
+      return PhsBackendFAILURE;
    }
    else if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_DIRECTX)
    {
       // TODO: support DIRECTX API
-      return false;
+      return PhsBackendFAILURE;
    }
 
-   return success;
+   return status;
 }
 
 template <RenderGraphicsAPI GraphicsPlatform>
 PHS_INLINE bool RenderBackend<GraphicsPlatform>::backendEndFrame(RenderData& data)
 {
-   bool success = false;
+   bool status = PhsBackendFAILURE;
 
    if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_OPENGL)
    {
-      success = BackendOpenGL::platformEndFrame(data);
+      status = BackendOpenGL::platformEndFrame(data);
    }
    else if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_VULKAN)
    {
       // TODO: support VULKAN API
-      return false;
+      return PhsBackendFAILURE;
    }
    else if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_DIRECTX)
    {
       // TODO: support DIRECTX API
-      return false;
+      return PhsBackendFAILURE;
    }
 
-   return success;
+   return status;
+}
+
+template <RenderGraphicsAPI GraphicsPlatform>
+PHS_INLINE bool RenderBackend<GraphicsPlatform>::backendClearScreen(float32_t red, float32_t green,
+                                                                    float32_t blue, float32_t alpha)
+{
+   bool status = PhsBackendFAILURE;
+
+   if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_OPENGL)
+   {
+      status = BackendOpenGL::platformClearScreen(red, green, blue, alpha);
+   }
+   else if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_VULKAN)
+   {
+      // TODO: support VULKAN API
+      return PhsBackendFAILURE;
+   }
+   else if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_DIRECTX)
+   {
+      // TODO: support DIRECTX API
+      return PhsBackendFAILURE;
+   }
+
+   return status;
 }
 
 } // namespace Phs

@@ -23,6 +23,8 @@ public:
    static bool platformWindowResize(uint width, uint height);
    static bool platformBeginFrame(RenderData& data);
    static bool platformEndFrame(RenderData& data);
+   static bool platformClearScreen(float32_t red, float32_t green, 
+                                   float32_t blue, float32_t alpha);
 private:
    struct GLContext
    {

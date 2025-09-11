@@ -61,10 +61,15 @@ set_target_properties(Pheasant PROPERTIES
 	ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/intermediates/${PROJECT_NAME}/${CMAKE_BUILD_TYPE}/${TARGET_ARCHITECTURE}"
 )
 
-# Copy library file into executable directory
+# Copy library file into multiple executable directories
 add_custom_command(TARGET Pheasant POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy
-		 $<TARGET_FILE:Pheasant>
-       ${CMAKE_SOURCE_DIR}/bin/Testbed/${CMAKE_BUILD_TYPE}/${TARGET_ARCHITECTURE}/
-		 ${CMAKE_SOURCE_DIR}/bin/TestPlatform/${CMAKE_BUILD_TYPE}/${TARGET_ARCHITECTURE}/
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_FILE:Pheasant>
+        ${CMAKE_SOURCE_DIR}/bin/Testbed/${CMAKE_BUILD_TYPE}/${TARGET_ARCHITECTURE}/
+	 COMMENT "Copying Pheasant.dll to ${CMAKE_SOURCE_DIR}/bin/Testbed/${CMAKE_BUILD_TYPE}/${TARGET_ARCHITECTURE}/"
+
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        $<TARGET_FILE:Pheasant>
+        ${CMAKE_SOURCE_DIR}/bin/TestPlatform/${CMAKE_BUILD_TYPE}/${TARGET_ARCHITECTURE}/
+	 COMMENT "Copying Pheasant.dll to ${CMAKE_SOURCE_DIR}/bin/TestPlatform/${CMAKE_BUILD_TYPE}/${TARGET_ARCHITECTURE}/"
 )

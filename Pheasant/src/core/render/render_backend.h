@@ -35,6 +35,11 @@ public:
    /* Calls platform-specific frame termination.
    */
    static PHS_INLINE bool backendEndFrame(RenderData& data);
+
+   /* Calls platform-specific screen clearing functions.
+   */
+   static PHS_INLINE bool backendClearScreen(float32_t red, float32_t green, 
+                                             float32_t blue, float32_t alpha);
 };
 
 } // namespace Phs

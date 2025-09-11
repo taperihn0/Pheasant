@@ -19,9 +19,9 @@ int Testcases::runAll()
 
    for (auto& [name, testcase_func] : Testcases::get())
    {
-      PHS_LOG_TRACE("[ TEST RUN ] {}", name);
+      PHS_LOG_INFO("[ TEST RUN ] {}", name);
       testcase_func();
-      PHS_LOG_TRACE("[ TEST OK  ] {}", name);
+      PHS_LOG_INFO("[ TEST OK  ] {}", name);
    }
 
    PHS_LOG_INFO("All {} tests passed.", test_cnt);

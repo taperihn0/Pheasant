@@ -70,6 +70,7 @@ public:
    bool        init(uint width, uint height, const std::string& title);
    void        update();
    bool        isOpen();
+   bool        isSuspended();
 
    /* __setWidth / __setHeight methods do not really *resize* the window, but
    *  rather change internal state fields to match the actual size.
@@ -82,9 +83,14 @@ public:
    */
    void        __setFocus(bool value);
    /* Internal usage method.
-   *  For more explanations, see Phs::Window::__setWidth and Phs::Window::__setHeight.
+   *  For more explanations on internal usage, see Phs::Window::__setWidth and Phs::Window::__setHeight.
+   */
+   void        __setSuspended(bool value);
+   /* Internal usage method.
+   *  For more explanations on internal usage, see Phs::Window::__setWidth and Phs::Window::__setHeight.
    */
    void        __setClose(bool value);
+
    uint        getWidth();
    uint        getHeight();
 
@@ -107,6 +113,7 @@ private:
    uint                               _width;
    uint                               _height;
    bool                               _focus;
+   bool                               _suspended;
    std::string                        _title;
    bool                               _initialized;
    Input                              _input;

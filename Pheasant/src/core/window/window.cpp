@@ -8,6 +8,9 @@
 namespace Phs
 {
 
+static constexpr bool PhsWindowSUCCESS = 1;
+static constexpr bool PhsWindowFAILURE = 0;
+
 // specify default error handling code
 template <EventCode EV_ERROR>
 void __defaultEventCallback(EventError ev) 
@@ -29,6 +32,7 @@ Window::Window()
    , _width(_InvalidWindowWidth)
    , _height(_InvalidWindowHeight)
    , _focus(false)
+   , _suspended(true)
    , _title(_DefaultWindowTitle)
    , _initialized(false)
    , _input()
@@ -83,7 +87,7 @@ bool Window::init(uint width, uint height, const std::string& title)
    if (!_native_window)
    {
       PHS_CORE_LOG_FATAL("Failed to create a new GLFW window!");
-      return false;
+      return PhsWindowFAILURE;
    }
 
    glfwMakeContextCurrent(_native_window);
@@ -102,10 +106,11 @@ bool Window::init(uint width, uint height, const std::string& title)
 
    // GLFW_FOCUSED set
    _focus = true;
+   _suspended = false;
    _initialized = true;
 
    PHS_CORE_LOG_INFO("Successfully initialized a new GLFW window.");
-   return true;
+   return PhsWindowSUCCESS;
 }
 
 Window::~Window()
@@ -134,6 +139,12 @@ bool Window::isOpen()
    return !_close;
 }
 
+bool Window::isSuspended()
+{
+   PHS_ASSERT(_initialized);
+   return _suspended;
+}
+
 void Window::__setWidth(uint width)
 {
    PHS_ASSERT(_initialized);
@@ -150,6 +161,12 @@ void Window::__setFocus(bool value)
 {
    PHS_ASSERT(_initialized);
    _focus = value;
+}
+
+void Window::__setSuspended(bool value)
+{
+   PHS_ASSERT(_initialized);
+   _suspended = value;
 }
 
 void Window::__setClose(bool value)
@@ -204,10 +221,16 @@ void Window::setEventCallbacks(EventCallbacks* callbacks)
          window->__setWidth(width);
          window->__setHeight(height);
 
+         bool suspend = !width and !height;
+         window->__setSuspended(suspend);
+         
+         if (suspend)
+            PHS_CORE_LOG_TRACE("Window suspended");
+
          bool status = Render::windowResize(width, height);
 
          if (!status)
-            PHS_CORE_LOG_FATAL_FULL_INFO("Got error code from resize code");
+            PHS_CORE_LOG_FATAL_FULL_INFO("Got error code from resize code!");
 
          callbacks->window_resize_callback(ev);
       }

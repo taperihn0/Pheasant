@@ -51,7 +51,7 @@ template <typename T>
 PHS_INLINE T sqrt(float64_t x)
 {
    PHS_STATIC_ASSERT(is_numeric<T>);
-   return std::sqrt<T>(x);
+   return std::sqrt(x);
 }
 
 using dim_int_t = uint;

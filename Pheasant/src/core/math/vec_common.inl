@@ -4,6 +4,7 @@
 #include "vec2.h"
 #include "vec3.h"
 #include "vec4.h"
+#include "math_utils.h"
 
 namespace Phs
 {
@@ -35,7 +36,7 @@ constexpr PHS_NODISCARD uint vecbase<Dimension, T, Derived>::dim() PHS_MATH_NOEX
 template <dim_int_t Dimension, typename T, template <dim_int_t, typename> typename Derived>
 constexpr PHS_INLINE PHS_NODISCARD float64_t vecbase<Dimension, T, Derived>::length() const
 {
-   return sqrt(__asDerived(*this).lengthSquared());
+   return sqrt<float64_t>(__asDerived(*this).lengthSquared());
 }
 
 template <dim_int_t Dimension, typename T, template <dim_int_t, typename> typename Derived>

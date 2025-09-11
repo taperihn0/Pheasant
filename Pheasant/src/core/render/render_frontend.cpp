@@ -6,6 +6,9 @@
 namespace Phs
 {
 
+static constexpr bool PhsFrontendSUCCESS = true;
+static constexpr bool PhsFrontendFAILURE = false;
+
 RenderGraphicsAPI        Render::_graphics_platform = RENDER_GRAPHICS_API_UNDEF;
 bool                     Render::_initialized = false;
 Render::BackendFunctions Render::_backend;
@@ -21,11 +24,11 @@ bool Render::initialize(RenderGraphicsAPI platform)
    if (!_backend.initialize())
    {
       PHS_CORE_LOG_FATAL_FULL_INFO("Backend initialization resulted in error return code!");
-      return false;
+      return PhsFrontendFAILURE;
    }
 
    _initialized = true;
-   return true;
+   return PhsFrontendSUCCESS;
 }
 
 void Render::shutdown()
@@ -51,7 +54,7 @@ bool Render::drawFrame(RenderData& data)
    if (!beg_frame_status)
    {
       PHS_CORE_LOG_FATAL_FULL_INFO("BeginFrame resulted in an error return code!");
-      return false;
+      return PhsFrontendFAILURE;
    }
 
    bool end_frame_status = _backend.end_frame(data);
@@ -59,10 +62,17 @@ bool Render::drawFrame(RenderData& data)
    if (!end_frame_status)
    {
       PHS_CORE_LOG_FATAL_FULL_INFO("EndFrame resulted in an error return code!");
-      return false;
+      return PhsFrontendFAILURE;
    }
 
-   return true;
+   return PhsFrontendSUCCESS;
+}
+
+bool Render::clearScreen(float32_t red, float32_t green,
+                         float32_t blue, float32_t alpha)
+{
+   PHS_ASSERT_LOG(_initialized, "Trying to call screen clearing on uninitialized render context!");
+   return _backend.clear_scr(red, green, blue, alpha);
 }
 
 template <RenderGraphicsAPI GraphicsPlatform>
@@ -73,6 +83,7 @@ void Render::BackendFunctions::initializePlatformCallbacks()
    resize      = RenderBackend<GraphicsPlatform>::backendWindowResize;
    begin_frame = RenderBackend<GraphicsPlatform>::backendBeginFrame;
    end_frame   = RenderBackend<GraphicsPlatform>::backendEndFrame;
+   clear_scr   = RenderBackend<GraphicsPlatform>::backendClearScreen;
 }
 
 void Render::loadBackend(RenderGraphicsAPI platform)

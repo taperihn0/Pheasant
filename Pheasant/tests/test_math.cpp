@@ -107,6 +107,58 @@ TEST_CASE(test_vec_cross_product)
    REQUIRE(approxEqual(cross_cd, reqf));
 }
 
+TEST_CASE(test_vec_length)
+{
+   vec3f v(3.0f, 4.0f, 0.0f);
+   REQUIRE(approxEqual64f(v.length(), 5.0));  // 3-4-5 triangle
+   REQUIRE(approxEqual64f(v.lengthSquared(), 25.0));
+}
+
+TEST_CASE(test_vec_normalized)
+{
+   vec3f v(10.0f, 0.0f, 0.0f);
+   vec3f n = v.normalized();
+
+   REQUIRE(approxEqual(n, vec3f(1.0f, 0.0f, 0.0f)));
+   REQUIRE(approxEqual64f(n.length(), 1.0));
+
+   // Ensure lengthSquared is exactly 1 for normalized vector
+   REQUIRE(approxEqual64f(n.lengthSquared(), 1.0));
+}
+
+TEST_CASE(test_vec_casting)
+{
+   vec3f v3(1.0f, 2.0f, 3.0f);
+   vec4f v4 = static_cast<vec4f>(v3);  // should preserve first 3 components
+   vec4f expected(1.0f, 2.0f, 3.0f, 0.0f); // assuming cast sets w = 0
+   REQUIRE(approxEqual(v4, expected));
+
+   vec2f v2 = static_cast<vec2f>(v3);
+   REQUIRE(approxEqual(v2, vec2f(1.0f, 2.0f)));
+}
+
+TEST_CASE(test_vec_combined_ops)
+{
+   vec3f a(1.0f, 2.0f, 3.0f);
+   vec3f b(-1.0f, 0.0f, 1.0f);
+
+   vec3f sum = a + b;
+   REQUIRE(approxEqual(sum, vec3f(0.0f, 2.0f, 4.0f)));
+
+   vec3f diff = a - b;
+   REQUIRE(approxEqual(diff, vec3f(2.0f, 2.0f, 2.0f)));
+
+   vec3f scaled = a * 2.0f;
+   REQUIRE(approxEqual(scaled, vec3f(2.0f, 4.0f, 6.0f)));
+}
+
+TEST_CASE(test_vec_chained_ops_and_normalization)
+{
+   vec3f v(2.0f, 0.0f, 0.0f);
+   vec3f res = (v * 3.0f).normalized();
+   REQUIRE(approxEqual(res, vec3f(1.0f, 0.0f, 0.0f)));
+}
+
 
 } // namespace TestPlatform
 
