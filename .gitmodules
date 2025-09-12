@@ -1,3 +1,6 @@
 [submodule "Pheasant/vendor/GLFW"]
 	path = Pheasant/vendor/GLFW
 	url = https://github.com/glfw/glfw
+[submodule "Pheasant/vendor/shaderc"]
+	path = Pheasant/vendor/shaderc
+	url = https://github.com/google/shaderc

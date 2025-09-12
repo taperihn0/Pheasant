@@ -16,6 +16,7 @@ add_library(Pheasant SHARED
 
 add_subdirectory(vendor/GLFW)
 add_subdirectory(vendor/GLAD)
+add_subdirectory(vendor/shaderc)
 
 option(PHEASANT_BUILD_TESTS "Build test executables" OFF)
 
@@ -27,6 +28,7 @@ endif()
 target_link_libraries(Pheasant PUBLIC 
 	glfw
 	glad
+	shaderc
 )
 
 target_compile_definitions(Pheasant PUBLIC 
@@ -67,9 +69,13 @@ add_custom_command(TARGET Pheasant POST_BUILD
         $<TARGET_FILE:Pheasant>
         ${CMAKE_SOURCE_DIR}/bin/Testbed/${CMAKE_BUILD_TYPE}/${TARGET_ARCHITECTURE}/
 	 COMMENT "Copying Pheasant.dll to ${CMAKE_SOURCE_DIR}/bin/Testbed/${CMAKE_BUILD_TYPE}/${TARGET_ARCHITECTURE}/"
-
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_FILE:Pheasant>
-        ${CMAKE_SOURCE_DIR}/bin/TestPlatform/${CMAKE_BUILD_TYPE}/${TARGET_ARCHITECTURE}/
-	 COMMENT "Copying Pheasant.dll to ${CMAKE_SOURCE_DIR}/bin/TestPlatform/${CMAKE_BUILD_TYPE}/${TARGET_ARCHITECTURE}/"
 )
+
+if (PHEASANT_BUILD_TESTS)
+	add_custom_command(TARGET Pheasant POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy_if_different
+			$<TARGET_FILE:Pheasant>
+			${CMAKE_SOURCE_DIR}/bin/TestPlatform/${CMAKE_BUILD_TYPE}/${TARGET_ARCHITECTURE}/
+		COMMENT "Copying Pheasant.dll to ${CMAKE_SOURCE_DIR}/bin/TestPlatform/${CMAKE_BUILD_TYPE}/${TARGET_ARCHITECTURE}/"
+	)
+endif()
