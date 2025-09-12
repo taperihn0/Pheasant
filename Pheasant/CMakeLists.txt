@@ -64,6 +64,7 @@ set_target_properties(Pheasant PROPERTIES
 )
 
 # Copy library file into multiple executable directories
+
 add_custom_command(TARGET Pheasant POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         $<TARGET_FILE:Pheasant>
