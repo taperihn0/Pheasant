@@ -14,6 +14,11 @@
                "name": "PHEASANT_BUILD_TESTS",
                "value": "False",
                "type": "BOOL"
+            },
+            {
+               "name": "SHADERC_ENABLE_SHARED_CRT",
+               "value": "True",
+               "type": "BOOL"
             }
          ]
       },
@@ -56,6 +61,11 @@
             {
                "name": "PHEASANT_BUILD_TESTS",
                "value": "False",
+               "type": "BOOL"
+            },
+            {
+               "name": "SHADERC_ENABLE_SHARED_CRT",
+               "value": "true",
                "type": "BOOL"
             }
          ]
