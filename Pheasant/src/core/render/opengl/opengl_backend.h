@@ -6,6 +6,7 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 #include "render/render_types.h"
+#include "opengl_types.h"
 
 namespace Phs
 {
@@ -26,17 +27,8 @@ public:
    static bool platformClearScreen(float32_t red, float32_t green, 
                                    float32_t blue, float32_t alpha);
 private:
-   struct GLContext
-   {
-      const uchar* vendor;
-      const uchar* graphics_device;
-      const uchar* version;
-      const uchar* shader_lang_version;
-      int          extension_count;
-   };
-
-   static GLContext                   _gl_context;
    static constexpr RenderGraphicsAPI _GraphicsPlatform = RENDER_GRAPHICS_API_OPENGL;
+   static GLContext                   _gl_context;
 };
 
 } // namespace Phs
