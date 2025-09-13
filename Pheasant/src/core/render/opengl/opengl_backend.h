@@ -3,8 +3,6 @@
 /* opengl_backend.h already includes crucial files
 *  for managing graphics platform context.
 */ 
-#include "glad/glad.h"
-#include "GLFW/glfw3.h"
 #include "render/render_types.h"
 #include "opengl_types.h"
 
