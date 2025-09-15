@@ -2,6 +2,7 @@
 
 #include "opengl_backend.h"
 #include "logger/log.h"
+#include "opengl_shader_man.h"
 
 namespace Phs
 {
@@ -76,12 +77,25 @@ bool BackendOpenGL::platformInitialize()
    PHS_CORE_LOG_TRACE("\tGL binary shader loading: {}", _gl_context.binary_shader_support ? "SUPPORTED" : "NOT SUPPORTED");
 
    PHS_CORE_LOG_INFO("Successfully loaded OpenGL context using GLAD.");
-   return PhsGlSUCCESS;
+
+   // allocate shader manager
+   _gl_context.shader_man = new GLShaderUtils;
+
+   // Load shaders assets, compile and link them
+   const FilePath shader_assets_path = FilePath::getCurrentDirectory()
+                                                 .stepInto("assets")
+                                                 .stepInto("shaders");
+
+   bool status = _gl_context.shader_man->loadShaderProgram(shader_assets_path, "default_shader");
+
+   return status;
 }
 
 void BackendOpenGL::platformShutdown()
 {
-   return;
+   PHS_CORE_LOG_TRACE("GL backend: shuting down");
+   // deallocate shader manager
+   delete _gl_context.shader_man;
 }
 
 bool BackendOpenGL::platformWindowResize(uint width, uint height)

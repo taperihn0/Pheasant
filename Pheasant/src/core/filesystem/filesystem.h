@@ -2,6 +2,7 @@
 
 #include "common.h"
 #include "precompile.h"
+#include "filepath.h"
 #include <fstream>
 
 namespace Phs
@@ -10,6 +11,7 @@ namespace Phs
 enum FileOpenMode
 {
    FILE_MODE_UNDEF    = 0,
+   FILE_MODE_NONE     = 0,
    FILE_MODE_APPEND   = std::ios::app,
    FILE_MODE_BINARY   = std::ios::binary,
    FILE_MODE_IN       = std::ios::in,
@@ -71,9 +73,6 @@ struct __FileStream<STREAM_IN_OUT>
 };
 
 using FileToken = byte;
-using FilePath  = std::string;
-
-static constexpr std::string_view UndefFilePath = "";
 
 /* Main file representation class.
 *  File can be readable, writable or both.
@@ -83,25 +82,24 @@ class File
 {
 public:
    File();
-   File(std::string_view path, FileOpenMode mode);
+   File(const FilePath& path, FileOpenMode mode = FILE_MODE_NONE);
    ~File();
 
-   bool open(const std::string_view path, FileOpenMode mode);
-   bool reopen(const std::string_view path, FileOpenMode mode);
-   bool close();
+   bool              open(const FilePath& path, FileOpenMode mode = FILE_MODE_NONE);
+   bool              reopen(const FilePath& path, FileOpenMode mode = FILE_MODE_NONE);
+   bool              close();
 
-   PHS_INLINE bool isOpen() const;
+   PHS_INLINE bool   isOpen() const;
 
-   bool write(const FileToken* content, size_t size);
-   bool read(std::unique_ptr<FileToken>& out, size_t& size);
+   bool              write(const FileToken* content, size_t size);
+   bool              read(std::unique_ptr<FileToken>& out, size_t& size);
 private:
    PHS_INLINE size_t byteSize();
 
-   using _OwnFilePathString = std::string;
    using _Stream = typename __FileStream<StreamDirection>::type;
 
    static constexpr size_t           _UndefSize = 0;
-   _OwnFilePathString                _path;
+   FilePath                          _path;
    FileOpenMode                      _mode;
    bool                              _opened;
    _Stream                           _stream;

@@ -59,8 +59,8 @@ bool Window::init(uint width, uint height, const std::string& title)
       return false;
    }
 
-   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
    glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
    glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);
@@ -115,7 +115,7 @@ bool Window::init(uint width, uint height, const std::string& title)
 
 Window::~Window()
 {
-   // Destroyed window can be defacto not-initialized.
+   Render::shutdown();
 
    if (_native_window) 
       glfwDestroyWindow(_native_window);

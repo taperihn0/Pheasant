@@ -4,51 +4,47 @@
 *  they are build on top of each other.
 *  I safely assume I can use instructions from older standards.
 */
+
+#ifdef PHEASANT_SIMD_AVX512
+#  define PHS_SIMD_AVX512
+#  define PHEASANT_SIMD_AVX2
+#endif
+
+#ifdef PHEASANT_SIMD_AVX2
+#  define PHS_SIMD_AVX2
+#  define PHEASANT_SIMD_AVX
+#endif
+
+#ifdef PHEASANT_SIMD_AVX
+#  define PHS_SIMD_AVX
+#  define PHEASANT_SIMD_SSE4_2
+#endif
+
+#ifdef PHEASANT_SIMD_SSE4_2
+#  define PHS_SIMD_SSE4_2
+#  define PHEASANT_SIMD_SSE4_1
+#endif
+
+#ifdef PHEASANT_SIMD_SSE4_1
+#  define PHS_SIMD_SSE4_1
+#  define PHEASANT_SIMD_SSSE3
+#endif
+
+#ifdef PHEASANT_SIMD_SSSE3
+#  define PHS_SIMD_SSSE3
+#  define PHEASANT_SIMD_SSE3
+#endif
+
+#ifdef PHEASANT_SIMD_SSE3
+#  define PHS_SIMD_SSE3
+#  define PHEASANT_SIMD_SSE2
+#endif
+
 #ifdef PHEASANT_SIMD_SSE2
 #  define PHS_SIMD_SSE2
-#elif defined(PHEASANT_SIMD_SSE3)
-#  define PHS_SIMD_SSE2
-#  define PHS_SIMD_SSE3
-#elif defined(PHEASANT_SIMD_SSSE3)
-#  define PHS_SIMD_SSE2
-#  define PHS_SIMD_SSE3
-#  define PHS_SIMD_SSSE3
-#elif defined(PHEASANT_SIMD_SSE4_1)
-#  define PHS_SIMD_SSE2
-#  define PHS_SIMD_SSE3
-#  define PHS_SIMD_SSSE3
-#  define PHS_SIMD_SSE4_1
-#elif defined(PHEASANT_SIMD_SSE4_2)
-#  define PHS_SIMD_SSE2
-#  define PHS_SIMD_SSE3
-#  define PHS_SIMD_SSSE3
-#  define PHS_SIMD_SSE4_1
-#  define PHS_SIMD_SSE4_2
-#elif defined(PHEASANT_SIMD_AVX)
-#  define PHS_SIMD_SSE2
-#  define PHS_SIMD_SSE3
-#  define PHS_SIMD_SSSE3
-#  define PHS_SIMD_SSE4_1
-#  define PHS_SIMD_SSE4_2
-#  define PHS_SIMD_AVX
-#elif defined(PHEASANT_SIMD_AVX2)
-#  define PHS_SIMD_SSE2
-#  define PHS_SIMD_SSE3
-#  define PHS_SIMD_SSSE3
-#  define PHS_SIMD_SSE4_1
-#  define PHS_SIMD_SSE4_2
-#  define PHS_SIMD_AVX
-#  define PHS_SIMD_AVX2
-#elif defined(PHEASANT_SIMD_AVX512)
-#  define PHS_SIMD_SSE2
-#  define PHS_SIMD_SSE3
-#  define PHS_SIMD_SSSE3
-#  define PHS_SIMD_SSE4_1
-#  define PHS_SIMD_SSE4_2
-#  define PHS_SIMD_AVX
-#  define PHS_SIMD_AVX2
-#  define PHS_SIMD_AVX512
-#elif defined(PHEASANT_FORCE_PURE)
+#endif
+
+#ifdef PHEASANT_FORCE_PURE
 #  define PHS_FORCE_PURE
 #endif
 
@@ -71,9 +67,5 @@
 #elif defined(PHS_SIMD_SEE)
 #  include <xmmintrin.h>   // SSE
 #endif
-
-namespace Phs
-{
-} // namespace Phs
 
 #endif // PHS_FORCE_PURE

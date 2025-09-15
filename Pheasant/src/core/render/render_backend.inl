@@ -35,7 +35,7 @@ PHS_INLINE void RenderBackend<GraphicsPlatform>::backendShutdown()
 {
    if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_OPENGL)
    {
-      BackendOpenGL::platformInitialize();
+      BackendOpenGL::platformShutdown();
    }
    else if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_VULKAN)
    {

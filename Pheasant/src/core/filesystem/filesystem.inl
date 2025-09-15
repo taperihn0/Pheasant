@@ -9,16 +9,13 @@ static constexpr bool PhsFileFAILURE = 0;
 
 template <StreamDirection StreamDirection>
 File<StreamDirection>::File()
-   : _path(UndefFilePath)
-   , _mode(FILE_MODE_UNDEF)
+   : _mode(FILE_MODE_UNDEF)
    , _opened(false)
-   , _inmode(false)
-   , _outmode(false)
    , _byte_size(_UndefSize)
 {}
 
 template <StreamDirection StreamDirection>
-File<StreamDirection>::File(std::string_view path, FileOpenMode mode)
+File<StreamDirection>::File(const FilePath& path, FileOpenMode mode)
 {
    open(path, mode);
 }
@@ -30,7 +27,7 @@ File<StreamDirection>::~File()
 }
 
 template <StreamDirection StreamDirection>
-bool File<StreamDirection>::open(const std::string_view path, FileOpenMode mode)
+bool File<StreamDirection>::open(const FilePath& path, FileOpenMode mode)
 {
    PHS_ASSERT_LOG(!_opened, "Opening already opened file");
 
@@ -50,7 +47,7 @@ bool File<StreamDirection>::open(const std::string_view path, FileOpenMode mode)
    _path = path;
    _mode = mode;
 
-   const char* cpath = _path.c_str();
+   const char* cpath = _path.toCStr();
 
    _stream.open(cpath, _mode);
 
@@ -67,7 +64,7 @@ bool File<StreamDirection>::open(const std::string_view path, FileOpenMode mode)
 }
 
 template <StreamDirection StreamDirection>
-bool File<StreamDirection>::reopen(const std::string_view path, FileOpenMode mode)
+bool File<StreamDirection>::reopen(const FilePath& path, FileOpenMode mode)
 {
    PHS_ASSERT_LOG(_opened, "Reopening closed file");
    close();
@@ -77,7 +74,6 @@ bool File<StreamDirection>::reopen(const std::string_view path, FileOpenMode mod
 template <StreamDirection StreamDirection>
 bool File<StreamDirection>::close()
 {
-   PHS_ASSERT_LOG(_opened, "Closing already closed file");
    _stream.close();
    _path = UndefFilePath;
    _mode = FILE_MODE_UNDEF;
@@ -109,7 +105,7 @@ bool File<StreamDirection>::read(std::unique_ptr<FileToken>& out, size_t& size)
    PHS_STATIC_ASSERT(StreamDirection != STREAM_IN);
    PHS_ASSERT(_byte_size != _UndefSize);
 
-   byte* buffer = reinterpret_cast<byte*>(std::malloc(_byte_size));
+   byte* buffer = reinterpret_cast<byte*>(std::malloc(_byte_size + 1));
 
    if (!buffer)
       return PhsFileFAILURE;
@@ -119,6 +115,9 @@ bool File<StreamDirection>::read(std::unique_ptr<FileToken>& out, size_t& size)
       std::free(buffer);
       return PhsFileFAILURE;
    }
+
+   // add null character
+   buffer[_byte_size] = '\0';
 
    out.reset(buffer);
    size = _byte_size;

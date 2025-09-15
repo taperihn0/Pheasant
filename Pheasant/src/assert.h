@@ -23,13 +23,13 @@ PHS_INLINE bool _PHSIMPL_failedAssertion(std::string_view file, std::string_view
 
 #ifdef PHS_RUNTIME_ASSERT_ENABLE
 
-#define PHS_ASSERT(s)						(void)((s) or ::_PHSIMPL_failedAssertion(__FILE__, "Runtime assertion failed", __LINE__))
-#define PHS_ASSERT_LOG(s, msg)			(void)((s) or ::_PHSIMPL_failedAssertion(__FILE__, msg, __LINE__))
+#	define PHS_ASSERT(s)						(void)((s) or ::_PHSIMPL_failedAssertion(__FILE__, "Runtime assertion failed", __LINE__))
+#	define PHS_ASSERT_LOG(s, msg)			(void)((s) or ::_PHSIMPL_failedAssertion(__FILE__, msg, __LINE__))
 
 #else // Assertions not specified.
 
-#define PHS_ASSERT(s)						NONE_TOKEN
-#define PHS_ASSERT_LOG(s, msg)			NONE_TOKEN
+#	define PHS_ASSERT(s)						NONE_TOKEN
+#	define PHS_ASSERT_LOG(s, msg)			NONE_TOKEN
 
 #endif // PHS_RUNTIME_ASSERT_ENABLE
 

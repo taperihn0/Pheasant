@@ -2,6 +2,7 @@
 #include "application.h"
 #include "logger/log.h"
 #include "render/render_frontend.h"
+#include "filesystem/filepath.h"
 
 namespace Phs 
 {
@@ -83,29 +84,29 @@ void Application::mouseScrollCallback(EventMouseScroll ev)
 	//PHS_CORE_LOG_DEBUG("Mouse scoll callback: xoff {}, yoff {}", scroll.xoff, scroll.yoff);
 }
 
-Application::Application()
+Application::Application(int argc, char** argv)
 	: _window(std::make_unique<Window>())
 	, _callbacks(std::make_unique<EventCallbacks>())
 {
 	// initialize logging system
 	Log::init();
 
+	// initialize external state from command line arguments
+	loadExternalState(argc, argv);
+
 	// initialize window
 	_window->init(800, 600, "Hello GLFW");
 
 	// initialize callback functions 
 	_callbacks->error_callback				= errorCallback;
-
 	_callbacks->window_resize_callback  = windowResizeCallback;
 	_callbacks->window_move_callback    = windowMoveCallback;
 	_callbacks->window_focus_callback   = windowFocusCallback;
 	_callbacks->window_close_callback   = windowCloseCallback;
-
 	_callbacks->key_press_callback      = keyPressCallback;
 	_callbacks->key_release_callback    = keyReleaseCallback;
 	_callbacks->key_repeat_callback     = keyRepeatCallback;
 	_callbacks->key_type_callback		   = keyTypeCallback;
-
 	_callbacks->mouse_press_callback    = mousePressCallback;
 	_callbacks->mouse_release_callback  = mouseReleaseCallback;
 	_callbacks->mouse_move_callback     = mouseMoveCallback;
@@ -127,6 +128,23 @@ void Application::run()
 
 		_window->update();
 	}
+}
+
+void Application::loadExternalState(int argc, char** argv)
+{
+	PHS_ASSERT_LOG(argc == _ProgramArgCount, "Invalid command line number");
+
+	for (int i = 0; i < argc; i++)
+	{
+		PHS_CORE_LOG_INFO("Program argument ({}): {}", i, argv[i]);
+	}
+
+	_program_path = argv[_ProgramPathPlace];
+	_working_dir  = argv[_WorkingDirPlace];
+
+	FilePath::setCurrentDirectory(_working_dir);
+
+	PHS_CORE_LOG_TRACE("Current working directory: {}", _working_dir);
 }
 
 } // namespace Phs

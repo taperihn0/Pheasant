@@ -1,8 +1,8 @@
 #pragma once
 
 #include "filesystem/filesystem.h"
-#include "opengl_types.h"
 #include "precompile.h"
+#include "opengl_types.h"
 #include "render/render_shader_types.h"
 
 namespace Phs
@@ -21,19 +21,17 @@ class GLStageObject
 {
 public:
    GLStageObject();
-   GLStageObject(std::string_view path, ShaderStage shader_type);
 
-   bool compile(std::string_view path, ShaderStage shader_type);
+   bool compile(const char* path, const char* source_content, ShaderStage shader_type);
    bool close();
    bool isCompiled() const;
    bool attachTo(GLuint gl_shader_program) const;
    bool detach(GLuint gl_shader_program) const;
 private:
-   bool compileSource(const char* source_content, GLenum gl_shader_type);
+   bool compileSource(const char* path, const char* source_content, GLenum gl_shader_type);
 
    static constexpr GLenum _UndefGlShaderStage = 0;
    static constexpr GLuint _UndefGlShaderNum = 0;
-   FilePath                _path;
    GLuint                  _gl_shader_stage;
    GLenum                  _gl_shader_type;
    bool                    _compiled;
@@ -53,12 +51,11 @@ public:
    ~GLShader();
 
    bool close();
-   bool specifyStage(std::string_view path, ShaderStage stage);
+   bool compileAttachStage(const char* source_path, const char* source, ShaderStage stage);
    bool linkProgram();
+   bool bind();
 private:
-   static constexpr GLuint _UndefGlShaderProgramNum = 0;
-   static constexpr size_t _ShaderStageCount = 5;
-   GLStageObject           _shader_stages[_ShaderStageCount];
+   GLStageObject           _shader_stages[ShaderStageCount];
    GLuint                  _gl_shader_program;
    bool                    _linked;
 };

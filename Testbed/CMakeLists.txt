@@ -10,10 +10,6 @@ if (MSVC)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zc:__cplusplus")
 endif()
 
-target_include_directories(Testbed PUBLIC
-	${CMAKE_SOURCE_DIR}/Pheasant/src/
-)
-
 target_link_libraries(Testbed PRIVATE Pheasant)
 
 set_target_properties(Testbed PROPERTIES
