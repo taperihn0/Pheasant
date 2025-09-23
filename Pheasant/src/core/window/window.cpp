@@ -100,7 +100,7 @@ bool Window::init(uint width, uint height, const std::string& title)
    // TODO: make it configurable
    bool render_init_status = Render::initialize(RENDER_GRAPHICS_API_OPENGL);
    PHS_ASSERT_LOG(render_init_status, "Failed to initialize render");
-   _swapchain = std::make_unique<SwapchainOpenGL>(_native_window, _width, _height);
+   _swapchain = std::make_unique<GL_Swapchain>(_native_window, _width, _height);
 
    _input.setWindow(_native_window);
 
@@ -115,6 +115,9 @@ bool Window::init(uint width, uint height, const std::string& title)
 
 Window::~Window()
 {
+   // close window state
+
+   // renderer should be closed
    Render::shutdown();
 
    if (_native_window) 

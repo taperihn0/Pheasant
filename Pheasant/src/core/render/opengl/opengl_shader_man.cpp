@@ -6,13 +6,13 @@ namespace Phs
 static constexpr bool PhsGlShaderManSUCCESS = 1;
 static constexpr bool PhsGlShaderManFAILURE = 0;
 
-std::string GLShaderUtils::_ShaderStageAppendix[ShaderStageCount] =
+std::string GL_ShaderUtils::_ShaderStageAppendix[ShaderStageCount] =
 {
    "vert", "tessc", "tesse", "geom", "frag"
 };
-std::string GLShaderUtils::_GlslShaderStageExtension = "glsl";
+std::string GL_ShaderUtils::_GlslShaderStageExtension = "glsl";
 
-bool GLShaderUtils::loadShaderProgram(const FilePath& dir, const std::string& shader_name)
+bool GL_ShaderUtils::loadShaderProgram(const FilePath& dir, const std::string& shader_name)
 {
    FilePath stage_file;
 
@@ -58,7 +58,7 @@ bool GLShaderUtils::loadShaderProgram(const FilePath& dir, const std::string& sh
    return PhsGlShaderManSUCCESS;
 }
 
-bool GLShaderUtils::bindShaderProgram()
+bool GL_ShaderUtils::bindShaderProgram()
 {
    return _shader_object.bind();
 }

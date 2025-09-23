@@ -2,6 +2,7 @@
 
 #include "render/render_swapchain.h"
 
+// forward declaration of a platform-independent window.
 extern struct GLFWwindow;
 
 namespace Phs
@@ -10,10 +11,10 @@ namespace Phs
 /* Framebuffer manager (Swapchain) for OpenGL API.
 *  Implementation of that is rather trivial, as long as we're relaying on GLFW library.
 */
-class SwapchainOpenGL : public PlatformSwapchain
+class GL_Swapchain : public PlatformSwapchain
 {
 public:
-   SwapchainOpenGL(GLFWwindow* native, uint width, uint height);
+   GL_Swapchain(GLFWwindow* native, uint width, uint height);
    bool     resize(uint width, uint height) override;
    void     present()                       override;
    uint32_t nextImage()                     override;

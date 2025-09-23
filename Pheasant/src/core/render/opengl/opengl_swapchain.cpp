@@ -8,7 +8,7 @@
 namespace Phs
 {
 
-SwapchainOpenGL::SwapchainOpenGL(GLFWwindow* native, uint width, uint height)
+GL_Swapchain::GL_Swapchain(GLFWwindow* native, uint width, uint height)
 {
    PHS_ASSERT(native);
 
@@ -22,26 +22,26 @@ SwapchainOpenGL::SwapchainOpenGL(GLFWwindow* native, uint width, uint height)
    PHS_CORE_LOG_INFO("Successfully initialized swapchain for OpenGL platform");
 }
 
-bool SwapchainOpenGL::resize(uint width, uint height)
+bool GL_Swapchain::resize(uint width, uint height)
 {
    PHS_ASSERT(_platform_native_window);
-   bool status = BackendOpenGL::platformWindowResize(width, height);
+   bool status = GL_Backend::platformWindowResize(width, height);
    return status;
 }
 
-void SwapchainOpenGL::present()
+void GL_Swapchain::present()
 {
    PHS_ASSERT(_platform_native_window);
    glfwSwapBuffers(_platform_native_window);
 }
 
-uint32_t SwapchainOpenGL::nextImage()
+uint32_t GL_Swapchain::nextImage()
 {
    PHS_ASSERT(_platform_native_window);
    return 0;
 }
 
-uint32_t SwapchainOpenGL::imageCount() const
+uint32_t GL_Swapchain::imageCount() const
 {
    PHS_ASSERT(_platform_native_window);
    return _GLImageCount;

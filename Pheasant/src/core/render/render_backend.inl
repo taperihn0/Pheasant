@@ -14,7 +14,7 @@ PHS_INLINE bool RenderBackend<GraphicsPlatform>::backendInitialize()
 
    if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_OPENGL)
    {
-      status = BackendOpenGL::platformInitialize();
+      status = GL_Backend::platformInitialize();
    }
    else if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_VULKAN)
    {
@@ -35,7 +35,7 @@ PHS_INLINE void RenderBackend<GraphicsPlatform>::backendShutdown()
 {
    if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_OPENGL)
    {
-      BackendOpenGL::platformShutdown();
+      GL_Backend::platformShutdown();
    }
    else if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_VULKAN)
    {
@@ -56,7 +56,7 @@ PHS_INLINE bool RenderBackend<GraphicsPlatform>::backendWindowResize(uint width,
 
    if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_OPENGL)
    {
-      status = BackendOpenGL::platformWindowResize(width, height);
+      status = GL_Backend::platformWindowResize(width, height);
    }
    else if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_VULKAN)
    {
@@ -79,7 +79,7 @@ PHS_INLINE bool RenderBackend<GraphicsPlatform>::backendBeginFrame(RenderData& d
 
    if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_OPENGL)
    {
-      status = BackendOpenGL::platformBeginFrame(data);
+      status = GL_Backend::platformBeginFrame(data);
    }
    else if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_VULKAN)
    {
@@ -102,7 +102,7 @@ PHS_INLINE bool RenderBackend<GraphicsPlatform>::backendEndFrame(RenderData& dat
 
    if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_OPENGL)
    {
-      status = BackendOpenGL::platformEndFrame(data);
+      status = GL_Backend::platformEndFrame(data);
    }
    else if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_VULKAN)
    {
@@ -126,7 +126,7 @@ PHS_INLINE bool RenderBackend<GraphicsPlatform>::backendClearScreen(float32_t re
 
    if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_OPENGL)
    {
-      status = BackendOpenGL::platformClearScreen(red, green, blue, alpha);
+      status = GL_Backend::platformClearScreen(red, green, blue, alpha);
    }
    else if constexpr (GraphicsPlatform == RENDER_GRAPHICS_API_VULKAN)
    {

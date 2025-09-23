@@ -30,8 +30,8 @@ PHS_STATIC_ASSERT(std::numeric_limits<float>::is_iec559);
 #define PHS_IEEE_STANDARD 1
 
 // As IEEE is checked, these types exactly maps their size.
-using float32_t = float;
-using float64_t = double;
+using float32_t  = float;
+using float64_t  = double;
 using floatmax_t = long double;
 
 // Define some handy aliases
@@ -40,53 +40,54 @@ using uchar     = unsigned char;
 using ll        = long long;
 using ull       = unsigned long long;
 using uint      = unsigned int;
+using intptr_t  = size_t;
 
-static constexpr uint8_t operator"" _u8(uintmax_t v)
+static constexpr uint8_t operator"" _u8(uintmax_t v) noexcept
 {
    return static_cast<uint8_t>(v);
 }
 
-static constexpr uint16_t operator"" _u16(uintmax_t v)
+static constexpr uint16_t operator"" _u16(uintmax_t v) noexcept
 {
    return static_cast<uint16_t>(v);
 }
 
-static constexpr uint32_t operator"" _u32(uintmax_t v)
+static constexpr uint32_t operator"" _u32(uintmax_t v) noexcept
 {
    return static_cast<uint32_t>(v);
 }
 
-static constexpr uint64_t operator"" _u64(uintmax_t v)
+static constexpr uint64_t operator"" _u64(uintmax_t v) noexcept
 {
    return static_cast<uint64_t>(v);
 }
 
-static constexpr int8_t operator"" _i8(uintmax_t v)
+static constexpr int8_t operator"" _i8(uintmax_t v) noexcept
 {
    return static_cast<int8_t>(v);
 }
 
-static constexpr int16_t operator"" _i16(uintmax_t v)
+static constexpr int16_t operator"" _i16(uintmax_t v) noexcept
 {
    return static_cast<int16_t>(v);
 }
 
-static constexpr int32_t operator"" _i32(uintmax_t v)
+static constexpr int32_t operator"" _i32(uintmax_t v) noexcept
 {
    return static_cast<int32_t>(v);
 }
 
-static constexpr int64_t operator"" _i64(uintmax_t v)
+static constexpr int64_t operator"" _i64(uintmax_t v) noexcept
 {
    return static_cast<int64_t>(v);
 }
 
-static constexpr float32_t operator"" _f32(floatmax_t v)
+static constexpr float32_t operator"" _f32(floatmax_t v) noexcept
 {
    return static_cast<float32_t>(v);
 }
 
-static constexpr float64_t operator"" _f64(floatmax_t v)
+static constexpr float64_t operator"" _f64(floatmax_t v) noexcept
 {
    return static_cast<float64_t>(v);
 }

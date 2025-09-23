@@ -18,7 +18,7 @@ namespace Phs
 {
 
 // Returns N-th argument of argument pack 'args'
-template<std::size_t N, typename... Ts>
+template <std::size_t N, typename... Ts>
 decltype(auto) getNthArgument(Ts&&... args)
 {
    PHS_STATIC_ASSERT(N < sizeof...(args));

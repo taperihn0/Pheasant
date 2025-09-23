@@ -23,12 +23,9 @@ private:
 	*   - working directory, which corresponds to the CMAKE_SOURCE_DIR from CMake 
 	*     configuration file
 	*  Seconds argument should be set to desired working directory
-	*  of a program. Then, the directory is changed in runtime.
+	*  of a program. Then, the directory is changed at runtime.
 	*/
 	void			loadExternalState(int argc, char** argv);
-
-	static constexpr size_t _ProgramPathPlace = 0;
-	static constexpr size_t _WorkingDirPlace  = 1;
 
 	// Callbacks functions handling window events
 	static void errorCallback(EventError ev);
@@ -45,12 +42,15 @@ private:
 	static void mouseMoveCallback(EventMouseMove ev);
 	static void mouseScrollCallback(EventMouseScroll ev);
 
-	std::unique_ptr<Window>			  _window;
-	std::unique_ptr<EventCallbacks> _callbacks;
-
 	static constexpr size_t			  _ProgramArgCount = 2;
+	static constexpr size_t			  _ProgramPathPlace = 0;
+	static constexpr size_t			  _WorkingDirPlace = 1;
+
 	FilePath								  _program_path;
 	FilePath								  _working_dir;
+
+	std::unique_ptr<Window>			  _window;
+	std::unique_ptr<EventCallbacks> _callbacks;
 };
 
 Application* createApplication(int argc, char** argv);

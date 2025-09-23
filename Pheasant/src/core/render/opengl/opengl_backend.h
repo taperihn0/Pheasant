@@ -11,7 +11,7 @@ namespace Phs
 
 /* Frontside of OpenGL, being managed by main renderer backend.
 */
-class BackendOpenGL
+class GL_Backend
 {
 public:
    /* Initialize OpenGL rendering context and store initialization data
@@ -26,7 +26,7 @@ public:
                                    float32_t blue, float32_t alpha);
 private:
    static constexpr RenderGraphicsAPI _GraphicsPlatform = RENDER_GRAPHICS_API_OPENGL;
-   static GLContext                   _gl_context;
+   static GL_Context                  _gl_context;
 };
 
 } // namespace Phs

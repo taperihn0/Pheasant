@@ -17,10 +17,10 @@ namespace Phs
 *  - SHADER_STAGE_FRAGMENT        (GL_FRAGMENT_SHADER)
 *  Uses SPIR-V during the compilation process.
 */
-class GLStageObject
+class GL_StageObject
 {
 public:
-   GLStageObject();
+   GL_StageObject();
 
    bool compile(const char* path, const char* source_content, ShaderStage shader_type);
    bool close();
@@ -44,18 +44,18 @@ private:
 *  and it can be used until the object is not destroyed by the program scope/heap deallocation.
 *  That means even after calling close() the program can be freely used with another stages.
 */
-class GLShader
+class GL_Shader
 {
 public:
-   GLShader();
-   ~GLShader();
+   GL_Shader();
+   ~GL_Shader();
 
    bool close();
    bool compileAttachStage(const char* source_path, const char* source, ShaderStage stage);
    bool linkProgram();
    bool bind();
 private:
-   GLStageObject           _shader_stages[ShaderStageCount];
+   GL_StageObject          _shader_stages[ShaderStageCount];
    GLuint                  _gl_shader_program;
    bool                    _linked;
 };

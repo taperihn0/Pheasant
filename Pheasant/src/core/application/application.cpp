@@ -111,7 +111,7 @@ Application::Application(int argc, char** argv)
 	_callbacks->mouse_release_callback  = mouseReleaseCallback;
 	_callbacks->mouse_move_callback     = mouseMoveCallback;
 	_callbacks->mouse_scroll_callback   = mouseScrollCallback;
-
+	// report them to the window
 	_window->setEventCallbacks(_callbacks.get());
 }
 
@@ -142,6 +142,7 @@ void Application::loadExternalState(int argc, char** argv)
 	_program_path = argv[_ProgramPathPlace];
 	_working_dir  = argv[_WorkingDirPlace];
 
+	// passed directory is a new working directory
 	FilePath::setCurrentDirectory(_working_dir);
 
 	PHS_CORE_LOG_TRACE("Current working directory: {}", _working_dir);

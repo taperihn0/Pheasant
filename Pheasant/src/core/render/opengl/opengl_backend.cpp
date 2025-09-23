@@ -10,9 +10,9 @@ namespace Phs
 static constexpr bool PhsGlSUCCESS = 1;
 static constexpr bool PhsGlFAILURE = 0;
 
-GLContext BackendOpenGL::_gl_context;
+GL_Context GL_Backend::_gl_context;
 
-bool BackendOpenGL::platformInitialize()
+bool GL_Backend::platformInitialize()
 {
    // load OpenGL functions with GLAD loader
    bool glad_status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
@@ -79,7 +79,7 @@ bool BackendOpenGL::platformInitialize()
    PHS_CORE_LOG_INFO("Successfully loaded OpenGL context using GLAD.");
 
    // allocate shader manager
-   _gl_context.shader_man = new GLShaderUtils;
+   _gl_context.shader_man = new GL_ShaderUtils;
 
    // Load shaders assets, compile and link them
    const FilePath shader_assets_path = FilePath::getCurrentDirectory()
@@ -91,14 +91,14 @@ bool BackendOpenGL::platformInitialize()
    return status;
 }
 
-void BackendOpenGL::platformShutdown()
+void GL_Backend::platformShutdown()
 {
    PHS_CORE_LOG_TRACE("GL backend: shuting down");
    // deallocate shader manager
    delete _gl_context.shader_man;
 }
 
-bool BackendOpenGL::platformWindowResize(uint width, uint height)
+bool GL_Backend::platformWindowResize(uint width, uint height)
 {
    glViewport(0, 0, width, height);
    GLenum status = glGetError();
@@ -106,17 +106,17 @@ bool BackendOpenGL::platformWindowResize(uint width, uint height)
    return status == GL_NO_ERROR;
 }
 
-bool BackendOpenGL::platformBeginFrame(RenderData& data)
+bool GL_Backend::platformBeginFrame(RenderData& data)
 {
    return PhsGlFAILURE;
 }
 
-bool BackendOpenGL::platformEndFrame(RenderData& data)
+bool GL_Backend::platformEndFrame(RenderData& data)
 {
    return PhsGlFAILURE;
 }
 
-bool BackendOpenGL::platformClearScreen(float32_t red, float32_t green,
+bool GL_Backend::platformClearScreen(float32_t red, float32_t green,
                                         float32_t blue, float32_t alpha)
 {
    glClearColor(red, green, blue, alpha);

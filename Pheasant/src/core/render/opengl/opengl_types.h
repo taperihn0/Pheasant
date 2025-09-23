@@ -1,7 +1,11 @@
 #pragma once
 
-#include "common.h"
+/* opengl_types.h:
+*  Here, graphics context of a OpenGL is declared.
+*  Also, we're including GLAD as also GLFW headers.
+*/
 
+#include "common.h"
 #define GLFW_INCLUDE_NONE
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
@@ -9,9 +13,13 @@
 namespace Phs
 {
 
-extern class GLShaderUtils;
+extern class GL_ShaderUtils;
 
-struct GLContext
+/* Storage of crucial OpenGL context info.
+*  GLContext object is managed by the OpenGL backend.
+*  Currently, only one shader is handled at a time.
+*/
+struct GL_Context
 {
    const uchar*      vendor;
    const uchar*      graphics_device;
@@ -21,7 +29,7 @@ struct GLContext
    int               context_profile_mask;
    int               context_features;
    bool              binary_shader_support;
-   GLShaderUtils*    shader_man;
+   GL_ShaderUtils*   shader_man;
 };
 
 } // namespace Phs

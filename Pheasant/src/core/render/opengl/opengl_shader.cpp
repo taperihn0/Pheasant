@@ -5,16 +5,16 @@
 namespace Phs
 {
 
-static constexpr bool PhsGlShaderSUCCESS = 1;
-static constexpr bool PhsGlShaderFAILURE = 0;
+static constexpr bool PhsGL_ShaderSUCCESS = 1;
+static constexpr bool PhsGL_ShaderFAILURE = 0;
 
-GLStageObject::GLStageObject()
+GL_StageObject::GL_StageObject()
 	: _gl_shader_stage(_UndefGlShaderNum)
    , _gl_shader_type(_UndefGlShaderStage)
    , _compiled(false)
 {}
 
-bool GLStageObject::compile(const char* path, const char* source_content, ShaderStage shader_type)
+bool GL_StageObject::compile(const char* path, const char* source_content, ShaderStage shader_type)
 {
 	GLenum gl_shader_stage = 0;
 
@@ -37,34 +37,34 @@ bool GLStageObject::compile(const char* path, const char* source_content, Shader
 			break;
 		case SHADER_STAGE_UNDEF:
 			PHS_CORE_LOG_ERROR("Undefined shader stage!");
-			return PhsGlShaderFAILURE;
+			return PhsGL_ShaderFAILURE;
 	}
 
 	return compileSource(path, source_content, gl_shader_stage);
 }
 
-bool GLStageObject::close()
+bool GL_StageObject::close()
 {
 	if (!isCompiled())
 	{
 		PHS_CORE_LOG_ERROR("Trying to delete non-compiled shader object!");
-		return PhsGlShaderFAILURE;
+		return PhsGL_ShaderFAILURE;
 	}
 	glDeleteShader(_gl_shader_stage);
-	return PhsGlShaderSUCCESS;
+	return PhsGL_ShaderSUCCESS;
 }
 
-bool GLStageObject::isCompiled() const
+bool GL_StageObject::isCompiled() const
 {
 	return _compiled;
 }
 
-bool GLStageObject::attachTo(GLuint gl_shader_program) const
+bool GL_StageObject::attachTo(GLuint gl_shader_program) const
 {
 	if (!isCompiled())
 	{
 		PHS_CORE_LOG_ERROR("Trying to attach non-compiled shader object!");
-		return PhsGlShaderFAILURE;
+		return PhsGL_ShaderFAILURE;
 	}
 
 	glAttachShader(gl_shader_program, _gl_shader_stage);
@@ -72,14 +72,14 @@ bool GLStageObject::attachTo(GLuint gl_shader_program) const
 	return status == GL_NO_ERROR;
 }
 
-bool GLStageObject::detach(GLuint gl_shader_program) const
+bool GL_StageObject::detach(GLuint gl_shader_program) const
 {
 	glDetachShader(gl_shader_program, _gl_shader_stage);
 	GLenum status = glGetError();
 	return status == GL_NO_ERROR;
 }
 
-bool GLStageObject::compileSource(const char* path, const char* source_content, GLenum gl_shader_type)
+bool GL_StageObject::compileSource(const char* path, const char* source_content, GLenum gl_shader_type)
 {
 	_gl_shader_type = gl_shader_type;
 	_gl_shader_stage = glCreateShader(_gl_shader_type);
@@ -105,7 +105,7 @@ bool GLStageObject::compileSource(const char* path, const char* source_content, 
 		break;
 	default: 
 		PHS_CORE_LOG_ERROR("Invalid shader type");
-		return PhsGlShaderFAILURE;
+		return PhsGL_ShaderFAILURE;
 	}
 
 	shaderc::Compiler compiler;
@@ -122,7 +122,7 @@ bool GLStageObject::compileSource(const char* path, const char* source_content, 
 	{
 		PHS_CORE_LOG_FATAL("Shader compilation failed!");
 		PHS_CORE_LOG_FATAL("Compilation error: {}", result.GetErrorMessage());
-		return PhsGlShaderFAILURE;
+		return PhsGL_ShaderFAILURE;
 	}
 
 	std::vector<uint32_t> spirv(result.cbegin(), result.cend());
@@ -132,12 +132,14 @@ bool GLStageObject::compileSource(const char* path, const char* source_content, 
 	GLenum status = glGetError();
 	
 	if (status != GL_NO_ERROR)
-		return PhsGlShaderFAILURE;
+		return PhsGL_ShaderFAILURE;
 
 	glSpecializeShader(_gl_shader_stage, "main", 0, nullptr, nullptr);
 
+	status = glGetError();
+
 	if (status != GL_NO_ERROR)
-		return PhsGlShaderFAILURE;
+		return PhsGL_ShaderFAILURE;
 
 	GLint compiled_status = 0;
 	glGetShaderiv(_gl_shader_stage, GL_COMPILE_STATUS, &compiled_status);
@@ -155,75 +157,75 @@ bool GLStageObject::compileSource(const char* path, const char* source_content, 
 		glDeleteShader(_gl_shader_stage);
 
 		PHS_CORE_LOG_FATAL("Shader specialization failed: {}", info);
-		return PhsGlShaderFAILURE;
+		return PhsGL_ShaderFAILURE;
 	}
 
 	PHS_CORE_LOG_TRACE("Shader compiled successfully");
 	
 	_compiled = true;	
-	return PhsGlShaderSUCCESS;
+	return PhsGL_ShaderSUCCESS;
 }
 
-GLShader::GLShader()
+GL_Shader::GL_Shader()
 	: _shader_stages{}
 	, _linked(false)
 {
 	_gl_shader_program = glCreateProgram();
 }
 
-GLShader::~GLShader()
+GL_Shader::~GL_Shader()
 {
 	close();
 	glDeleteProgram(_gl_shader_program);
 }
 
-bool GLShader::close()
+bool GL_Shader::close()
 {
 	for (uint i = 0; i < ShaderStageCount; i++)
 	{
 		if (_shader_stages[i].isCompiled())
 		{
 			bool status = _shader_stages[i].close();
-			if (!status) return PhsGlShaderFAILURE;
+			if (!status) return PhsGL_ShaderFAILURE;
 
 			if (_linked) 
 			{
 				status = _shader_stages[i].detach(_gl_shader_program);
-				if (!status) return PhsGlShaderFAILURE;
+				if (!status) return PhsGL_ShaderFAILURE;
 			}
 		}
 	}
 
 	_linked = false;
-	return PhsGlShaderSUCCESS;
+	return PhsGL_ShaderSUCCESS;
 }
 
-bool GLShader::compileAttachStage(const char* source_path, const char* source, ShaderStage stage)
+bool GL_Shader::compileAttachStage(const char* source_path, const char* source, ShaderStage stage)
 {
 	return _shader_stages[stage].compile(source_path, source, stage);
 }
 
-bool GLShader::linkProgram()
+bool GL_Shader::linkProgram()
 {
 	for (uint i = 0; i < ShaderStageCount; i++)
 	{
 		if (_shader_stages[i].isCompiled())
 		{
 			bool status = _shader_stages[i].attachTo(_gl_shader_program);
-			if (!status) return PhsGlShaderFAILURE;
+			if (!status) return PhsGL_ShaderFAILURE;
 		}
 	}
 
 	_linked = true;
-	return PhsGlShaderSUCCESS;
+	return PhsGL_ShaderSUCCESS;
 }
 
-bool GLShader::bind()
+bool GL_Shader::bind()
 {
 	if (!_linked)
 	{
 		PHS_CORE_LOG_ERROR("Trying to bind unliked shader program!");
-		return PhsGlShaderFAILURE;
+		return PhsGL_ShaderFAILURE;
 	}
 
 	glUseProgram(_gl_shader_program);
