@@ -43,35 +43,35 @@ constexpr PHS_INLINE mat3<T>& mat3<T>::operator=(const mat3<T>& m) PHS_MATH_NOEX
 }
 
 template <typename T>
-constexpr PHS_INLINE PHS_NODISCARD mat3<T> mat3<T>::operator+(const mat3<T>& m) const PHS_MATH_NOEXCEPT
+PHS_NODISCARD constexpr PHS_INLINE mat3<T> mat3<T>::operator+(const mat3<T>& m) const PHS_MATH_NOEXCEPT
 {
    const mat3<T> res(_m[0] + m._m[0], _m[1] + m._m[1], _m[2] + m._m[2]);
    return res;
 }
 
 template <typename T>
-constexpr PHS_INLINE PHS_NODISCARD mat3<T> mat3<T>::operator-(const mat3<T>& m) const PHS_MATH_NOEXCEPT
+PHS_NODISCARD constexpr PHS_INLINE mat3<T> mat3<T>::operator-(const mat3<T>& m) const PHS_MATH_NOEXCEPT
 {
    const mat3<T> res(_m[0] - m._m[0], _m[1] - m._m[1], _m[2] - m._m[2]);
    return res;
 }
 
 template <typename T>
-constexpr PHS_INLINE PHS_NODISCARD mat3<T> mat3<T>::operator*(T s) const PHS_MATH_NOEXCEPT
+PHS_NODISCARD constexpr PHS_INLINE mat3<T> mat3<T>::operator*(T s) const PHS_MATH_NOEXCEPT
 {
    const mat3<T> res(_m[0] * s, _m[1] * s, _m[2] * s);
    return res;
 }
 
 template <typename T>
-constexpr PHS_INLINE PHS_NODISCARD mat3<T> mat3<T>::operator/(T s) const
+PHS_NODISCARD constexpr PHS_INLINE mat3<T> mat3<T>::operator/(T s) const
 {
    const mat3<T> res(_m[0] / s, _m[1] / s, _m[2] / s);
    return res;
 }
 
 template <typename T>
-constexpr PHS_INLINE PHS_NODISCARD mat3<T> mat3<T>::operator*(const mat3<T>& m) const PHS_MATH_NOEXCEPT
+PHS_NODISCARD constexpr PHS_INLINE mat3<T> mat3<T>::operator*(const mat3<T>& m) const PHS_MATH_NOEXCEPT
 {
    mat3<T> res;
 
@@ -90,7 +90,7 @@ constexpr PHS_INLINE PHS_NODISCARD mat3<T> mat3<T>::operator*(const mat3<T>& m) 
 }
 
 template <typename T>
-constexpr PHS_INLINE PHS_NODISCARD vec3<T> mat3<T>::operator*(const vec3<T>& v)  const PHS_MATH_NOEXCEPT
+PHS_NODISCARD constexpr PHS_INLINE vec3<T> mat3<T>::operator*(const vec3<T>& v)  const PHS_MATH_NOEXCEPT
 {
    const vec3<T> res(dot(_m[0], v),
                      dot(_m[1], v),
@@ -99,7 +99,7 @@ constexpr PHS_INLINE PHS_NODISCARD vec3<T> mat3<T>::operator*(const vec3<T>& v) 
 }
 
 template <typename T>
-constexpr PHS_INLINE PHS_NODISCARD bool mat3<T>::operator==(const mat3<T>& m) const PHS_MATH_NOEXCEPT
+PHS_NODISCARD constexpr PHS_INLINE bool mat3<T>::operator==(const mat3<T>& m) const PHS_MATH_NOEXCEPT
 {
    return _m[0] == m._m[0] and _m[1] == m._m[1] and _m[2] == m._m[2];
 }

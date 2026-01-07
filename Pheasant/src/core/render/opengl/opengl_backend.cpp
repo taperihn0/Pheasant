@@ -1,5 +1,3 @@
-#pragma once
-
 #include "opengl_backend.h"
 #include "logger/log.h"
 #include "opengl_shader_man.h"

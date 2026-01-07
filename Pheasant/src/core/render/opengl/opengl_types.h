@@ -13,7 +13,7 @@
 namespace Phs
 {
 
-extern class GL_ShaderUtils;
+PHS_DECLARE class GL_ShaderUtils;
 
 /* Storage of crucial OpenGL context info.
 *  GLContext object is managed by the OpenGL backend.

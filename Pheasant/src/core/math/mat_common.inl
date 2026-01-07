@@ -26,20 +26,20 @@ constexpr PHS_INLINE const mat<Rows, Cols, T>& matbase<Rows, Cols, T>::__asDeriv
 }
 
 template <dim_int_t Rows, dim_int_t Cols, typename T>
-constexpr PHS_NODISCARD uint matbase<Rows, Cols, T>::rows() PHS_MATH_NOEXCEPT
+PHS_NODISCARD constexpr uint matbase<Rows, Cols, T>::rows() PHS_MATH_NOEXCEPT
 {
    return Rows;
 }
 
 template <dim_int_t Rows, dim_int_t Cols, typename T>
-constexpr PHS_INLINE PHS_NODISCARD uint matbase<Rows, Cols, T>::cols() PHS_MATH_NOEXCEPT
+PHS_NODISCARD constexpr PHS_INLINE uint matbase<Rows, Cols, T>::cols() PHS_MATH_NOEXCEPT
 {
    return Cols;
 }
 
 template <dim_int_t Rows, dim_int_t Cols, typename T>
 template <dim_int_t CastRows, dim_int_t CastCols, typename CastT>
-constexpr PHS_INLINE PHS_NODISCARD matbase<Rows, Cols, T>::operator mat<CastRows, CastCols, CastT>()
+PHS_NODISCARD constexpr PHS_INLINE matbase<Rows, Cols, T>::operator mat<CastRows, CastCols, CastT>()
 {
    const mat<Rows, Cols, T>& self = __asDerived(*this);
    mat<CastRows, CastCols, CastT> res;
@@ -65,7 +65,7 @@ constexpr PHS_INLINE mat<Rows, Cols, T>& matbase<Rows, Cols, T>::operator+=(cons
 template <dim_int_t Rows, dim_int_t Cols, typename T>
 constexpr PHS_INLINE mat<Rows, Cols, T>& matbase<Rows, Cols, T>::operator-=(const mat<Rows, Cols, T>& m) PHS_MATH_NOEXCEPT
 {
-   __asDerived(*this) = __asDerived(*this) - m:
+   __asDerived(*this) = __asDerived(*this) - m;
    return __asDerived(*this);
 }
 
@@ -91,21 +91,21 @@ constexpr PHS_INLINE mat<Rows, Cols, T>& matbase<Rows, Cols, T>::operator*=(cons
 }
 
 template <dim_int_t Rows, dim_int_t Cols, typename T>
-constexpr PHS_INLINE PHS_NODISCARD vec<Cols, T>& matbase<Rows, Cols, T>::operator[](size_t i) PHS_MATH_NOEXCEPT
+PHS_NODISCARD constexpr PHS_INLINE vec<Cols, T>& matbase<Rows, Cols, T>::operator[](size_t i) PHS_MATH_NOEXCEPT
 {
    PHS_ASSERT(i < Rows);
    return __asDerived(*this)._m[i];
 }
 
 template <dim_int_t Rows, dim_int_t Cols, typename T>
-constexpr PHS_INLINE PHS_NODISCARD const vec<Cols, T>& matbase<Rows, Cols, T>::operator[](size_t i) const PHS_MATH_NOEXCEPT
+PHS_NODISCARD constexpr PHS_INLINE const vec<Cols, T>& matbase<Rows, Cols, T>::operator[](size_t i) const PHS_MATH_NOEXCEPT
 {
    PHS_ASSERT(i < Rows);
    return __asDerived(*this)._m[i];
 }
 
 template <dim_int_t Rows, dim_int_t Cols, typename T>
-constexpr PHS_INLINE PHS_NODISCARD bool matbase<Rows, Cols, T>::operator!=(const mat<Rows, Cols, T>& m) const PHS_MATH_NOEXCEPT
+PHS_NODISCARD constexpr PHS_INLINE bool matbase<Rows, Cols, T>::operator!=(const mat<Rows, Cols, T>& m) const PHS_MATH_NOEXCEPT
 {
    return !(__asDerived(*this) == m);
 }

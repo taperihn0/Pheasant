@@ -51,11 +51,13 @@
 #  define PHS_FORCEINLINE		    __forceinline
 #  define PHS_LAMBDA_FORCEINLINE  [[msvc::forceinline]] 
 #  define PHS_NODISCARD           [[nodiscard]]
+#  define PHS_DECLARE             extern
 #elif defined(__GNUG__)
 #  define PHS_INLINE				    inline
-#  define PHS_FORCEINLINE		    __attribute__((always_inline))
+#  define PHS_FORCEINLINE		    __attribute__((always_inline)) inline
 #  define PHS_LAMBDA_FORCEINLINE  NONE_TOKEN
 #  define PHS_NODISCARD           [[nodiscard]]
+#  define PHS_DECLARE             
 #endif
 
 #define PHS_NOEXCEPT              noexcept

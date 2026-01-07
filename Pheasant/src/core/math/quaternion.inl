@@ -39,14 +39,14 @@ constexpr PHS_INLINE quat4<T>::quat(const vec4<T>& q) PHS_MATH_NOEXCEPT
 {}
 
 template <typename T>
-constexpr PHS_INLINE PHS_NODISCARD quat4<T> quat4<T>::quatwxyz(T w, T x, T y, T z) PHS_MATH_NOEXCEPT
+PHS_NODISCARD constexpr PHS_INLINE quat4<T> quat4<T>::quatwxyz(T w, T x, T y, T z) PHS_MATH_NOEXCEPT
 {
    const quat4<T> res(x, y, z, w);
    return res;
 }
 
 template <typename T>
-constexpr PHS_INLINE PHS_NODISCARD quat4<T> quat4<T>::inversed() const
+PHS_NODISCARD constexpr PHS_INLINE quat4<T> quat4<T>::inversed() const
 {
    const float64_t lensq = lengthSquared();
    quat4<T> res = conjugated() / lensq;
@@ -54,7 +54,7 @@ constexpr PHS_INLINE PHS_NODISCARD quat4<T> quat4<T>::inversed() const
 }
 
 template <typename T>
-constexpr PHS_INLINE PHS_NODISCARD quat4<T> quat4<T>::inverse()
+PHS_NODISCARD constexpr PHS_INLINE quat4<T> quat4<T>::inverse()
 {
    quat4<T> inv = inversed();
    *this = inv;
@@ -62,14 +62,14 @@ constexpr PHS_INLINE PHS_NODISCARD quat4<T> quat4<T>::inverse()
 }
 
 template <typename T>
-constexpr PHS_INLINE PHS_NODISCARD quat4<T> quat4<T>::conjugated() const PHS_MATH_NOEXCEPT
+PHS_NODISCARD constexpr PHS_INLINE quat4<T> quat4<T>::conjugated() const PHS_MATH_NOEXCEPT
 {
    quat4<T> res = quatwxyz(w, -x, -y, -z);
    return res;
 }
 
 template <typename T>
-constexpr PHS_INLINE PHS_NODISCARD quat4<T> quat4<T>::conjugate()
+PHS_NODISCARD constexpr PHS_INLINE quat4<T> quat4<T>::conjugate()
 {
    quat4<T> cnj = conjugated();
    *this = cnj;
@@ -77,14 +77,14 @@ constexpr PHS_INLINE PHS_NODISCARD quat4<T> quat4<T>::conjugate()
 }
 
 template <typename T>
-constexpr PHS_INLINE PHS_NODISCARD float64_t quat4<T>::lengthSquared() const PHS_MATH_NOEXCEPT
+PHS_NODISCARD constexpr PHS_INLINE float64_t quat4<T>::lengthSquared() const PHS_MATH_NOEXCEPT
 {
    const float64_t len = dot(*this, *this);
    return len;
 }
 
 template <typename T>
-constexpr PHS_INLINE PHS_NODISCARD quat4<T> quat4<T>::operator+(const quat4<T>& q) const PHS_MATH_NOEXCEPT
+PHS_NODISCARD constexpr PHS_INLINE quat4<T> quat4<T>::operator+(const quat4<T>& q) const PHS_MATH_NOEXCEPT
 {
    quat4<T> res;
 
@@ -107,7 +107,7 @@ constexpr PHS_INLINE PHS_NODISCARD quat4<T> quat4<T>::operator+(const quat4<T>& 
 }
 
 template <typename T>
-constexpr PHS_INLINE PHS_NODISCARD quat4<T> quat4<T>::operator-(const quat4<T>& q) const PHS_MATH_NOEXCEPT
+PHS_NODISCARD constexpr PHS_INLINE quat4<T> quat4<T>::operator-(const quat4<T>& q) const PHS_MATH_NOEXCEPT
 {
    quat4<T> res;
 
@@ -130,7 +130,7 @@ constexpr PHS_INLINE PHS_NODISCARD quat4<T> quat4<T>::operator-(const quat4<T>& 
 }
 
 template <typename T>
-constexpr PHS_INLINE PHS_NODISCARD quat4<T> quat4<T>::operator*(T s) const PHS_MATH_NOEXCEPT
+PHS_NODISCARD constexpr PHS_INLINE quat4<T> quat4<T>::operator*(T s) const PHS_MATH_NOEXCEPT
 {
    quat4<T> res;
 
@@ -153,7 +153,7 @@ constexpr PHS_INLINE PHS_NODISCARD quat4<T> quat4<T>::operator*(T s) const PHS_M
 }
 
 template <typename T>
-constexpr PHS_INLINE PHS_NODISCARD quat4<T> quat4<T>::operator/(T s) const
+PHS_NODISCARD constexpr PHS_INLINE quat4<T> quat4<T>::operator/(T s) const
 {
    quat4<T> res;
 
@@ -176,7 +176,7 @@ constexpr PHS_INLINE PHS_NODISCARD quat4<T> quat4<T>::operator/(T s) const
 }
 
 template <typename T>
-constexpr PHS_INLINE PHS_NODISCARD quat4<T> quat4<T>::operator*(const quat4<T>& q) const PHS_MATH_NOEXCEPT
+PHS_NODISCARD constexpr PHS_INLINE quat4<T> quat4<T>::operator*(const quat4<T>& q) const PHS_MATH_NOEXCEPT
 {
    quat4<T> res;
 
@@ -234,7 +234,7 @@ constexpr PHS_INLINE PHS_NODISCARD quat4<T> quat4<T>::operator*(const quat4<T>& 
 }
 
 template <typename T>
-constexpr PHS_INLINE PHS_NODISCARD quat4<T> quat4<T>::operator/(const quat4<T>& q) const
+PHS_NODISCARD constexpr PHS_INLINE quat4<T> quat4<T>::operator/(const quat4<T>& q) const
 {
    quat4<T> res;
    res = *this * q.inversed();
@@ -242,7 +242,7 @@ constexpr PHS_INLINE PHS_NODISCARD quat4<T> quat4<T>::operator/(const quat4<T>& 
 }
 
 template <typename T>
-constexpr PHS_INLINE PHS_NODISCARD bool quat4<T>::operator==(const vec4<T>& q) const PHS_MATH_NOEXCEPT
+PHS_NODISCARD constexpr PHS_INLINE bool quat4<T>::operator==(const vec4<T>& q) const PHS_MATH_NOEXCEPT
 {
    return x == q.x and y == q.y and z == q.z and w == q.w;
 }

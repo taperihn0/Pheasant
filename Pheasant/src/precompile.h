@@ -7,6 +7,7 @@
 #include <string_view>
 #include <tuple>
 #include <vector>
+#include <memory>
 
 #ifdef PHS_OS_WINDOWS
 #  include <Windows.h>

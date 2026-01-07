@@ -41,6 +41,7 @@ using ll        = long long;
 using ull       = unsigned long long;
 using uint      = unsigned int;
 using intptr_t  = size_t;
+using uintmax_t = ull;
 
 static constexpr uint8_t operator"" _u8(uintmax_t v) noexcept
 {

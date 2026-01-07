@@ -33,8 +33,8 @@ struct vecbase
 
    constexpr                                          vecbase()                                        PHS_MATH_NOEXCEPT;
 
-   static constexpr PHS_INLINE PHS_NODISCARD uint     dim()                                            PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE PHS_NODISCARD float64_t       length()                                   const;
+   PHS_NODISCARD static constexpr PHS_INLINE uint     dim()                                            PHS_MATH_NOEXCEPT;
+   PHS_NODISCARD constexpr PHS_INLINE float64_t       length()                                   const;
                                                                                                  
    constexpr PHS_INLINE Derived<Dimension, T>         normalized()                               const;                        
    constexpr PHS_INLINE Derived<Dimension, T>&        normalize();                               
@@ -46,10 +46,10 @@ struct vecbase
    constexpr PHS_INLINE Derived<Dimension, T>&        operator*=(const Derived<Dimension, T>& v)       PHS_MATH_NOEXCEPT;
    constexpr PHS_INLINE Derived<Dimension, T>&        operator/=(const Derived<Dimension, T>& v)       PHS_MATH_NOEXCEPT;
                                                                                                        
-   constexpr PHS_INLINE PHS_NODISCARD T&              operator[](size_t i)                             PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE PHS_NODISCARD const T&        operator[](size_t i)                       const PHS_MATH_NOEXCEPT;
+   PHS_NODISCARD constexpr PHS_INLINE T&              operator[](size_t i)                             PHS_MATH_NOEXCEPT;
+   PHS_NODISCARD constexpr PHS_INLINE const T&        operator[](size_t i)                       const PHS_MATH_NOEXCEPT;
                                                                                                 
-   constexpr PHS_INLINE PHS_NODISCARD bool            operator!=(const Derived<Dimension, T>& m) const PHS_MATH_NOEXCEPT;
+   PHS_NODISCARD constexpr PHS_INLINE bool            operator!=(const Derived<Dimension, T>& m) const PHS_MATH_NOEXCEPT;
 private:
    constexpr PHS_INLINE Derived<Dimension, T>&        __asDerived(vecbase<Dimension, T, Derived>& self);
    constexpr PHS_INLINE const Derived<Dimension, T>&  __asDerived(const vecbase<Dimension, T, Derived>& self) const;

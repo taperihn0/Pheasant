@@ -6,6 +6,10 @@ add_library(glad
    src/glad.c
 )
 
+if (NOT MSVC)
+   target_compile_options(glad PRIVATE -fPIC)
+endif()
+
 target_include_directories(glad PUBLIC 
    include/
 )

@@ -1,5 +1,3 @@
-#pragma once
-
 #include "opengl_swapchain.h"
 #include "logger/log.h"
 #include "opengl_backend.h"

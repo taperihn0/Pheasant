@@ -28,13 +28,13 @@ constexpr PHS_INLINE const Derived<Dimension, T>& vecbase<Dimension, T, Derived>
 }
 
 template <dim_int_t Dimension, typename T, template <dim_int_t, typename> typename Derived>
-constexpr PHS_NODISCARD uint vecbase<Dimension, T, Derived>::dim() PHS_MATH_NOEXCEPT
+PHS_NODISCARD constexpr uint vecbase<Dimension, T, Derived>::dim() PHS_MATH_NOEXCEPT
 {
    return Dimension;
 }
 
 template <dim_int_t Dimension, typename T, template <dim_int_t, typename> typename Derived>
-constexpr PHS_INLINE PHS_NODISCARD float64_t vecbase<Dimension, T, Derived>::length() const
+PHS_NODISCARD constexpr PHS_INLINE float64_t vecbase<Dimension, T, Derived>::length() const
 {
    return sqrt<float64_t>(__asDerived(*this).lengthSquared());
 }
@@ -64,7 +64,7 @@ constexpr PHS_INLINE Derived<Dimension, T>& vecbase<Dimension, T, Derived>::oper
 template <dim_int_t Dimension, typename T, template <dim_int_t, typename> typename Derived>
 constexpr PHS_INLINE Derived<Dimension, T>& vecbase<Dimension, T, Derived>::operator-=(const Derived<Dimension, T>& m) PHS_MATH_NOEXCEPT
 {
-   __asDerived(*this) = __asDerived(*this) - m:
+   __asDerived(*this) = __asDerived(*this) - m;
    return __asDerived(*this);
 }
 
@@ -97,7 +97,7 @@ constexpr PHS_INLINE Derived<Dimension, T>& vecbase<Dimension, T, Derived>::oper
 }
 
 template <dim_int_t Dimension, typename T, template <dim_int_t, typename> typename Derived>
-constexpr PHS_INLINE PHS_NODISCARD T& vecbase<Dimension, T, Derived>::operator[](size_t i) PHS_MATH_NOEXCEPT
+PHS_NODISCARD constexpr PHS_INLINE T& vecbase<Dimension, T, Derived>::operator[](size_t i) PHS_MATH_NOEXCEPT
 {
    PHS_ASSERT(i < Dimension);
    T* addres = &(__asDerived(*this).x);
@@ -105,7 +105,7 @@ constexpr PHS_INLINE PHS_NODISCARD T& vecbase<Dimension, T, Derived>::operator[]
 }
 
 template <dim_int_t Dimension, typename T, template <dim_int_t, typename> typename Derived>
-constexpr PHS_INLINE PHS_NODISCARD const T& vecbase<Dimension, T, Derived>::operator[](size_t i) const PHS_MATH_NOEXCEPT
+PHS_NODISCARD constexpr PHS_INLINE const T& vecbase<Dimension, T, Derived>::operator[](size_t i) const PHS_MATH_NOEXCEPT
 {
    PHS_ASSERT(i < Dimension);
    const T* addres = &(__asDerived(*this).x);
@@ -113,7 +113,7 @@ constexpr PHS_INLINE PHS_NODISCARD const T& vecbase<Dimension, T, Derived>::oper
 }
 
 template <dim_int_t Dimension, typename T, template <dim_int_t, typename> typename Derived>
-constexpr PHS_INLINE PHS_NODISCARD bool vecbase<Dimension, T, Derived>::operator!=(const Derived<Dimension, T>& m) const PHS_MATH_NOEXCEPT
+PHS_NODISCARD constexpr PHS_INLINE bool vecbase<Dimension, T, Derived>::operator!=(const Derived<Dimension, T>& m) const PHS_MATH_NOEXCEPT
 {
    return !(__asDerived(*this) == m);
 }

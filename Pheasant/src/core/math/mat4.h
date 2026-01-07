@@ -29,14 +29,14 @@ struct mat<4, 4, T> : public matbase<4, 4, T>
 
    constexpr PHS_INLINE mat4<T>&               operator=(const mat4<T>& m)        PHS_MATH_NOEXCEPT;
 
-   constexpr PHS_INLINE PHS_NODISCARD mat4<T>  operator+(const mat4<T>& m)  const PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE PHS_NODISCARD mat4<T>  operator-(const mat4<T>& m)  const PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE PHS_NODISCARD mat4<T>  operator*(T s)               const PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE PHS_NODISCARD mat4<T>  operator/(T s)               const;
-   constexpr PHS_INLINE PHS_NODISCARD mat4<T>  operator*(const mat4<T>& m)  const PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE PHS_NODISCARD vec4<T>  operator*(const vec4<T>& v)  const PHS_MATH_NOEXCEPT;
+   PHS_NODISCARD constexpr PHS_INLINE mat4<T>  operator+(const mat4<T>& m)  const PHS_MATH_NOEXCEPT;
+   PHS_NODISCARD constexpr PHS_INLINE mat4<T>  operator-(const mat4<T>& m)  const PHS_MATH_NOEXCEPT;
+   PHS_NODISCARD constexpr PHS_INLINE mat4<T>  operator*(T s)               const PHS_MATH_NOEXCEPT;
+   PHS_NODISCARD constexpr PHS_INLINE mat4<T>  operator/(T s)               const;
+   PHS_NODISCARD constexpr PHS_INLINE mat4<T>  operator*(const mat4<T>& m)  const PHS_MATH_NOEXCEPT;
+   PHS_NODISCARD constexpr PHS_INLINE vec4<T>  operator*(const vec4<T>& v)  const PHS_MATH_NOEXCEPT;
 
-   constexpr PHS_INLINE PHS_NODISCARD bool     operator==(const mat4<T>& m) const PHS_MATH_NOEXCEPT;
+   PHS_NODISCARD constexpr PHS_INLINE bool     operator==(const mat4<T>& m) const PHS_MATH_NOEXCEPT;
 
 private:
    static constexpr dim_int_t _Rows = 4;

@@ -42,35 +42,35 @@ constexpr PHS_INLINE mat2<T>& mat2<T>::operator=(const mat2<T>& m) PHS_MATH_NOEX
 }
 
 template <typename T>
-constexpr PHS_INLINE PHS_NODISCARD mat2<T> mat2<T>::operator+(const mat2<T>& m) const PHS_MATH_NOEXCEPT
+PHS_NODISCARD constexpr PHS_INLINE mat2<T> mat2<T>::operator+(const mat2<T>& m) const PHS_MATH_NOEXCEPT
 {
    const mat2<T> res(_m[0] + m._m[0], _m[1] + m._m[1]);
    return res;
 }
 
 template <typename T>
-constexpr PHS_INLINE PHS_NODISCARD mat2<T> mat2<T>::operator-(const mat2<T>& m) const PHS_MATH_NOEXCEPT
+PHS_NODISCARD constexpr PHS_INLINE mat2<T> mat2<T>::operator-(const mat2<T>& m) const PHS_MATH_NOEXCEPT
 {
    const mat2<T> res(_m[0] - m._m[0], _m[1] - m._m[1]);
    return res;
 }
 
 template <typename T>
-constexpr PHS_INLINE PHS_NODISCARD mat2<T> mat2<T>::operator*(T s) const PHS_MATH_NOEXCEPT
+PHS_NODISCARD constexpr PHS_INLINE mat2<T> mat2<T>::operator*(T s) const PHS_MATH_NOEXCEPT
 {
    const mat2<T> res(_m[0] * s, _m[1] * s);
    return res;
 }
 
 template <typename T>
-constexpr PHS_INLINE PHS_NODISCARD mat2<T> mat2<T>::operator/(T s) const
+PHS_NODISCARD constexpr PHS_INLINE mat2<T> mat2<T>::operator/(T s) const
 {
    const mat2<T> res(_m[0] / s, _m[1] / s);
    return res;
 }
 
 template <typename T>
-constexpr PHS_INLINE PHS_NODISCARD mat2<T> mat2<T>::operator*(const mat2<T>& m) const PHS_MATH_NOEXCEPT
+PHS_NODISCARD constexpr PHS_INLINE mat2<T> mat2<T>::operator*(const mat2<T>& m) const PHS_MATH_NOEXCEPT
 {
    mat2<T> res;
 
@@ -94,7 +94,7 @@ constexpr PHS_INLINE PHS_NODISCARD mat2<T> mat2<T>::operator*(const mat2<T>& m) 
 }
 
 template <typename T>
-constexpr PHS_INLINE PHS_NODISCARD vec2<T> mat2<T>::operator*(const vec2<T>& v) const PHS_MATH_NOEXCEPT
+PHS_NODISCARD constexpr PHS_INLINE vec2<T> mat2<T>::operator*(const vec2<T>& v) const PHS_MATH_NOEXCEPT
 {
    const vec2<T> res(_m[0].x * v.x + _m[0].y * v.y,
                      _m[1].x * v.x + _m[1].y * v.y);
@@ -102,7 +102,7 @@ constexpr PHS_INLINE PHS_NODISCARD vec2<T> mat2<T>::operator*(const vec2<T>& v) 
 }
 
 template <typename T>
-constexpr PHS_INLINE PHS_NODISCARD bool mat2<T>::operator==(const mat2<T>& m) const PHS_MATH_NOEXCEPT
+PHS_NODISCARD constexpr PHS_INLINE bool mat2<T>::operator==(const mat2<T>& m) const PHS_MATH_NOEXCEPT
 {
    return _m[0] == m._m[0] and _m[1] == m._m[1];
 }

@@ -1,0 +1,29 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+    {
+      "name": "Debug Testbed",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/bin/Testbed/Debug/PHEASANT_ARCHITECTURE_64/Testbed",
+      "args": ["${workspaceFolder}"],
+      "cwd": "${workspaceFolder}",
+      "stopAtEntry": true,
+      "environment": [],
+      "externalConsole": false,
+    },
+    {
+      "name": "CMake Debug",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${command:cmake.launchTargetPath}",
+      "args": ["${workspaceFolder}"],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}",
+      "MIMode": "gdb",
+      "setupCommands": [
+        { "text": "-enable-pretty-printing", "ignoreFailures": true }
+      ]
+    }
+  ]
+}

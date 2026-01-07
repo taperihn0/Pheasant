@@ -49,7 +49,7 @@ bool File<StreamDirection>::open(const FilePath& path, FileOpenMode mode)
 
    const char* cpath = _path.toCStr();
 
-   _stream.open(cpath, _mode);
+   _stream.open(cpath, static_cast<std::ios_base::openmode>(_mode));
 
    if (!_stream)
    {

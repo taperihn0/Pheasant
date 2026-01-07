@@ -18,23 +18,23 @@ struct PHS_ALIGN(16) quat<4, T> : vecbase<4, T, quat>
                                                            T z = __Zero, T w = __Zero)   PHS_MATH_NOEXCEPT;
    constexpr PHS_INLINE explicit                      quat(const vec4<T>& q)             PHS_MATH_NOEXCEPT;
 
-   static constexpr PHS_INLINE PHS_NODISCARD quat4<T> quatwxyz(T w, T x, T y, T z)       PHS_MATH_NOEXCEPT;
+   PHS_NODISCARD static constexpr PHS_INLINE quat4<T> quatwxyz(T w, T x, T y, T z)       PHS_MATH_NOEXCEPT;
 
-   constexpr PHS_INLINE PHS_NODISCARD quat4<T>        inversed()                   const;
-   constexpr PHS_INLINE PHS_NODISCARD quat4<T>        inverse();
-   constexpr PHS_INLINE PHS_NODISCARD quat4<T>        conjugated()                 const PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE PHS_NODISCARD quat4<T>        conjugate();
+   PHS_NODISCARD constexpr PHS_INLINE quat4<T>        inversed()                   const;
+   PHS_NODISCARD constexpr PHS_INLINE quat4<T>        inverse();
+   PHS_NODISCARD constexpr PHS_INLINE quat4<T>        conjugated()                 const PHS_MATH_NOEXCEPT;
+   PHS_NODISCARD constexpr PHS_INLINE quat4<T>        conjugate();
 
-   constexpr PHS_INLINE PHS_NODISCARD float64_t       lengthSquared()              const PHS_MATH_NOEXCEPT;
+   PHS_NODISCARD constexpr PHS_INLINE float64_t       lengthSquared()              const PHS_MATH_NOEXCEPT;
 
-   constexpr PHS_INLINE PHS_NODISCARD quat4<T>        operator+(const quat4<T>& q) const PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE PHS_NODISCARD quat4<T>        operator-(const quat4<T>& q) const PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE PHS_NODISCARD quat4<T>        operator*(T s)               const PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE PHS_NODISCARD quat4<T>        operator/(T s)               const;
-   constexpr PHS_INLINE PHS_NODISCARD quat4<T>        operator*(const quat4<T>& q) const PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE PHS_NODISCARD quat4<T>        operator/(const quat4<T>& q) const;
+   PHS_NODISCARD constexpr PHS_INLINE quat4<T>        operator+(const quat4<T>& q) const PHS_MATH_NOEXCEPT;
+   PHS_NODISCARD constexpr PHS_INLINE quat4<T>        operator-(const quat4<T>& q) const PHS_MATH_NOEXCEPT;
+   PHS_NODISCARD constexpr PHS_INLINE quat4<T>        operator*(T s)               const PHS_MATH_NOEXCEPT;
+   PHS_NODISCARD constexpr PHS_INLINE quat4<T>        operator/(T s)               const;
+   PHS_NODISCARD constexpr PHS_INLINE quat4<T>        operator*(const quat4<T>& q) const PHS_MATH_NOEXCEPT;
+   PHS_NODISCARD constexpr PHS_INLINE quat4<T>        operator/(const quat4<T>& q) const;
                                                       
-   constexpr PHS_INLINE PHS_NODISCARD bool            operator==(const vec4<T>& q) const PHS_MATH_NOEXCEPT;
+   PHS_NODISCARD constexpr PHS_INLINE bool            operator==(const vec4<T>& q) const PHS_MATH_NOEXCEPT;
 
 #if defined(PHS_EXTENSIONS) and defined(PHS_USE_ANONYMOUS_STRUCT)
    union

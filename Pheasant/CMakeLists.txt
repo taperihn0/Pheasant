@@ -26,7 +26,7 @@ if (PHEASANT_BUILD_TESTS)
 endif()
 
 target_link_libraries(Pheasant PUBLIC 
-	glfw
+	glfw	
 	glad
 	shaderc
 )

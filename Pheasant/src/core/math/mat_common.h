@@ -25,11 +25,11 @@ struct matbase
 
    constexpr                                              matbase()                                      PHS_MATH_NOEXCEPT;
 
-   static constexpr PHS_INLINE PHS_NODISCARD uint         rows()                                         PHS_MATH_NOEXCEPT;
-   static constexpr PHS_INLINE PHS_NODISCARD uint         cols()                                         PHS_MATH_NOEXCEPT;
+   PHS_NODISCARD static constexpr PHS_INLINE uint         rows()                                         PHS_MATH_NOEXCEPT;
+   PHS_NODISCARD static constexpr PHS_INLINE uint         cols()                                         PHS_MATH_NOEXCEPT;
 
    template <dim_int_t CastRows, dim_int_t CastCols, typename CastT>
-   constexpr PHS_INLINE PHS_NODISCARD explicit            operator mat<CastRows, CastCols, CastT>();
+   PHS_NODISCARD constexpr PHS_INLINE explicit            operator mat<CastRows, CastCols, CastT>();
 
    constexpr PHS_INLINE mat<Rows, Cols, T>&               operator+=(const mat<Rows, Cols, T>& v)        PHS_MATH_NOEXCEPT;
    constexpr PHS_INLINE mat<Rows, Cols, T>&               operator-=(const mat<Rows, Cols, T>& v)        PHS_MATH_NOEXCEPT;
@@ -37,10 +37,10 @@ struct matbase
    constexpr PHS_INLINE mat<Rows, Cols, T>&               operator/=(T s);                               
    constexpr PHS_INLINE mat<Rows, Cols, T>&               operator*=(const mat<Rows, Cols, T>& v)        PHS_MATH_NOEXCEPT;
                                                                                                          
-   constexpr PHS_INLINE PHS_NODISCARD vec<Cols, T>&       operator[](size_t i)                           PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE PHS_NODISCARD const vec<Cols, T>& operator[](size_t i)                     const PHS_MATH_NOEXCEPT;
+   PHS_NODISCARD constexpr PHS_INLINE vec<Cols, T>&       operator[](size_t i)                           PHS_MATH_NOEXCEPT;
+   PHS_NODISCARD constexpr PHS_INLINE const vec<Cols, T>& operator[](size_t i)                     const PHS_MATH_NOEXCEPT;
 
-   constexpr PHS_INLINE PHS_NODISCARD bool                operator!=(const mat<Rows, Cols, T>& m)  const PHS_MATH_NOEXCEPT;
+   PHS_NODISCARD constexpr PHS_INLINE bool                operator!=(const mat<Rows, Cols, T>& m)  const PHS_MATH_NOEXCEPT;
 private:
    constexpr PHS_INLINE mat<Rows, Cols, T>&               __asDerived(matbase<Rows, Cols, T>& self);
    constexpr PHS_INLINE const mat<Rows, Cols, T>&         __asDerived(const matbase<Rows, Cols, T>& self) const;

@@ -1,0 +1,55 @@
+{
+    "version": 3,
+    "configurePresets": [
+        {            
+            "name": "debug",
+            "displayName": "Debug",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/Debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "SHADERC_SKIP_TESTS": "ON",
+                "SHADERC_SKIP_EXAMPLES": "ON",
+                "SHADERC_ENABLE_SHARED_CRT": "ON"    
+            }
+        },
+        {
+            "name": "release",
+            "displayName": "Release",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/Release",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "SHADERC_SKIP_TESTS": "ON",
+                "SHADERC_SKIP_EXAMPLES": "ON",
+                "SHADERC_ENABLE_SHARED_CRT": "ON"    
+            }
+        },
+        {
+            "name": "debug test",
+            "displayName": "DebugTest",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/Tests/Debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "SHADERC_SKIP_TESTS": "ON",
+                "SHADERC_SKIP_EXAMPLES": "ON",
+                "SHADERC_ENABLE_SHARED_CRT": "ON",
+                "PHEASANT_BUILD_TESTS": "ON"
+            }
+        },
+        {
+            "name": "release test",
+            "displayName": "ReleaseTest",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/Tests/Release",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "SHADERC_SKIP_TESTS": "ON",
+                "SHADERC_SKIP_EXAMPLES": "ON",
+                "SHADERC_ENABLE_SHARED_CRT": "ON",
+                "PHEASANT_BUILD_TESTS": "ON"
+            }
+        }
+    ]
+}

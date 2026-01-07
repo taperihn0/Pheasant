@@ -3,7 +3,7 @@
 #include "render/render_swapchain.h"
 
 // forward declaration of a platform-independent window.
-extern struct GLFWwindow;
+PHS_DECLARE struct GLFWwindow;
 
 namespace Phs
 {

@@ -23,18 +23,18 @@ struct vec<3, T> : public vecbase<3, T>
                                                     T s2 = __Zero, 
                                                     T s3 = __Zero)                 PHS_MATH_NOEXCEPT;
                                                 
-   constexpr PHS_INLINE PHS_NODISCARD vec3<T>&  round();
+   PHS_NODISCARD constexpr PHS_INLINE vec3<T>&  round();
 
-   constexpr PHS_INLINE PHS_NODISCARD float64_t lengthSquared()              const PHS_MATH_NOEXCEPT;
+   PHS_NODISCARD constexpr PHS_INLINE float64_t lengthSquared()              const PHS_MATH_NOEXCEPT;
                                                 
-   constexpr PHS_INLINE PHS_NODISCARD vec3<T>   operator+(const vec3<T>& v)  const PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE PHS_NODISCARD vec3<T>   operator-(const vec3<T>& v)  const PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE PHS_NODISCARD vec3<T>   operator*(T s)               const PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE PHS_NODISCARD vec3<T>   operator/(T s)               const;
-   constexpr PHS_INLINE PHS_NODISCARD vec3<T>   operator*(const vec3<T>& v)  const PHS_MATH_NOEXCEPT;
-   constexpr PHS_INLINE PHS_NODISCARD vec3<T>   operator/(const vec3<T>& v)  const;
+   PHS_NODISCARD constexpr PHS_INLINE vec3<T>   operator+(const vec3<T>& v)  const PHS_MATH_NOEXCEPT;
+   PHS_NODISCARD constexpr PHS_INLINE vec3<T>   operator-(const vec3<T>& v)  const PHS_MATH_NOEXCEPT;
+   PHS_NODISCARD constexpr PHS_INLINE vec3<T>   operator*(T s)               const PHS_MATH_NOEXCEPT;
+   PHS_NODISCARD constexpr PHS_INLINE vec3<T>   operator/(T s)               const;
+   PHS_NODISCARD constexpr PHS_INLINE vec3<T>   operator*(const vec3<T>& v)  const PHS_MATH_NOEXCEPT;
+   PHS_NODISCARD constexpr PHS_INLINE vec3<T>   operator/(const vec3<T>& v)  const;
                                                 
-   constexpr PHS_INLINE PHS_NODISCARD bool      operator==(const vec3<T>& v) const PHS_MATH_NOEXCEPT;
+   PHS_NODISCARD constexpr PHS_INLINE bool      operator==(const vec3<T>& v) const PHS_MATH_NOEXCEPT;
 
 #if defined(PHS_EXTENSIONS) and defined(PHS_USE_ANONYMOUS_STRUCT)
    union
