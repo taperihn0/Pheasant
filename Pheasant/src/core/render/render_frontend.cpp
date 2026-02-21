@@ -68,8 +68,10 @@ bool Render::drawFrame(RenderData& data)
    return PhsFrontendSUCCESS;
 }
 
-bool Render::clearScreen(float32_t red, float32_t green,
-                         float32_t blue, float32_t alpha)
+bool Render::clearScreen(float32_t red, 
+                         float32_t green,
+                         float32_t blue, 
+                         float32_t alpha)
 {
    PHS_ASSERT_LOG(_initialized, "Trying to call screen clearing on uninitialized render context!");
    return _backend.clear_scr(red, green, blue, alpha);

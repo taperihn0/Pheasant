@@ -98,7 +98,7 @@ Application::Application(int argc, char** argv)
 	_window->init(800, 600, "Hello GLFW");
 
 	// initialize callback functions 
-	_callbacks->error_callback				= errorCallback;
+	_callbacks->error_callback			= errorCallback;
 	_callbacks->window_resize_callback  = windowResizeCallback;
 	_callbacks->window_move_callback    = windowMoveCallback;
 	_callbacks->window_focus_callback   = windowFocusCallback;
@@ -106,7 +106,7 @@ Application::Application(int argc, char** argv)
 	_callbacks->key_press_callback      = keyPressCallback;
 	_callbacks->key_release_callback    = keyReleaseCallback;
 	_callbacks->key_repeat_callback     = keyRepeatCallback;
-	_callbacks->key_type_callback		   = keyTypeCallback;
+	_callbacks->key_type_callback		= keyTypeCallback;
 	_callbacks->mouse_press_callback    = mousePressCallback;
 	_callbacks->mouse_release_callback  = mouseReleaseCallback;
 	_callbacks->mouse_move_callback     = mouseMoveCallback;
@@ -132,18 +132,33 @@ void Application::run()
 
 void Application::loadExternalState(int argc, char** argv)
 {
-	PHS_ASSERT_LOG(argc == _ProgramArgCount, "Invalid command line number");
-
 	for (int i = 0; i < argc; i++)
 	{
 		PHS_CORE_LOG_INFO("Program argument ({}): {}", i, argv[i]);
 	}
 
-	_program_path = argv[_ProgramPathPlace];
-	_working_dir  = argv[_WorkingDirPlace];
+	for (int i = 0; i < argc; i++) {
+		switch (i) 
+		{
+		case 0:
+			_program_path = static_cast<FilePath>(argv[0]);
+			break;
+		case 1:
+			_working_dir  = static_cast<FilePath>(argv[1]);
+			break;
+		}
+	}
 
-	// passed directory is a new working directory
-	FilePath::setCurrentDirectory(_working_dir);
+	if (_program_path.isValid())
+		PHS_CORE_LOG_INFO("Executable path: {}", _program_path);
+
+	if (_working_dir.isValid()) {
+		PHS_CORE_LOG_INFO("Changing working directory to: {}", _working_dir);
+		FilePath::setCurrentDirectory(_working_dir);
+	}
+	else {
+		_working_dir = FilePath::getCurrentDirectory();
+	}
 
 	PHS_CORE_LOG_TRACE("Current working directory: {}", _working_dir);
 }

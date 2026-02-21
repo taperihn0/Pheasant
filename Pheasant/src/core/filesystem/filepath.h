@@ -16,8 +16,8 @@ public:
    friend std::ostream& operator<<(std::ostream&, const FilePath&);
 
    FilePath();
-   FilePath(const std::string& s);
-   FilePath(const char* s);
+   explicit FilePath(const std::string& s);
+   explicit FilePath(const char* s);
 
    FilePath(const FilePath& fp);
    FilePath(FilePath&& fp);
@@ -35,11 +35,15 @@ public:
 
    FilePath           stepInto(const std::string& s) const;
    FilePath           stepInto(const char* s) const;
+   
+   FilePath           operator/(const FilePath& fp) const;
 
    // TODO: implement optionally stepBack functionality
 
    static FilePath    getCurrentDirectory();
    static void        setCurrentDirectory(const FilePath& dir);
+
+   bool               isValid() const;
 private:
    std::string        _path_str;
 
@@ -49,6 +53,6 @@ private:
 
 std::ostream& operator<<(std::ostream& out, const FilePath& fp);
 
-extern FilePath UndefFilePath;
+static inline FilePath UndefFilePath = static_cast<FilePath>("");
 
 } // namespace Phs

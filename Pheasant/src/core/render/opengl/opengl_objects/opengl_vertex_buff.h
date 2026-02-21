@@ -5,7 +5,7 @@
 namespace Phs
 {
 
-/* 
+/* OpenGL's Vertex buffer abstraction
 */
 class GL_VertexBuffer
 {

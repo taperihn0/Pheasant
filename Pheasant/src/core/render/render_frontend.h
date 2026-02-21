@@ -39,8 +39,10 @@ public:
 
    /* Clearing the screen.
    */
-   static bool clearScreen(float32_t red, float32_t green, 
-                           float32_t blue, float32_t alpha);
+   static bool clearScreen(float32_t red, 
+                           float32_t green, 
+                           float32_t blue, 
+                           float32_t alpha);
 private:
    static void loadBackend(RenderGraphicsAPI platform);
 

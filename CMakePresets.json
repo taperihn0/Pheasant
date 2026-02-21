@@ -10,7 +10,8 @@
                 "CMAKE_BUILD_TYPE": "Debug",
                 "SHADERC_SKIP_TESTS": "ON",
                 "SHADERC_SKIP_EXAMPLES": "ON",
-                "SHADERC_ENABLE_SHARED_CRT": "ON"    
+                "SHADERC_ENABLE_SHARED_CRT": "ON",
+                "ENABLE_SIMD_SSE4_2": "ON"
             }
         },
         {
@@ -22,7 +23,8 @@
                 "CMAKE_BUILD_TYPE": "Release",
                 "SHADERC_SKIP_TESTS": "ON",
                 "SHADERC_SKIP_EXAMPLES": "ON",
-                "SHADERC_ENABLE_SHARED_CRT": "ON"    
+                "SHADERC_ENABLE_SHARED_CRT": "ON",
+                "ENABLE_SIMD_SSE4_2": "ON"
             }
         },
         {
@@ -35,7 +37,8 @@
                 "SHADERC_SKIP_TESTS": "ON",
                 "SHADERC_SKIP_EXAMPLES": "ON",
                 "SHADERC_ENABLE_SHARED_CRT": "ON",
-                "PHEASANT_BUILD_TESTS": "ON"
+                "PHEASANT_BUILD_TESTS": "ON",
+                "ENABLE_SIMD_SSE4_2": "ON"
             }
         },
         {
@@ -48,7 +51,8 @@
                 "SHADERC_SKIP_TESTS": "ON",
                 "SHADERC_SKIP_EXAMPLES": "ON",
                 "SHADERC_ENABLE_SHARED_CRT": "ON",
-                "PHEASANT_BUILD_TESTS": "ON"
+                "PHEASANT_BUILD_TESTS": "ON",
+                "ENABLE_SIMD_SSE4_2": "ON"
             }
         }
     ]
